@@ -210,7 +210,9 @@ export function Globe({ geo, colored, focus, labels, ariaLabel }: GlobeProps) {
     };
   }, [geo]);
 
-  useEffect(() => drawRef.current(), [colored, labels]);
+  useEffect(() => {
+    drawRef.current();
+  }, [colored, labels]);
 
   // animate towards the focused country
   const anim = useRef(0);

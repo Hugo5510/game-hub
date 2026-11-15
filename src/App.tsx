@@ -17,7 +17,9 @@ export function App() {
   const [id, sub] = useHashRoute();
   useContrast(); // applies data-contrast on <html>
   const { t } = useI18n();
-  useEffect(() => window.scrollTo(0, 0), [id, sub]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id, sub]);
   const Game = id && id in games ? games[id as GameId] : null;
   if (!Game) return <Hub />;
   const mode: Mode = sub === 'unlimited' ? 'unlimited' : 'daily';
