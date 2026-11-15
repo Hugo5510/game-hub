@@ -1,0 +1,208 @@
+.hub {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 16px 16px 40px;
+}
+.hub__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.hub__brand {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.hub__logo {
+  width: 40px;
+  height: 40px;
+}
+.hub__brand h1 {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.hub__date {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-family: var(--font-mono);
+}
+.hub__tagline {
+  font-size: 1.05rem;
+  max-width: 46ch;
+  margin: 18px 0 6px;
+}
+.hub__progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin: 0 0 18px;
+}
+.hub__dots {
+  display: inline-flex;
+  gap: 4px;
+}
+.hub__dots span {
+  width: 10px;
+  height: 10px;
+  border: 1.5px solid var(--fg);
+}
+.hub__dots span.is-on {
+  background: var(--fg);
+}
+.hub__grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 760px) {
+  .hub__grid {
+    grid-template-columns: 1.2fr 1fr 1fr;
+    grid-template-areas:
+      'slowko slowko globus'
+      'kontur glebia globus'
+      'epoka epoka epoka';
+  }
+  .card--slowko { grid-area: slowko; }
+  .card--globus { grid-area: globus; }
+  .card--kontur { grid-area: kontur; }
+  .card--glebia { grid-area: glebia; }
+  .card--epoka { grid-area: epoka; }
+}
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  overflow: hidden;
+}
+.card__main {
+  flex: 1;
+  display: flex;
+  gap: 16px;
+  padding: 18px;
+  text-decoration: none;
+  align-items: center;
+}
+.card__text {
+  display: grid;
+  gap: 6px;
+}
+.card__title {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  line-height: 1;
+  letter-spacing: var(--title-tracking);
+  text-transform: var(--title-case, none);
+}
+.card__tag {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+.card__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.card__streak {
+  color: var(--muted);
+  font-weight: 400;
+}
+.card__unl {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  margin: 0 18px 14px;
+  font-size: 0.82rem;
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+}
+.card__main:hover .card__title {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.art {
+  flex: none;
+  width: 96px;
+  height: 96px;
+}
+/* per-game card character */
+.card--slowko {
+  border: 3px solid var(--fg);
+}
+.card--slowko .card__main {
+  flex-direction: column;
+  align-items: flex-start;
+}
+.card--slowko .art {
+  width: 190px;
+  height: 44px;
+}
+.card--globus {
+  border-radius: 22px;
+  background:
+    radial-gradient(1px 1px at 20% 30%, #fff8 50%, transparent 51%),
+    radial-gradient(1px 1px at 70% 15%, #fff6 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 85% 70%, #fff7 50%, transparent 51%),
+    radial-gradient(1px 1px at 40% 85%, #fff5 50%, transparent 51%),
+    radial-gradient(1px 1px at 10% 75%, #fff6 50%, transparent 51%),
+    var(--bg);
+}
+.card--globus .card__main {
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+.card--globus .art {
+  width: 150px;
+  height: 150px;
+}
+.card--kontur {
+  border: 1px solid var(--ink);
+  outline: 1px solid var(--ink);
+  outline-offset: -6px;
+}
+.card--kontur .card__title {
+  font-weight: 600;
+}
+.card--glebia {
+  background: linear-gradient(180deg, #0c4c56 0%, #03191d 60%, #010608 100%);
+  border-radius: 3px;
+}
+.card--glebia .card__title {
+  color: var(--glow);
+  text-shadow: 0 0 12px color-mix(in oklab, var(--glow), transparent 50%);
+}
+[data-contrast='high'] .card--glebia {
+  background: #000;
+  border: 2px solid var(--fg);
+}
+.card--epoka {
+  border: 4px double var(--ink);
+}
+.card--epoka .card__tag {
+  font-style: italic;
+}
+[data-contrast='high'] .card--globus,
+[data-contrast='high'] .card--epoka {
+  border: 2px solid var(--fg);
+}
+.hub__foot {
+  margin-top: 28px;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
