@@ -436,13 +436,15 @@ button {
 .ac {
   position: relative;
   width: 100%;
+  min-width: 0;
 }
 .ac__row {
   display: flex;
   gap: 8px;
 }
 .ac input {
-  flex: 1;
+  flex: 1 1 0;
+  width: 0;
   min-width: 0;
   min-height: 46px;
   padding: 0 12px;
