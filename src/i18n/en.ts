@@ -51,6 +51,8 @@ export const en: typeof pl = {
   giveUp: 'Give up',
   giveUpConfirm: 'Are you sure? Giving up counts as a loss.',
   attempts: 'Guesses',
+  unknownCountry: 'Unknown country — pick one from the list',
+  alreadyGuessed: 'Already guessed',
   slowkoTitle: 'Słówko',
   slowkoTag: 'A five-letter Polish word. Six tries.',
   slowkoBoard: 'Board',

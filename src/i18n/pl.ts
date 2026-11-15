@@ -49,6 +49,8 @@ export const pl = {
   giveUp: 'Poddaj się',
   giveUpConfirm: 'Na pewno? Poddanie się liczy się jako przegrana.',
   attempts: 'Próby',
+  unknownCountry: 'Nie znam takiego kraju — wybierz z listy',
+  alreadyGuessed: 'Ten kraj już był',
   // Słówko
   slowkoTitle: 'Słówko',
   slowkoTag: 'Polskie słowo z pięciu liter. Sześć prób.',
