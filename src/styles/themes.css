@@ -114,8 +114,7 @@
 }
 /* Głębia — the abyss; background darkens with depth (set by --depth) */
 .theme-glebia {
-  --depth: 0;
-  --bg: color-mix(in oklab, #0c4c56, #010608 calc(var(--depth) * 100%));
+  --bg: color-mix(in oklab, #0c4c56, #010608 calc(var(--depth, 0) * 100%));
   --fg: #dff6ef;
   --muted: #8fb7ad;
   --surface: rgb(4 24 28 / 0.86);
@@ -135,7 +134,7 @@
   color-scheme: dark;
 }
 [data-contrast='high'] .theme-glebia {
-  --bg: color-mix(in oklab, #00262c, #000 calc(var(--depth) * 100%));
+  --bg: color-mix(in oklab, #00262c, #000 calc(var(--depth, 0) * 100%));
   --fg: #fff;
   --muted: #e6e6e6;
   --surface: #000;
