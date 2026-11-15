@@ -1,0 +1,322 @@
+.gl-root .game {
+  position: relative;
+  overflow: hidden;
+}
+.gl-root .game__main {
+  position: relative;
+  z-index: 1;
+}
+.gl-layout {
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr);
+  gap: 14px;
+  max-width: 760px;
+  margin: 0 auto;
+}
+.gl-gauge {
+  position: sticky;
+  top: 12px;
+  height: min(70dvh, 560px);
+}
+.gl-gauge__track {
+  position: relative;
+  height: 100%;
+  margin-left: 34px;
+  width: 6px;
+  border-radius: 3px;
+  background: color-mix(in oklab, var(--glow), transparent 85%);
+}
+.gl-gauge__tick {
+  position: absolute;
+  right: 10px;
+  transform: translateY(-50%);
+  font-size: 0.62rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.gl-gauge__tick::after {
+  content: '';
+  position: absolute;
+  right: -10px;
+  top: 50%;
+  width: 6px;
+  height: 1px;
+  background: var(--muted);
+}
+.gl-gauge__fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  border-radius: 3px;
+  background: var(--glow);
+  box-shadow: 0 0 10px var(--glow);
+  transition: height 1.2s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.gl-gauge__diver {
+  position: absolute;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--glow-2);
+  box-shadow: 0 0 14px var(--glow-2);
+  transition: top 1.2s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.gl-main {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  min-width: 0;
+}
+.gl-hud {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+}
+.gl-hud small {
+  display: block;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+}
+.gl-depth strong {
+  font-size: 2rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--glow);
+  text-shadow: 0 0 16px color-mix(in oklab, var(--glow), transparent 55%);
+}
+.gl-tanks {
+  display: flex;
+  gap: 2px;
+}
+.gl-tanks .is-full {
+  color: var(--glow);
+  fill: color-mix(in oklab, var(--glow), transparent 70%);
+}
+.gl-tanks .is-empty {
+  color: var(--muted);
+  opacity: 0.45;
+}
+.gl-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+.gl-step {
+  display: grid;
+  place-items: center;
+  height: 30px;
+  border: 1px solid var(--border);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+.gl-step.is-now {
+  border-color: var(--glow);
+  color: var(--fg);
+  box-shadow: inset 0 0 0 1px var(--glow);
+}
+.gl-step.is-hit {
+  background: color-mix(in oklab, var(--glow), transparent 78%);
+  color: var(--fg);
+  font-weight: 600;
+}
+.gl-step.is-skip,
+.gl-step.is-fail {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+.gl-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 16px;
+  display: grid;
+  gap: 10px;
+}
+.gl-card__n {
+  margin: 0;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--glow);
+}
+.gl-card__q {
+  margin: 0;
+  font-size: clamp(1.25rem, 4.6vw, 1.7rem);
+  line-height: 1.2;
+  font-weight: 600;
+}
+.gl-card__note {
+  margin: -4px 0 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.gl-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.gl-form .btn {
+  flex: 1 0 auto;
+}
+.gl-form input {
+  flex: 999 1 200px;
+  width: 0;
+  min-height: 48px;
+  padding: 0 12px;
+  font: inherit;
+  font-size: 1.05rem;
+  color: var(--fg);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-bottom: 2px solid var(--glow);
+}
+.gl-form input:focus {
+  outline: none;
+  background: color-mix(in oklab, var(--glow), transparent 92%);
+}
+.gl-skip {
+  justify-self: start;
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 4px 0;
+  font-size: 0.85rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.gl-flash {
+  min-height: 1.4em;
+  margin: 0;
+  font-size: 0.95rem;
+}
+.gl-flash.is-hit {
+  color: var(--glow);
+}
+.gl-flash.is-hit::before {
+  content: '+ ';
+}
+.gl-flash.is-miss {
+  color: var(--glow-2);
+}
+.gl-flash.is-miss::before {
+  content: '! ';
+  font-weight: 700;
+}
+.gl-log {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  font-size: 0.9rem;
+}
+.gl-pill {
+  display: inline-block;
+  min-width: 2.2em;
+  padding: 0 6px;
+  border: 1px solid var(--glow);
+  color: var(--glow);
+  font-size: 0.78rem;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.gl-recap {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+  text-align: left;
+  width: 100%;
+}
+.gl-recap__item {
+  border-left: 2px solid var(--glow);
+  padding-left: 10px;
+}
+.gl-recap__q {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.gl-recap__a {
+  margin: 2px 0;
+}
+.gl-recap__hint {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+.gl-final {
+  display: grid;
+  margin: 0;
+}
+.gl-final__m {
+  font-size: 2.6rem;
+  font-weight: 600;
+  color: var(--glow);
+  text-shadow: 0 0 18px color-mix(in oklab, var(--glow), transparent 50%);
+}
+/* drifting bioluminescent particles, more visible deeper */
+.gl-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: calc(0.15 + var(--depth, 0) * 0.85);
+  transition: opacity 1.5s;
+}
+.gl-particles span {
+  position: absolute;
+  bottom: -10px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--glow);
+  box-shadow: 0 0 8px var(--glow);
+  animation: gl-rise linear infinite;
+}
+.gl-particles span:nth-child(3n) {
+  background: var(--glow-2);
+  box-shadow: 0 0 8px var(--glow-2);
+  width: 3px;
+  height: 3px;
+}
+@keyframes gl-rise {
+  from {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  to {
+    transform: translate(20px, -105vh);
+    opacity: 0;
+  }
+}
+[data-contrast='high'] .gl-particles {
+  display: none;
+}
+@media (max-width: 420px) {
+  .gl-layout {
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 10px;
+  }
+  .gl-gauge__track {
+    margin-left: 28px;
+  }
+  .gl-gauge__tick {
+    font-size: 0.55rem;
+  }
+}

@@ -1,0 +1,734 @@
+[
+ {
+  "year": 100,
+  "from": 100,
+  "to": 199,
+  "file": "epoch/world_100.topo.json",
+  "prevYear": null,
+  "nextYear": 200,
+  "appears": [],
+  "vanishes": [
+   "Kushan Empire",
+   "Saami",
+   "Yayoi",
+   "Alans",
+   "Plain-Pottery culture"
+  ],
+  "polities": 83
+ },
+ {
+  "year": 200,
+  "from": 200,
+  "to": 299,
+  "file": "epoch/world_200.topo.json",
+  "prevYear": 100,
+  "nextYear": 300,
+  "appears": [
+   "Magadha",
+   "Sámi",
+   "Chola"
+  ],
+  "vanishes": [
+   "Roman Empire",
+   "Magadha",
+   "Sámi",
+   "Chola",
+   "Southern Xiongnu"
+  ],
+  "polities": 69
+ },
+ {
+  "year": 300,
+  "from": 300,
+  "to": 399,
+  "file": "epoch/world_300.topo.json",
+  "prevYear": 200,
+  "nextYear": 400,
+  "appears": [
+   "Jin",
+   "Rome (Diocletianus)",
+   "Rome (Maximian)",
+   "Gupta Empire",
+   "Rome (Constantinus)"
+  ],
+  "vanishes": [
+   "Parthian Empire",
+   "Rome (Diocletianus)",
+   "Rome (Maximian)",
+   "Saka Kingdom",
+   "Rome (Constantinus)"
+  ],
+  "polities": 71
+ },
+ {
+  "year": 400,
+  "from": 400,
+  "to": 499,
+  "file": "epoch/world_400.topo.json",
+  "prevYear": 300,
+  "nextYear": 500,
+  "appears": [
+   "Ruanruan",
+   "Western Roman Empire",
+   "Persia",
+   "Eastern Roman Empire",
+   "Hunnic Empire"
+  ],
+  "vanishes": [
+   "Persia",
+   "Suren Kingdom",
+   "Hunnic Empire",
+   "Meroe",
+   "Satavahanihara"
+  ],
+  "polities": 79
+ },
+ {
+  "year": 500,
+  "from": 500,
+  "to": 599,
+  "file": "epoch/world_500.topo.json",
+  "prevYear": 400,
+  "nextYear": 600,
+  "appears": [
+   "Sasanian Empire",
+   "Toba Wei",
+   "Vakataka",
+   "Funan",
+   "Vandals"
+  ],
+  "vanishes": [
+   "Ruanruan",
+   "Jin Empire",
+   "Gupta Empire",
+   "Toba Wei",
+   "Hopewell Culture"
+  ],
+  "polities": 87
+ },
+ {
+  "year": 600,
+  "from": 600,
+  "to": 699,
+  "file": "epoch/world_600.topo.json",
+  "prevYear": 500,
+  "nextYear": 700,
+  "appears": [
+   "Sui Empire",
+   "Göktürks",
+   "Frankish Kingdom",
+   "Vazimba",
+   "Chalukyas"
+  ],
+  "vanishes": [
+   "Shaskanka",
+   "Kamarupa",
+   "Funan",
+   "Ostrogoths",
+   "Arakan"
+  ],
+  "polities": 83
+ },
+ {
+  "year": 700,
+  "from": 700,
+  "to": 799,
+  "file": "epoch/world_700.topo.json",
+  "prevYear": 600,
+  "nextYear": 800,
+  "appears": [
+   "Tufan Empire",
+   "Tungus",
+   "Umayyad Caliphate",
+   "Western Gokturk Khaganate",
+   "Samoyèdes"
+  ],
+  "vanishes": [
+   "Sui Empire",
+   "Göktürks",
+   "Sasanian Empire",
+   "Tufan Empire",
+   "Umayyad Caliphate"
+  ],
+  "polities": 127
+ },
+ {
+  "year": 800,
+  "from": 800,
+  "to": 899,
+  "file": "epoch/world_800.topo.json",
+  "prevYear": 700,
+  "nextYear": 900,
+  "appears": [
+   "Abbasid Caliphate",
+   "Tibetan Empire",
+   "Tang Empire",
+   "Tupis",
+   "Dorset"
+  ],
+  "vanishes": [
+   "Permians",
+   "Bashkirs",
+   "Northmen",
+   "Japan",
+   "Chen-La"
+  ],
+  "polities": 117
+ },
+ {
+  "year": 900,
+  "from": 900,
+  "to": 999,
+  "file": "epoch/world_900.topo.json",
+  "prevYear": 800,
+  "nextYear": 1000,
+  "appears": [
+   "Oghuz Turks",
+   "Tuaregs",
+   "Mandes",
+   "Bedouins",
+   "Berbers"
+  ],
+  "vanishes": [
+   "Abbasid Caliphate",
+   "Tibetan Empire",
+   "Oghuz Turks",
+   "Tuaregs",
+   "Tang Empire"
+  ],
+  "polities": 135
+ },
+ {
+  "year": 1000,
+  "from": 1000,
+  "to": 1099,
+  "file": "epoch/world_1000.topo.json",
+  "prevYear": 900,
+  "nextYear": 1100,
+  "appears": [
+   "Kimek-Kipchak khaganate",
+   "Song Empire",
+   "Denmark-Norway",
+   "Tibet",
+   "Buwayhid Emirates"
+  ],
+  "vanishes": [
+   "Kimek-Kipchak khaganate",
+   "Buwayhid Emirates",
+   "Peshemegs",
+   "Kyivan Rus",
+   "Caliphate of Córdoba"
+  ],
+  "polities": 129
+ },
+ {
+  "year": 1100,
+  "from": 1100,
+  "to": 1199,
+  "file": "epoch/world_1100.topo.json",
+  "prevYear": 1000,
+  "nextYear": 1200,
+  "appears": [
+   "Cuman-Kipchak confederation",
+   "Mongols",
+   "Almoravid dynasty",
+   "Seljuk Empire",
+   "Karkhanids"
+  ],
+  "vanishes": [
+   "Cuman-Kipchak confederation",
+   "Mongols",
+   "Almoravid dynasty",
+   "Seljuk Empire",
+   "Karkhanids"
+  ],
+  "polities": 139
+ },
+ {
+  "year": 1200,
+  "from": 1200,
+  "to": 1278,
+  "file": "epoch/world_1200.topo.json",
+  "prevYear": 1100,
+  "nextYear": 1279,
+  "appears": [
+   "Mongol Empire",
+   "Kara Khitai Khaganate",
+   "Cuman Khanates",
+   "Buwayhid Emirates",
+   "Sultanate of Delhi"
+  ],
+  "vanishes": [
+   "Mongol Empire",
+   "Kara Khitai Khaganate",
+   "Song Empire",
+   "Cuman Khanates",
+   "Buwayhid Emirates"
+  ],
+  "polities": 129
+ },
+ {
+  "year": 1279,
+  "from": 1279,
+  "to": 1299,
+  "file": "epoch/world_1279.topo.json",
+  "prevYear": 1200,
+  "nextYear": 1300,
+  "appears": [
+   "Great Khanate",
+   "Siberians",
+   "Khanate of the Golden Horde",
+   "Touareg",
+   "Ilkhanate"
+  ],
+  "vanishes": [
+   "Touareg",
+   "Sámi",
+   "Merinides",
+   "Abdelouadides",
+   "Serbia"
+  ],
+  "polities": 113
+ },
+ {
+  "year": 1300,
+  "from": 1300,
+  "to": 1399,
+  "file": "epoch/world_1300.topo.json",
+  "prevYear": 1279,
+  "nextYear": 1400,
+  "appears": [
+   "Samis",
+   "Morocco",
+   "Raška"
+  ],
+  "vanishes": [
+   "Khanate of the Golden Horde",
+   "Ilkhanate",
+   "Ryazan",
+   "Norway",
+   "Samis"
+  ],
+  "polities": 113
+ },
+ {
+  "year": 1400,
+  "from": 1400,
+  "to": 1491,
+  "file": "epoch/world_1400.topo.json",
+  "prevYear": 1300,
+  "nextYear": 1492,
+  "appears": [
+   "Timurid Empire",
+   "White Horde",
+   "Kalmar Union",
+   "Blue Horde",
+   "Sámi"
+  ],
+  "vanishes": [
+   "Great Khanate",
+   "Timurid Empire",
+   "Kalmar Union",
+   "Blue Horde",
+   "Athabaskan"
+  ],
+  "polities": 115
+ },
+ {
+  "year": 1500,
+  "from": 1500,
+  "to": 1529,
+  "file": "epoch/world_1500.topo.json",
+  "prevYear": 1492,
+  "nextYear": 1530,
+  "appears": [
+   "Kalmar Union",
+   "Inca Empire",
+   "Athabaskan",
+   "Tlinoit",
+   "Huron"
+  ],
+  "vanishes": [
+   "Chagatai Khanate",
+   "Siberians",
+   "West African cereal farmers",
+   "Kalmar Union",
+   "Grand Duchy of Moscow"
+  ],
+  "polities": 139
+ },
+ {
+  "year": 1530,
+  "from": 1530,
+  "to": 1599,
+  "file": "epoch/world_1530.topo.json",
+  "prevYear": 1500,
+  "nextYear": 1600,
+  "appears": [
+   "Quazaq Khanate",
+   "Tsardom of Muscovy",
+   "Nogai Horde",
+   "T'atsaot'ine",
+   "Safavid Empire"
+  ],
+  "vanishes": [
+   "Khanate of Sibir",
+   "Bukara Khanate",
+   "Kazan Khanate",
+   "Nenets",
+   "Sámi"
+  ],
+  "polities": 269
+ },
+ {
+  "year": 1600,
+  "from": 1600,
+  "to": 1649,
+  "file": "epoch/world_1600.topo.json",
+  "prevYear": 1530,
+  "nextYear": 1650,
+  "appears": [
+   "Wiradjuri",
+   "Mardu",
+   "Kokatha",
+   "Pintupi",
+   "Watjarri"
+  ],
+  "vanishes": [
+   "Ming Chinese Empire",
+   "Inca Empire",
+   "Poland-Lithuania",
+   "Apache",
+   "Adal"
+  ],
+  "polities": 638
+ },
+ {
+  "year": 1650,
+  "from": 1650,
+  "to": 1714,
+  "file": "epoch/world_1650.topo.json",
+  "prevYear": 1600,
+  "nextYear": 1715,
+  "appears": [
+   "Manchu Empire",
+   "Viceroyalty of Peru",
+   "Dutch East Indies",
+   "Post-Ming Warlords",
+   "Polish–Lithuanian Commonwealth"
+  ],
+  "vanishes": [
+   "Chukchi",
+   "Cree",
+   "Post-Ming Warlords",
+   "Portuguese Brazil",
+   "Obiwa"
+  ],
+  "polities": 593
+ },
+ {
+  "year": 1715,
+  "from": 1715,
+  "to": 1782,
+  "file": "epoch/world_1715.topo.json",
+  "prevYear": 1700,
+  "nextYear": 1783,
+  "appears": [
+   "Viceroyalty of Brazil",
+   "Rupert's Land",
+   "Egypt",
+   "Algiers",
+   "Papua New Guinea"
+  ],
+  "vanishes": [
+   "Tsardom of Muscovy",
+   "Manchu Empire",
+   "Mughal Empire",
+   "Safavid Empire",
+   "Tibet"
+  ],
+  "polities": 600
+ },
+ {
+  "year": 1783,
+  "from": 1783,
+  "to": 1799,
+  "file": "epoch/world_1783.topo.json",
+  "prevYear": 1715,
+  "nextYear": 1800,
+  "appears": [
+   "Russian Empire",
+   "Qing Empire",
+   "Luisiana",
+   "Viceroyalty of New Granada",
+   "Viceroyalty of the Río de la Plata"
+  ],
+  "vanishes": [
+   "Poland",
+   "Athabascan",
+   "Lahore",
+   "Bengal",
+   "Sind"
+  ],
+  "polities": 549
+ },
+ {
+  "year": 1800,
+  "from": 1800,
+  "to": 1814,
+  "file": "epoch/world_1800.topo.json",
+  "prevYear": 1783,
+  "nextYear": 1815,
+  "appears": [
+   "Rajputs",
+   "Sikhs",
+   "Bundelkhand",
+   "Nizam's Dominions",
+   "Sindh"
+  ],
+  "vanishes": [
+   "Qing Empire",
+   "Rupert's Land",
+   "Luisiana",
+   "Viceroyalty of the Río de la Plata",
+   "Quebec"
+  ],
+  "polities": 546
+ },
+ {
+  "year": 1815,
+  "from": 1815,
+  "to": 1877,
+  "file": "epoch/world_1815.topo.json",
+  "prevYear": 1800,
+  "nextYear": 1878,
+  "appears": [
+   "Manchu Empire",
+   "Canada",
+   "New South Wales",
+   "United Provinces of the Río de la Plata",
+   "Turan"
+  ],
+  "vanishes": [
+   "Viceroyalty of Brazil",
+   "Viceroyalty of New Granada",
+   "Maratha Confederacy",
+   "United Provinces of the Río de la Plata",
+   "Turan"
+  ],
+  "polities": 313
+ },
+ {
+  "year": 1878,
+  "from": 1878,
+  "to": 1879,
+  "file": "epoch/world_1878.topo.json",
+  "prevYear": 1815,
+  "nextYear": 1880,
+  "appears": [
+   "Mapuche",
+   "Kingdom of Brazil",
+   "British Raj",
+   "Western Australia (UK)",
+   "Arabia"
+  ],
+  "vanishes": [
+   "Mapuche",
+   "Sultinate of Zanzibar",
+   "M?ori"
+  ],
+  "polities": 172
+ },
+ {
+  "year": 1880,
+  "from": 1880,
+  "to": 1899,
+  "file": "epoch/world_1880.topo.json",
+  "prevYear": 1878,
+  "nextYear": 1900,
+  "appears": [
+   "Sultanate of Zanzibar",
+   "Māori"
+  ],
+  "vanishes": [
+   "Mozambique",
+   "Annam",
+   "Wadai Empire",
+   "Bokhara Khanate",
+   "Dendi Kingdom"
+  ],
+  "polities": 169
+ },
+ {
+  "year": 1900,
+  "from": 1900,
+  "to": 1913,
+  "file": "epoch/world_1900.topo.json",
+  "prevYear": 1880,
+  "nextYear": 1914,
+  "appears": [
+   "Portuguese East Africa",
+   "First Samori Empire",
+   "Tunisia",
+   "Second Samori Empire",
+   "Accra"
+  ],
+  "vanishes": [
+   "Greenland",
+   "Queensland (UK)",
+   "Northern Territory (UK)",
+   "Sokoto Caliphate",
+   "New South Wales (UK)"
+  ],
+  "polities": 165
+ },
+ {
+  "year": 1914,
+  "from": 1914,
+  "to": 1919,
+  "file": "epoch/world_1914.topo.json",
+  "prevYear": 1900,
+  "nextYear": 1920,
+  "appears": [
+   "French West Africa",
+   "Anglo-Egyptian Sudan",
+   "Xinjiang",
+   "Mongolia",
+   "Libya"
+  ],
+  "vanishes": [
+   "Russian Empire",
+   "Manchu Empire",
+   "Belgian Congo",
+   "Ottoman Empire",
+   "Arabia (Nejd)"
+  ],
+  "polities": 142
+ },
+ {
+  "year": 1920,
+  "from": 1920,
+  "to": 1929,
+  "file": "epoch/world_1920.topo.json",
+  "prevYear": 1914,
+  "nextYear": 1930,
+  "appears": [
+   "USSR",
+   "Chinese Warlords",
+   "Zaire (Belgium)",
+   "Dutch East Indies",
+   "Iran"
+  ],
+  "vanishes": [
+   "USSR",
+   "Ukraine",
+   "Ottoman Sultanate",
+   "South Russia"
+  ],
+  "polities": 163
+ },
+ {
+  "year": 1930,
+  "from": 1930,
+  "to": 1937,
+  "file": "epoch/world_1930.topo.json",
+  "prevYear": 1920,
+  "nextYear": 1938,
+  "appears": [
+   "Republic of Turkey"
+  ],
+  "vanishes": [
+   "White Russia",
+   "Zaire (Belgium)",
+   "Far Eastern SSR",
+   "Manchuria",
+   "Zambia"
+  ],
+  "polities": 163
+ },
+ {
+  "year": 1938,
+  "from": 1938,
+  "to": 1944,
+  "file": "epoch/world_1938.topo.json",
+  "prevYear": 1930,
+  "nextYear": 1945,
+  "appears": [
+   "USSR",
+   "Belgian Congo",
+   "Saudi Arabia",
+   "Northern Rhodesia",
+   "Siam"
+  ],
+  "vanishes": [
+   "Chinese warlords",
+   "British Raj",
+   "French West Africa",
+   "French Equatorial Africa",
+   "Dutch East Indies"
+  ],
+  "polities": 171
+ },
+ {
+  "year": 1945,
+  "from": 1945,
+  "to": 1959,
+  "file": "epoch/world_1945.topo.json",
+  "prevYear": 1938,
+  "nextYear": 1960,
+  "appears": [
+   "Zaire",
+   "Indonesia",
+   "Chad",
+   "Mali",
+   "Niger"
+  ],
+  "vanishes": [
+   "Xinjiang",
+   "Manchuria",
+   "Cyraneica (UK Lybia)",
+   "Northern Rhodesia",
+   "Fezzan (Frech Lybia)"
+  ],
+  "polities": 183
+ },
+ {
+  "year": 1960,
+  "from": 1960,
+  "to": 1993,
+  "file": "epoch/world_1960.topo.json",
+  "prevYear": 1945,
+  "nextYear": 1994,
+  "appears": [
+   "Greenland",
+   "Libya",
+   "Zambia",
+   "Zimbabwe",
+   "Vietnam"
+  ],
+  "vanishes": [
+   "USSR",
+   "Tibet",
+   "Yugoslavia",
+   "Czechoslovakia"
+  ],
+  "polities": 157
+ },
+ {
+  "year": 1994,
+  "from": 1994,
+  "to": 2010,
+  "file": "epoch/world_1994.topo.json",
+  "prevYear": 1960,
+  "nextYear": null,
+  "appears": [
+   "Russia",
+   "Kazakhstan",
+   "Ukraine",
+   "Turkmenistan",
+   "Uzbekistan"
+  ],
+  "vanishes": [],
+  "polities": 193
+ }
+]

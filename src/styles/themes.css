@@ -1,0 +1,193 @@
+/* Theme tokens for every game (used by hub cards and game screens). Each has a high-contrast variant. */
+.theme-slowko {
+  --bg: #f7f6f2;
+  --fg: #141414;
+  --muted: #5e5e5a;
+  --surface: #ffffff;
+  --surface-2: #e6e4dd;
+  --border: #c9c6bd;
+  --accent: #2f8a4e;
+  --accent-fg: #ffffff;
+  --focus: #d4561c;
+  --font-display: 'Archivo Black', 'Archivo', system-ui, sans-serif;
+  --font-body: 'Archivo', system-ui, sans-serif;
+  --radius: 4px;
+  --title-case: uppercase;
+  --title-tracking: 0.12em;
+  --sl-correct: #2f8a4e;
+  --sl-present: #c9a227;
+  --sl-absent: #6f6e69;
+  --sl-tile-fg: #ffffff;
+  --sl-key: #d9d7cf;
+}
+[data-contrast='high'] .theme-slowko {
+  --bg: #ffffff;
+  --fg: #000000;
+  --muted: #2a2a2a;
+  --border: #000000;
+  --surface-2: #dcdcdc;
+  --accent: #c24e00;
+  --sl-correct: #c24e00; /* orange */
+  --sl-present: #1d5fd6; /* blue */
+  --sl-absent: #3a3a3a;
+  --sl-key: #c9c9c9;
+}
+/* Globus — deep space, heat scale pale → deep red */
+.theme-globus {
+  --bg: #07080b;
+  --fg: #ece8df;
+  --muted: #a09b91;
+  --surface: #12141a;
+  --surface-2: #1f222b;
+  --border: #343844;
+  --accent: #e0442b;
+  --accent-fg: #fff;
+  --focus: #ffb38a;
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Space Grotesk', system-ui, sans-serif;
+  --radius: 14px;
+  --modal-radius: 18px;
+  --title-tracking: -0.01em;
+  --gl-ocean: #0d131c;
+  --gl-land: #2b303a;
+  --gl-grid: #1d2633;
+  --gl-rim: #4a5568;
+  --gl-target: #ffffff;
+  --heat-0: #fbeee4;
+  --heat-1: #f8cfb3;
+  --heat-2: #f3a57f;
+  --heat-3: #e9764f;
+  --heat-4: #d4472e;
+  --heat-5: #a51f1a;
+  --heat-6: #6a0810;
+  color-scheme: dark;
+}
+[data-contrast='high'] .theme-globus {
+  --bg: #000;
+  --fg: #fff;
+  --muted: #e0e0e0;
+  --surface: #000;
+  --surface-2: #262626;
+  --border: #fff;
+  --gl-ocean: #000;
+  --gl-land: #4d4d4d;
+  --gl-grid: #333;
+  --gl-rim: #fff;
+  --heat-0: #fff4b0;
+  --heat-1: #ffd23f;
+  --heat-2: #ff9f1c;
+  --heat-3: #ff5d00;
+  --heat-4: #e00000;
+  --heat-5: #b00068;
+  --heat-6: #ff00c8;
+}
+/* Kontur — survey map: cool paper, ink, vermilion compass */
+.theme-kontur {
+  --bg: #eef1ea;
+  --fg: #16232b;
+  --muted: #4f6168;
+  --surface: #f8faf5;
+  --surface-2: #dde5dc;
+  --border: #9fb4b4;
+  --accent: #c8402a;
+  --accent-fg: #fff;
+  --focus: #c8402a;
+  --ink: #16232b;
+  --grid: #bdd0cf;
+  --font-display: 'Barlow Condensed', system-ui, sans-serif;
+  --font-body: 'Barlow Condensed', system-ui, sans-serif;
+  --radius: 0px;
+  --modal-radius: 0px;
+  --title-case: uppercase;
+  --title-tracking: 0.28em;
+}
+[data-contrast='high'] .theme-kontur {
+  --bg: #fff;
+  --fg: #000;
+  --muted: #1f1f1f;
+  --surface: #fff;
+  --surface-2: #e2e2e2;
+  --border: #000;
+  --ink: #000;
+  --grid: #7c9a9a;
+  --accent: #b00000;
+}
+/* Głębia — the abyss; background darkens with depth (set by --depth) */
+.theme-glebia {
+  --bg: color-mix(in oklab, #0c4c56, #010608 calc(var(--depth, 0) * 100%));
+  --fg: #dff6ef;
+  --muted: #8fb7ad;
+  --surface: rgb(4 24 28 / 0.86);
+  --surface-2: #10343a;
+  --border: #1f5a5f;
+  --accent: #4cf0c0;
+  --accent-fg: #02201a;
+  --focus: #f6d55c;
+  --glow: #4cf0c0;
+  --glow-2: #f6d55c;
+  --font-display: 'Chakra Petch', system-ui, sans-serif;
+  --font-body: 'Chakra Petch', system-ui, sans-serif;
+  --radius: 3px;
+  --modal-radius: 6px;
+  --title-case: uppercase;
+  --title-tracking: 0.18em;
+  color-scheme: dark;
+}
+[data-contrast='high'] .theme-glebia {
+  --bg: color-mix(in oklab, #00262c, #000 calc(var(--depth, 0) * 100%));
+  --fg: #fff;
+  --muted: #e6e6e6;
+  --surface: #000;
+  --surface-2: #1a1a1a;
+  --border: #fff;
+  --accent: #00ffc8;
+  --glow: #00ffc8;
+  --glow-2: #ffe600;
+}
+/* Epoka — old atlas: parchment, sepia, engraved type */
+.theme-epoka {
+  --bg: #eadbb9;
+  --fg: #33230f;
+  --muted: #6c5536;
+  --surface: #f3e8cd;
+  --surface-2: #dcc79c;
+  --border: #a88b5c;
+  --accent: #842a18;
+  --accent-fg: #f6ecd2;
+  --focus: #842a18;
+  --ink: #33230f;
+  --sea: #d9cba6;
+  --terr-1: #d6b27c;
+  --terr-2: #b98c5a;
+  --terr-3: #c99d6c;
+  --terr-4: #a47b4f;
+  --terr-5: #e0c28e;
+  --terr-6: #8f6b43;
+  --terr-7: #cfa775;
+  --terr-8: #b7956a;
+  --font-display: 'Cinzel', 'Old Standard TT', serif;
+  --font-body: 'Old Standard TT', Georgia, serif;
+  --font-mono: 'Old Standard TT', Georgia, serif;
+  --radius: 2px;
+  --modal-radius: 2px;
+  --title-tracking: 0.14em;
+}
+[data-contrast='high'] .theme-epoka {
+  --bg: #fffaf0;
+  --fg: #000;
+  --muted: #1a1a1a;
+  --surface: #fff;
+  --surface-2: #e8dcc0;
+  --border: #000;
+  --ink: #000;
+  --accent: #8a0000;
+  --sea: #ffffff;
+  --terr-1: #f2c879;
+  --terr-2: #c58a46;
+  --terr-3: #f0dca8;
+  --terr-4: #9a6a35;
+  --terr-5: #ffe9b8;
+  --terr-6: #7a5226;
+  --terr-7: #e0b066;
+  --terr-8: #b8834a;
+}

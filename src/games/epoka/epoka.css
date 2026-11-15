@@ -1,0 +1,243 @@
+.theme-epoka.game {
+  background:
+    radial-gradient(ellipse at 50% 30%, transparent 40%, color-mix(in oklab, var(--ink), transparent 88%) 100%),
+    var(--bg);
+}
+[data-contrast='high'] .theme-epoka.game {
+  background: var(--bg);
+}
+.theme-epoka .game__title h1 {
+  font-weight: 600;
+}
+.ep-wrap {
+  display: grid;
+  gap: 14px;
+  max-width: 1040px;
+  margin: 0 auto;
+}
+.ep-map {
+  margin: 0;
+}
+.ep-map__frame {
+  position: relative;
+  border: 1px solid var(--ink);
+  outline: 3px double var(--ink);
+  outline-offset: 3px;
+  background: var(--surface);
+  margin: 5px;
+}
+.ep-map svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  touch-action: none;
+  cursor: grab;
+}
+.ep-sea {
+  fill: var(--sea);
+}
+.ep-grat {
+  fill: none;
+  stroke: var(--ink);
+  opacity: 0.35;
+}
+.ep-land {
+  stroke: var(--ink);
+  stroke-linejoin: round;
+}
+.ep-land:hover {
+  filter: brightness(1.08);
+}
+.ep-rim {
+  fill: none;
+  stroke: var(--ink);
+}
+.ep-labels text {
+  font-family: var(--font-body);
+  font-style: italic;
+  fill: var(--ink);
+  stroke: var(--surface);
+  paint-order: stroke;
+  stroke-linejoin: round;
+  pointer-events: none;
+  letter-spacing: 0.04em;
+}
+.ep-cartouche {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  padding: 3px 12px;
+  font-family: var(--font-display);
+  font-size: clamp(0.7rem, 2.4vw, 1rem);
+  letter-spacing: 0.16em;
+  background: var(--surface);
+  border: 1px solid var(--ink);
+  outline: 1px solid var(--ink);
+  outline-offset: -4px;
+  pointer-events: none;
+}
+.ep-zoom {
+  position: absolute;
+  right: 6px;
+  top: 6px;
+  display: grid;
+  gap: 4px;
+}
+.ep-zoom .icon-btn {
+  width: 34px;
+  height: 34px;
+  background: var(--surface);
+  border: 1px solid var(--ink);
+}
+.ep-tl {
+  padding: 8px 14px 22px;
+}
+.ep-tl__axis {
+  position: relative;
+  height: 26px;
+  border-bottom: 2px solid var(--ink);
+}
+.ep-tl__win {
+  position: absolute;
+  bottom: 0;
+  height: 10px;
+  background: color-mix(in oklab, var(--accent), transparent 75%);
+  transition: all 0.6s;
+}
+.ep-tl__ans {
+  position: absolute;
+  bottom: -4px;
+  height: 18px;
+  background: var(--accent);
+}
+.ep-tl__tick {
+  position: absolute;
+  bottom: -18px;
+  transform: translateX(-50%);
+  font-size: 0.62rem;
+  font-family: var(--font-body);
+  display: grid;
+  justify-items: center;
+}
+.ep-tl__tick i {
+  width: 1px;
+  height: 6px;
+  background: var(--ink);
+  margin-bottom: 1px;
+}
+.ep-tl__tick:nth-child(even) b {
+  visibility: hidden;
+}
+@media (min-width: 600px) {
+  .ep-tl__tick:nth-child(even) b {
+    visibility: visible;
+  }
+}
+.ep-tl__mark {
+  position: absolute;
+  top: -2px;
+  transform: translateX(-50%);
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1.5px solid var(--ink);
+  font-size: 0.65rem;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+}
+.ep-tl__mark.is-correct {
+  background: var(--accent);
+  color: var(--accent-fg);
+}
+.ep-panel {
+  display: grid;
+  gap: 12px;
+  max-width: 640px;
+  width: 100%;
+  margin: 0 auto;
+}
+.ep-guesses {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+}
+.ep-g {
+  display: grid;
+  grid-template-columns: 4.2em 1fr;
+  align-items: center;
+  gap: 10px;
+  min-height: 38px;
+  padding: 0 10px;
+  border-bottom: 1px solid var(--border);
+}
+.ep-g.is-empty {
+  border-bottom-style: dotted;
+}
+.ep-g__year {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.ep-g__hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.ep-g.tier-hot .ep-g__hint em {
+  color: var(--accent);
+  font-weight: 700;
+}
+.ep-g.is-correct {
+  background: color-mix(in oklab, var(--accent), transparent 85%);
+  border-bottom: 2px solid var(--accent);
+}
+.ep-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.ep-form input {
+  flex: 1 1 0;
+  width: 0;
+  min-height: 46px;
+  padding: 0 12px;
+  font: inherit;
+  font-size: 1.2rem;
+  color: var(--fg);
+  background: var(--surface);
+  border: 1px solid var(--ink);
+  letter-spacing: 0.08em;
+}
+.ep-err {
+  flex-basis: 100%;
+  margin: 0;
+  min-height: 1.2em;
+  font-size: 0.85rem;
+  color: var(--accent);
+}
+.ep-clues {
+  text-align: left;
+  width: 100%;
+}
+.ep-clues h3 {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  letter-spacing: 0.1em;
+  margin: 10px 0 4px;
+}
+.ep-clues p {
+  margin: 4px 0;
+  line-height: 1.45;
+}
+.ep-range {
+  font-size: 1.15rem;
+}
+.ep-src {
+  font-size: 0.8rem;
+}
