@@ -41,6 +41,7 @@ function addCategory(id, prompt, items, opts = {}) {
 const a0 = raw('ne_50m_admin_0_countries.geojson').features;
 const STATE_TYPES = new Set(['Sovereign country', 'Country', 'Sovereignty', 'Disputed']);
 const NOT_STATES = new Set(['KAS', 'ATA', 'IOT', 'FLK', 'SAH']);
+const plFix = local('../country-aliases-pl.json');
 const states = a0
   .filter((f) => STATE_TYPES.has(f.properties.TYPE) && !NOT_STATES.has(f.properties.ADM0_A3))
   .map((f) => {
@@ -54,7 +55,7 @@ const states = a0
       pop: p.POP_EST,
       area: geoArea(f) * 6371 ** 2,
       bounds: { minLon, minLat, maxLon, maxLat },
-      item: { pl: p.NAME_PL, en: p.NAME_EN, alt: [p.NAME, p.NAME_LONG, p.ADMIN, p.FORMAL_EN, p.NAME_ALT, p.BRK_NAME], metric: p.POP_EST },
+      item: { pl: plFix.display[p.ADM0_A3] ?? p.NAME_PL, en: plFix.displayEn[p.ADM0_A3] ?? p.NAME_EN, alt: [p.NAME_PL, ...(plFix.aliases[p.ADM0_A3] ?? []), p.NAME, p.NAME_LONG, p.ADMIN, p.FORMAL_EN, p.NAME_ALT, p.BRK_NAME], metric: p.POP_EST },
     };
   });
 const stateById = new Map(states.map((s) => [s.id, s]));

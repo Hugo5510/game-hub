@@ -9,7 +9,7 @@
 - [x] i18n PL (domyślnie) / EN
 - [x] Hub (neutralny), karty gier o własnym charakterze
 - [x] Motywy CSS per gra + tryb wysokiego kontrastu
-- [ ] PWA (manifest, service worker, ikony)
+- [x] PWA (manifest, service worker, ikony)
 
 ## Dane
 - [x] Natural Earth: kraje 50m → topojson + metadane PL/EN
@@ -25,8 +25,13 @@
 - [x] Epoka
 
 ## Weryfikacja
-- [ ] build bez błędów
+- [x] build bez błędów
 - [x] testy jednostkowe
-- [ ] wygrana/przegrana w obu trybach dla każdej gry (e2e Playwright)
-- [ ] 360 px i desktop (zrzuty)
-- [ ] README: licencje danych, uruchomienie
+- [x] wygrana/przegrana w obu trybach dla każdej gry (e2e Playwright)
+- [x] 360 px i desktop (zrzuty)
+- [x] README: licencje danych, uruchomienie
+
+## Uwagi / ograniczenia (opisane w README)
+- Wikidata, Wikipedia i sjp.pl zablokowane przez sieć środowiska → rzadkość w Głębi z obiektywnych metryk danych, nie z częstości odpowiedzi graczy.
+- Słówko w trybie EN nadal używa polskich haseł (gra słowna w języku polskim); EN tłumaczy interfejs.
+- Wskazówki Epoki liczone automatycznie; zbiór historical-basemaps bywa niekonsekwentny w nazewnictwie.

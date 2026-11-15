@@ -60,6 +60,7 @@ export function Globe({ geo, colored, focus, labels, ariaLabel }: GlobeProps) {
       draw();
     };
     const draw = () => {
+      if (size < 40) return;
       const r = (size / 2 - 6) * zoom.current;
       proj.rotate(rot.current).scale(r).translate([size / 2, size / 2]);
       ctx.clearRect(0, 0, size, size);

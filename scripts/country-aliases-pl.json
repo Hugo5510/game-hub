@@ -1,0 +1,115 @@
+{
+  "_comment": "Common Polish short names (display) and extra aliases for Natural Earth countries. display replaces NAME_PL; NE name stays as an alias.",
+  "display": {
+    "CHN": "Chiny",
+    "TWN": "Tajwan",
+    "ZAF": "Republika Południowej Afryki",
+    "MMR": "Mjanma (Birma)"
+  },
+  "aliases": {
+    "CHN": [
+      "ChRL"
+    ],
+    "TWN": [
+      "Republika Chińska"
+    ],
+    "ZAF": [
+      "RPA",
+      "Południowa Afryka"
+    ],
+    "USA": [
+      "USA",
+      "Stany Zjednoczone Ameryki",
+      "Stany",
+      "US",
+      "Ameryka"
+    ],
+    "GBR": [
+      "Zjednoczone Królestwo",
+      "UK",
+      "Brytania"
+    ],
+    "MMR": [
+      "Birma",
+      "Mjanma"
+    ],
+    "CZE": [
+      "Czechia",
+      "Republika Czeska"
+    ],
+    "NLD": [
+      "Niderlandy"
+    ],
+    "SWZ": [
+      "Suazi"
+    ],
+    "MKD": [
+      "Macedonia"
+    ],
+    "COD": [
+      "DR Konga",
+      "Kongo-Kinszasa",
+      "Zair"
+    ],
+    "COG": [
+      "Kongo-Brazzaville",
+      "Republika Konga"
+    ],
+    "CIV": [
+      "Côte d'Ivoire"
+    ],
+    "CPV": [
+      "Wyspy Zielonego Przylądka",
+      "Cabo Verde"
+    ],
+    "TLS": [
+      "Timor-Leste"
+    ],
+    "ARE": [
+      "ZEA",
+      "Emiraty"
+    ],
+    "KOR": [
+      "Korea Płd"
+    ],
+    "PRK": [
+      "Korea Płn",
+      "KRLD"
+    ],
+    "CAF": [
+      "RŚA"
+    ],
+    "DOM": [
+      "Republika Dominikańska"
+    ],
+    "BIH": [
+      "Bośnia"
+    ],
+    "VAT": [
+      "Państwo Watykańskie"
+    ],
+    "PNG": [
+      "Papua Nowa Gwinea"
+    ],
+    "RUS": [
+      "Federacja Rosyjska"
+    ],
+    "LKA": [
+      "Cejlon"
+    ],
+    "IRN": [
+      "Persja"
+    ],
+    "THA": [
+      "Syjam"
+    ],
+    "TUR": [
+      "Turkiye",
+      "Türkiye"
+    ]
+  },
+  "displayEn": {
+    "CHN": "China",
+    "TWN": "Taiwan"
+  }
+}

@@ -111,7 +111,7 @@ export default function Globus({ mode }: { mode: Mode }) {
             <span className="gb-count">
               {t('attempts')}: <strong>{n}</strong>
             </span>
-            {closest && <span className="gb-closest">{t('globusClosest', { name: countryName(closest.id, lang), km: km(closest.km) })}</span>}
+            {closest && <span className="gb-closest">{t('globusClosest', { name: countryName(closest.id, lang), km: closest.km === 0 ? t('globusNeighbour') : km(closest.km) })}</span>}
           </div>
           {sorted.length > 0 && (
             <>

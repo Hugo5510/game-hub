@@ -8,19 +8,21 @@ import { geoArea, geoCentroid } from 'd3-geo';
 
 const root = path.resolve(import.meta.dirname, '..');
 const src = JSON.parse(fs.readFileSync(path.join(root, 'data-raw/ne_50m_admin_0_countries.geojson'), 'utf8'));
+const plFix = JSON.parse(fs.readFileSync(path.join(root, 'scripts/country-aliases-pl.json'), 'utf8'));
 const R = 6371;
 const features = src.features
   .filter((f) => f.properties.ADM0_A3 !== 'ATA' || true)
   .map((f) => {
     const p = f.properties;
     const id = p.ADM0_A3;
-    const names = new Set([p.NAME_PL, p.NAME_EN, p.NAME, p.NAME_LONG, p.ADMIN, p.FORMAL_EN, p.NAME_ALT, p.BRK_NAME, p.GEOUNIT, p.SUBUNIT].filter((x) => typeof x === 'string' && x.trim()));
+    const pl = plFix.display[id] ?? p.NAME_PL;
+    const names = new Set([pl, p.NAME_PL, ...(plFix.aliases[id] ?? []), p.NAME_EN, p.NAME, p.NAME_LONG, p.ADMIN, p.FORMAL_EN, p.NAME_ALT, p.BRK_NAME, p.GEOUNIT, p.SUBUNIT].filter((x) => typeof x === 'string' && x.trim()));
     return {
       type: 'Feature',
       id,
       properties: {
-        pl: p.NAME_PL,
-        en: p.NAME_EN,
+        pl,
+        en: plFix.displayEn[id] ?? p.NAME_EN,
         aliases: [...names],
         type: p.TYPE,
         continent: p.CONTINENT,
