@@ -73,3 +73,10 @@ Ponieważ aplikacja zawiera dane na licencji GPL‑3.0 (historical-basemaps, sł
 - **Kontur** – odległość i kierunek między punktami etykiet Natural Earth (leżą wewnątrz głównej części kraju, więc np. Francja nie „przesuwa się” przez Gujanę); pula: kraje i terytoria ≥ 2000 km².
 - **Słówko** – słownik z 2008 r., więc część najnowszych słów może nie być rozpoznawana; hasła wyłącznie z listy przeglądniętej ręcznie.
 - Dane administracyjne Natural Earth odzwierciedlają stan z wersji 5 (np. 110 prowincji Włoch, Meksyk z „Distrito Federal”).
+
+## Publikacja na GitHub Pages
+
+Workflow `.github/workflows/deploy.yml` buduje i publikuje grę przy każdym pushu do `main`
+(albo ręcznie: Actions → „Deploy to GitHub Pages” → Run workflow). Jednorazowo trzeba włączyć
+Pages: Settings → Pages → Build and deployment → Source: **GitHub Actions**.
+Gra będzie pod adresem `https://<użytkownik>.github.io/<repozytorium>/`.
