@@ -229,4 +229,6 @@ export const en: typeof pl = {
   glebiaDiveHit: '{a} · rarity {r}',
   glebiaDiveSkip: 'Skipped — you stay at this depth',
   epokaMapHint: 'Tap a country to see its name · zoom in to see more names',
+  epokaMapError: 'The map could not be loaded. Check your connection.',
+  epokaMapRetry: 'Try again',
 };

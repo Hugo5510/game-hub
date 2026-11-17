@@ -100,7 +100,7 @@ export default function Epoka({ mode }: { mode: Mode }) {
       resultBody={clues}
     >
       <div className="ep-wrap">
-        <AtlasMap file={m.file} label={t('map')} cartouche={done ? `Anno ${m.from}–${m.to}` : 'Anno ????'} hint={t('epokaMapHint')} />
+        <AtlasMap file={m.file} label={t('map')} cartouche={done ? `Anno ${m.from}–${m.to}` : 'Anno ????'} hint={t('epokaMapHint')} errorText={t('epokaMapError')} retryText={t('epokaMapRetry')} />
         <Timeline fb={fb} range={[m.from, m.to]} reveal={done ? [m.from, m.to] : null} />
         <div className="ep-panel">
           <ol className="ep-guesses" aria-label={t('attempts')}>

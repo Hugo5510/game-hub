@@ -39,7 +39,10 @@ function build(file: string): Promise<Drawn> {
   let p = cache.get(file);
   if (!p) {
     p = fetch(`${import.meta.env.BASE_URL}data/${file}`)
-      .then((r) => r.json() as Promise<Topology<{ p: GeometryCollection<Props> }>>)
+      .then((r) => {
+        if (!r.ok) throw new Error(`map ${r.status}`);
+        return r.json() as Promise<Topology<{ p: GeometryCollection<Props> }>>;
+      })
       .then((t) => {
         const feats = (feature(t, t.objects.p).features as PolyFeature[]).map(fixWinding);
         const geoms = t.objects.p.geometries;
@@ -79,6 +82,7 @@ function build(file: string): Promise<Drawn> {
         const labels = [...best.values()].sort((a, b) => b.area - a.area);
         return { shapes, labels, sphere: path({ type: 'Sphere' }) ?? '', grat: path(geoGraticule10()) ?? '' };
       });
+    p.catch(() => cache.delete(file)); // a failed download can be retried
     cache.set(file, p);
   }
   return p;
@@ -108,8 +112,10 @@ const clampVB = (x: number, y: number, w: number): VB => {
   return [Math.max(0, Math.min(W - w, x)), Math.max(0, Math.min(H - h, y)), w, h];
 };
 
-export function AtlasMap({ file, label, cartouche, hint }: { file: string; label: string; cartouche: string; hint?: string }) {
+export function AtlasMap({ file, label, cartouche, hint, errorText, retryText }: { file: string; label: string; cartouche: string; hint?: string; errorText?: string; retryText?: string }) {
   const [drawn, setDrawn] = useState<Drawn | null>(null);
+  const [failed, setFailed] = useState(false);
+  const [attempt, setAttempt] = useState(0);
   const [vb, setVb] = useState<VB>([0, 0, W, H]);
   const [sel, setSel] = useState<number | null>(null);
   const [px, setPx] = useState(W);
@@ -120,13 +126,17 @@ export function AtlasMap({ file, label, cartouche, hint }: { file: string; label
   useEffect(() => {
     let alive = true;
     setDrawn(null);
+    setFailed(false);
     setSel(null);
     setVb([0, 0, W, H]);
-    build(file).then((d) => alive && setDrawn(d));
+    build(file).then(
+      (d) => alive && setDrawn(d),
+      () => alive && setFailed(true),
+    );
     return () => {
       alive = false;
     };
-  }, [file]);
+  }, [file, attempt]);
 
   useEffect(() => {
     const el = svgRef.current;
@@ -265,7 +275,7 @@ export function AtlasMap({ file, label, cartouche, hint }: { file: string; label
           onPointerMove={onMove}
           onPointerUp={onUp}
           onPointerCancel={onUp}
-          style={{ ['--zoom' as string]: zoom }}
+          style={{ ['--zoom' as string]: zoom, touchAction: zoom > 1.01 ? 'none' : 'pan-y' }}
         >
           {drawn ? (
             <>
@@ -283,11 +293,21 @@ export function AtlasMap({ file, label, cartouche, hint }: { file: string; label
               </g>
             </>
           ) : (
-            <text x={W / 2} y={H / 2} textAnchor="middle" className="ep-loading">
-              …
-            </text>
+            !failed && (
+              <text x={W / 2} y={H / 2} textAnchor="middle" className="ep-loading">
+                …
+              </text>
+            )
           )}
         </svg>
+        {failed && (
+          <div className="ep-failed" role="alert">
+            <p>{errorText ?? 'Map could not be loaded.'}</p>
+            <button className="btn" onClick={() => setAttempt((a) => a + 1)}>
+              {retryText ?? 'Retry'}
+            </button>
+          </div>
+        )}
         <div className="ep-cartouche" aria-hidden="true">
           {cartouche}
         </div>

@@ -17,7 +17,7 @@ export function fixWinding(f: PolyFeature): PolyFeature {
 }
 
 /** Not states: shown in a neutral colour and without a name. */
-export const NOT_A_STATE = /hunter|gatherer|tribes?\b|peoples|nomad|cultures?\b|clans|chiefdoms|antarctica|uninhabited/i;
+export const NOT_A_STATE = /hunter|gatherer|farmers|herders|pastoralists|foragers|fishers|tribes?\b|peoples|nomad|cultures?\b|complex\b|clans|chiefdoms|antarctica|uninhabited/i;
 
 /**
  * Greedy colouring of polities (parts of one polity share a colour) so that bordering polities

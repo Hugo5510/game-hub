@@ -28,6 +28,7 @@
 }
 .ep-map__frame > svg {
   display: block;
+  min-height: 120px;
   width: 100%;
   height: auto;
   touch-action: none;
@@ -302,4 +303,19 @@
 }
 .ep-src {
   font-size: 0.8rem;
+}
+
+.ep-failed {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 8px;
+  padding: 16px;
+  text-align: center;
+  background: color-mix(in oklab, var(--surface), transparent 10%);
+}
+.ep-failed p {
+  margin: 0;
 }

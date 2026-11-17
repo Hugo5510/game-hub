@@ -238,4 +238,6 @@ export const pl = {
   glebiaDiveHit: '{a} · rzadkość {r}',
   glebiaDiveSkip: 'Pominięte — zostajesz na tej głębokości',
   epokaMapHint: 'Dotknij państwa, by zobaczyć nazwę · przybliż, by zobaczyć więcej nazw',
+  epokaMapError: 'Nie udało się wczytać mapy. Sprawdź połączenie z internetem.',
+  epokaMapRetry: 'Spróbuj ponownie',
 };
