@@ -8,8 +8,12 @@ export interface Answer {
   r: number;
   extra?: boolean;
 }
+export type Group = 'geo' | 'science' | 'history' | 'culture' | 'sport' | 'world';
 export interface Category {
   id: string;
+  group?: Group;
+  /** numbers and years: exact match only, no typo tolerance */
+  exact?: boolean;
   prompt: { pl: string; en: string };
   note?: { pl: string; en: string };
   metric?: { pl: string; en: string };
@@ -24,10 +28,32 @@ export const PROMPTS = 7;
 export const OXYGEN = 3;
 export const METERS_PER_POINT = 10;
 
-/** Seven distinct categories for a puzzle: the puzzle's own category plus six chosen by a seeded shuffle. */
-export function promptsFor(puzzle: number, categoryCount: number): number[] {
+/** Max prompts per dive from one group — keeps every dive varied (at most two geography prompts). */
+export const GROUP_CAP: Record<Group, number> = { geo: 2, science: 2, history: 2, culture: 2, sport: 2, world: 1 };
+
+/**
+ * Seven distinct categories for a puzzle: the puzzle's own category plus six chosen by a seeded
+ * shuffle, respecting GROUP_CAP (falls back to plain order only if the pool is too small).
+ */
+export function promptsFor(puzzle: number, categoryCount: number, groups?: (Group | undefined)[]): number[] {
   const others = seededPermutation(categoryCount, hashString(`glebia:dive:${puzzle}`)).filter((i) => i !== puzzle);
-  return [puzzle, ...others.slice(0, PROMPTS - 1)];
+  if (!groups) return [puzzle, ...others.slice(0, PROMPTS - 1)];
+  const count: Partial<Record<Group, number>> = {};
+  const take = (i: number) => {
+    const g = groups[i];
+    if (g) count[g] = (count[g] ?? 0) + 1;
+  };
+  const picked = [puzzle];
+  take(puzzle);
+  for (const i of others) {
+    if (picked.length >= PROMPTS) break;
+    const g = groups[i];
+    if (g && (count[g] ?? 0) >= GROUP_CAP[g]) continue;
+    picked.push(i);
+    take(i);
+  }
+  for (const i of others) if (picked.length < PROMPTS && !picked.includes(i)) picked.push(i);
+  return picked;
 }
 
 const keyCache = new WeakMap<Category, string[][]>();
@@ -46,6 +72,7 @@ export function matchAnswer(cat: Category, input: string): number {
   if (!q) return -1;
   const all = keys(cat);
   for (let i = 0; i < all.length; i++) if (all[i].includes(q)) return i;
+  if (cat.exact) return -1;
   let best = -1;
   let bestD = Infinity;
   for (let i = 0; i < all.length; i++) {

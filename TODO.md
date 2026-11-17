@@ -23,6 +23,15 @@
 - [x] Globus
 - [x] Głębia
 - [x] Epoka
+- [x] Flagi (kategorie: świat + kontynenty)
+- [x] Kronika (7 wydarzeń dziennie, podróżnik)
+
+## Zmiany v2
+- [x] Motyw jasny / ciemny / systemowy (+ wysoki kontrast w obu)
+- [x] Globus: odgadnięty kraj na zielono
+- [x] Słówko: komunikat wygranej i okno statystyk jak w Wordle; naprawione samoczynne otwieranie okna wyniku we wszystkich grach
+- [x] Głębia: mniej geografii (bez prowincji/stanów poza USA i Polską), nowe kategorie, maks. 2 geograficzne na nurkowanie
+- [x] Epoka: tylko wcześniej/później, bez odległości w latach
 
 ## Weryfikacja
 - [x] build bez błędów

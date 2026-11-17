@@ -9,8 +9,12 @@
     radial-gradient(1px 1px at 48% 30%, #fff3 50%, transparent 51%),
     var(--bg);
 }
-[data-contrast='high'] .theme-globus.game {
+[data-contrast='high'] .theme-globus.game,
+[data-theme='light'] .theme-globus.game {
   background: var(--bg);
+}
+.gb-swatch.is-win {
+  color: #fff;
 }
 .gb-wrap {
   display: grid;
@@ -98,7 +102,8 @@
   border-color: var(--gl-rim);
 }
 .gb-item.is-hit {
-  border-color: var(--gl-target);
+  border-color: var(--gl-win);
+  background: color-mix(in oklab, var(--gl-win), var(--surface) 82%);
   font-weight: 700;
 }
 .gb-swatch {

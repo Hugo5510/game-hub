@@ -68,8 +68,11 @@
     grid-template-areas:
       'slowko slowko globus'
       'kontur glebia globus'
+      'flagi kronika kronika'
       'epoka epoka epoka';
   }
+  .card--flagi { grid-area: flagi; }
+  .card--kronika { grid-area: kronika; }
   .card--slowko { grid-area: slowko; }
   .card--globus { grid-area: globus; }
   .card--kontur { grid-area: kontur; }
@@ -187,6 +190,17 @@
   color: var(--glow);
   text-shadow: 0 0 12px color-mix(in oklab, var(--glow), transparent 50%);
 }
+[data-theme='light'] .card--glebia {
+  background: linear-gradient(180deg, #e4f5f2 0%, #b5dad6 60%, #86bdb9 100%);
+}
+[data-theme='light'] .card--glebia .card__title {
+  text-shadow: none;
+}
+[data-theme='light'] .card--globus {
+  background:
+    radial-gradient(circle at 80% 20%, #ffffff 0, transparent 45%),
+    var(--bg);
+}
 [data-contrast='high'] .card--glebia {
   background: #000;
   border: 2px solid var(--fg);
@@ -205,4 +219,38 @@
   margin-top: 28px;
   color: var(--muted);
   font-size: 0.8rem;
+}
+
+.hub__actions {
+  display: flex;
+}
+.card--flagi {
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 30px -20px rgb(0 0 0 / 0.5);
+}
+.card--flagi .card__title {
+  font-weight: 800;
+}
+.card--kronika {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 1px 1px, color-mix(in oklab, var(--fg), transparent 90%) 1px, transparent 1.6px) 0 0 / 18px 18px,
+    var(--bg);
+}
+.card--kronika .card__title {
+  font-weight: 600;
+}
+.card--kronika .card__main {
+  flex-wrap: wrap;
+}
+.card--kronika .art {
+  width: 200px;
+  height: 80px;
+}
+[data-contrast='high'] .card--flagi,
+[data-contrast='high'] .card--kronika {
+  border: 2px solid var(--fg);
+  background: var(--bg);
 }

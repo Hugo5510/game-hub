@@ -7,8 +7,8 @@ const data: DepthData = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../.
 const cat = (id: string) => data.categories.find((c) => c.id === id)!;
 
 describe('głębia data', () => {
-  it('has ≥ 60 categories with ≥ 30 answers and rarity 1–100', () => {
-    expect(data.categories.length).toBeGreaterThanOrEqual(60);
+  it('has ≥ 45 categories with ≥ 30 answers and rarity 1–100', () => {
+    expect(data.categories.length).toBeGreaterThanOrEqual(45);
     for (const c of data.categories) {
       expect(c.answers.filter((a) => !a.extra).length).toBeGreaterThanOrEqual(30);
       for (const a of c.answers) {
@@ -19,12 +19,43 @@ describe('głębia data', () => {
       expect(Math.max(...c.answers.map((a) => a.r))).toBe(100);
     }
   });
+  it('geography is limited: no foreign states/provinces, geo is under half of the pool', () => {
+    const geo = data.categories.filter((c) => c.group === 'geo');
+    expect(geo.length).toBeLessThan(data.categories.length / 2);
+    const banned = /provinces|prefectures|departments|subjects|counties|-states$/;
+    for (const c of data.categories) if (c.id !== 'us-states') expect(c.id).not.toMatch(banned);
+    for (const c of data.categories) expect(c.group).toBeTruthy();
+  });
+  it('every dive has at most two geography prompts and seven distinct categories', () => {
+    const groups = data.categories.map((c) => c.group);
+    for (let p = 0; p < data.categories.length; p++) {
+      const ps = promptsFor(p, data.categories.length, groups);
+      expect(new Set(ps).size).toBe(7);
+      expect(ps[0]).toBe(p);
+      expect(ps.filter((i) => groups[i] === 'geo').length).toBeLessThanOrEqual(2);
+    }
+  });
   it('category ids are unique', () => {
     expect(new Set(data.categories.map((c) => c.id)).size).toBe(data.categories.length);
   });
 });
 
 describe('głębia matching', () => {
+  it('curated categories: people, works, numbers', () => {
+    expect(matchAnswer(cat('pl-rulers'), 'Chrobry')).toBe(matchAnswer(cat('pl-rulers'), 'Bolesław Chrobry'));
+    expect(matchAnswer(cat('pl-rulers'), 'Mieszko II')).not.toBe(matchAnswer(cat('pl-rulers'), 'Mieszko I'));
+    expect(matchAnswer(cat('us-presidents'), 'Lincoln')).toBeGreaterThanOrEqual(0);
+    expect(matchAnswer(cat('shakespeare'), 'Makbet')).toBe(matchAnswer(cat('shakespeare'), 'Macbeth'));
+    expect(matchAnswer(cat('constellations'), 'Wielki Wóz')).toBe(matchAnswer(cat('constellations'), 'Ursa Major'));
+    expect(cat('constellations').answers.length).toBe(88);
+    // numbers never fuzzy-match
+    expect(matchAnswer(cat('primes-200'), '97')).toBeGreaterThanOrEqual(0);
+    expect(matchAnswer(cat('primes-200'), '91')).toBe(-1);
+    expect(matchAnswer(cat('summer-olympics-years'), '1940')).toBe(-1);
+    expect(matchAnswer(cat('summer-olympics-years'), '2021')).toBe(matchAnswer(cat('summer-olympics-years'), '2020'));
+    expect(matchAnswer(cat('nato'), 'Polska')).toBeGreaterThanOrEqual(0);
+    expect(matchAnswer(cat('nato'), 'Austria')).toBe(-1);
+  });
   it('accepts Polish and English names, diacritics-insensitive', () => {
     const c = cat('countries-europe');
     const pl = matchAnswer(c, 'Niemcy');

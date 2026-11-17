@@ -12,7 +12,7 @@ export default defineConfig({
       manifest: {
         name: 'Game Hub — zagadki dnia',
         short_name: 'Game Hub',
-        description: 'Pięć codziennych zagadek: Słówko, Globus, Kontur, Głębia, Epoka.',
+        description: 'Siedem codziennych zagadek: Słówko, Globus, Kontur, Głębia, Epoka, Flagi, Kronika.',
         lang: 'pl',
         theme_color: '#1d1c1a',
         background_color: '#f3f0e8',

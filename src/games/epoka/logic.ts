@@ -63,7 +63,7 @@ export function timeX(year: number): number {
   return 1;
 }
 
+/** Share row: only the direction of each miss (the game no longer reveals how far off a guess was). */
 export function shareRows(fb: Feedback[], hc: boolean): string {
-  const sq = { hit: '🎯', hot: hc ? '🟧' : '🟥', warm: '🟨', cold: '⬜' } as const;
-  return fb.map((f) => (f.dir === 'correct' ? sq.hit : `${f.dir === 'later' ? '⏩' : '⏪'}${sq[f.tier]}`)).join(' ');
+  return fb.map((f) => (f.dir === 'correct' ? (hc ? '🟧' : '🟩') : f.dir === 'later' ? '⏩' : '⏪')).join(' ');
 }
