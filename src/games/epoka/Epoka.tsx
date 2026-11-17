@@ -57,7 +57,6 @@ export default function Epoka({ mode }: { mode: Mode }) {
     setVal('');
     g.setState((s) => ({ guesses: [...s.guesses, y] }));
   };
-  const tierLabel = (f: Feedback) => (f.tier === 'hot' ? t('epokaScorched') : f.tier === 'warm' ? t('epokaWarm') : t('epokaCold'));
   const share = g.result ? `${t('epokaTitle')} ${mode === 'daily' ? '#' + g.puzzleNo : '∞'} ${g.result.won ? fb.length : 'X'}/${MAX_GUESSES}\n${shareRows(fb, hc)}` : undefined;
 
   const clues = (
@@ -109,7 +108,7 @@ export default function Epoka({ mode }: { mode: Mode }) {
               const f = fb[i];
               if (!f) return <li key={i} className="ep-g is-empty" />;
               return (
-                <li key={i} className={`ep-g is-${f.dir} tier-${f.tier}`}>
+                <li key={i} className={`ep-g is-${f.dir}`}>
                   <span className="ep-g__year">{f.year}</span>
                   {f.dir === 'correct' ? (
                     <span className="ep-g__hint">
@@ -118,7 +117,7 @@ export default function Epoka({ mode }: { mode: Mode }) {
                   ) : (
                     <span className="ep-g__hint">
                       <Icon name={f.dir === 'later' ? 'up' : 'down'} size={18} />
-                      {f.dir === 'later' ? t('epokaLater') : t('epokaEarlier')} · {t('epokaOff', { n: f.off })} · <em>{tierLabel(f)}</em>
+                      {f.dir === 'later' ? t('epokaLater') : t('epokaEarlier')}
                     </span>
                   )}
                 </li>

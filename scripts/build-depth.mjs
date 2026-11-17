@@ -4,6 +4,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { geoContains, geoArea, geoBounds, geoLength } from 'd3-geo';
+import { finalize } from './depth/finalize.mjs';
 
 const root = path.resolve(import.meta.dirname, '..');
 const raw = (f) => JSON.parse(fs.readFileSync(path.join(root, 'data-raw', f), 'utf8'));
@@ -148,26 +149,9 @@ const stripAdmin = (s) =>
     .replace(/^(Prowincja|Prefektura|Okręg|Departament|Stan|Region|Obwód|obwód|kraj|okręg|Province of|Provincia di|Provincia de|Prefecture)\s+/i, '')
     .replace(/\s+(Province|Prefecture|County|Department|State|Oblast|Krai|Governorate|prefecture|Region)$/i, '');
 const URB = { pl: 'ludność miast w regionie', en: 'urban population in the region' };
+// Only US states remain (states/provinces of other countries were removed from the pool).
 const adminCats = [
   ['us-states', 'Podaj stan USA', 'Name a US state', 'United States of America', (p) => p.type_en === 'State'],
-  ['mx-states', 'Podaj stan Meksyku', 'Name a Mexican state', 'Mexico', (p) => p.type_en],
-  ['in-states', 'Podaj stan lub terytorium związkowe Indii', 'Name an Indian state or union territory', 'India', (p) => p.type_en],
-  ['cn-provinces', 'Podaj prowincję, region autonomiczny lub miasto wydzielone Chin', 'Name a Chinese province, autonomous region or municipality', 'China', (p) => p.type_en],
-  ['jp-prefectures', 'Podaj prefekturę Japonii', 'Name a Japanese prefecture', 'Japan', () => true],
-  ['es-provinces', 'Podaj prowincję Hiszpanii', 'Name a Spanish province', 'Spain', (p) => p.type_en === 'Autonomous Community'],
-  ['tr-provinces', 'Podaj prowincję Turcji', 'Name a Turkish province', 'Turkey', () => true],
-  ['ru-subjects', 'Podaj podmiot federalny Rosji (obwód, republikę, kraj…)', 'Name a federal subject of Russia', 'Russia', () => true],
-  ['fr-departments', 'Podaj departament Francji', 'Name a French department', 'France', () => true],
-  ['it-provinces', 'Podaj prowincję Włoch', 'Name an Italian province', 'Italy', () => true],
-  ['ng-states', 'Podaj stan Nigerii', 'Name a Nigerian state', 'Nigeria', () => true],
-  ['ir-provinces', 'Podaj prowincję (ostan) Iranu', 'Name an Iranian province', 'Iran', () => true],
-  ['co-departments', 'Podaj departament Kolumbii', 'Name a Colombian department', 'Colombia', (p) => p.type_en],
-  ['th-provinces', 'Podaj prowincję Tajlandii', 'Name a Thai province', 'Thailand', () => true],
-  ['vn-provinces', 'Podaj prowincję Wietnamu', 'Name a Vietnamese province', 'Vietnam', () => true],
-  ['ph-provinces', 'Podaj prowincję Filipin', 'Name a Philippine province', 'Philippines', (p) => p.type_en === 'Province'],
-  ['id-provinces', 'Podaj prowincję Indonezji', 'Name an Indonesian province', 'Indonesia', () => true],
-  ['ro-counties', 'Podaj okręg (județ) Rumunii', 'Name a Romanian county', 'Romania', () => true],
-  ['dz-provinces', 'Podaj prowincję (wilaję) Algierii', 'Name an Algerian province', 'Algeria', () => true],
 ];
 for (const [id, pl, en, admin, filter] of adminCats) addCategory(id, { pl, en }, admin1(admin, filter), { note: NOTE_NE, metric: URB });
 
@@ -266,13 +250,15 @@ for (const f of raw('ne_10m_rivers_lake_centerlines.geojson').features) {
 addCategory('rivers', { pl: 'Podaj jedną z większych rzek świata', en: 'Name one of the world’s major rivers' }, [...rivers.values()], { note: { pl: 'rzeki z mapy Natural Earth 1:10 mln', en: 'rivers on the Natural Earth 1:10m map' }, metric: SCALE });
 
 /* ---------------- output ---------------- */
-fs.writeFileSync(path.join(root, 'public/data/depth.json'), JSON.stringify({ version: 1, categories }));
+const meta = JSON.parse(fs.readFileSync(path.join(root, 'src/data/countries-meta.json'), 'utf8'));
+const pool = finalize(categories, meta);
+fs.writeFileSync(path.join(root, 'public/data/depth.json'), JSON.stringify({ version: 2, categories: pool }));
 console.log(
   'categories',
-  categories.length,
+  pool.length,
   'answers',
-  categories.reduce((a, c) => a + c.answers.length, 0),
+  pool.reduce((a, c) => a + c.answers.length, 0),
   'min',
-  Math.min(...categories.map((c) => c.answers.length)),
+  Math.min(...pool.map((c) => c.answers.length)),
 );
-for (const c of categories) console.log(c.id.padEnd(22), String(c.answers.length).padStart(4), c.answers.slice(0, 3).map((a) => a.pl).join(', '), '…', c.answers.filter((a) => !a.extra).slice(-2).map((a) => a.pl).join(', '));
+for (const c of pool) console.log(c.id.padEnd(22), String(c.answers.length).padStart(4), c.answers.slice(0, 3).map((a) => a.pl).join(', '), '…', c.answers.filter((a) => !a.extra).slice(-2).map((a) => a.pl).join(', '));

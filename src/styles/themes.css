@@ -191,3 +191,323 @@
   --terr-7: #e0b066;
   --terr-8: #b8834a;
 }
+
+/* =====================================================================
+   Light / dark theme (data-theme on <html>, set from Settings or the OS).
+   Each game keeps its own character in both themes: originally-light games
+   get a dark variant, originally-dark games (Globus, Głębia) a light one.
+   High contrast has its own variant for every theme (two-attribute selectors win).
+   ===================================================================== */
+
+/* ---------- Słówko: dark ---------- */
+[data-theme='dark'] .theme-slowko {
+  --bg: #121212;
+  --fg: #f1f0ec;
+  --muted: #a5a49e;
+  --surface: #1a1a19;
+  --surface-2: #2b2b29;
+  --border: #3d3d3a;
+  --accent: #4f9d63;
+  --accent-fg: #ffffff;
+  --focus: #f08a52;
+  --sl-correct: #4f9d63;
+  --sl-present: #c29d2a;
+  --sl-absent: #3d3d3a;
+  --sl-key: #57564f;
+  --shadow: 0 12px 40px rgb(0 0 0 / 0.6);
+  color-scheme: dark;
+}
+[data-contrast='high'][data-theme='dark'] .theme-slowko {
+  --bg: #000;
+  --fg: #fff;
+  --muted: #e0e0e0;
+  --surface: #000;
+  --surface-2: #333;
+  --border: #fff;
+  --accent: #f5793a;
+  --sl-correct: #f5793a;
+  --sl-present: #3d7fe0;
+  --sl-absent: #3a3a3a;
+  --sl-key: #6a6a6a;
+}
+
+/* ---------- Kontur: dark — night survey sheet, chalk ink ---------- */
+[data-theme='dark'] .theme-kontur {
+  --bg: #0f181d;
+  --fg: #dbe7e3;
+  --muted: #8fa6a6;
+  --surface: #142128;
+  --surface-2: #1c2e35;
+  --border: #36535a;
+  --accent: #f0705a;
+  --accent-fg: #0f181d;
+  --focus: #f0705a;
+  --ink: #dbe7e3;
+  --grid: #213a42;
+  --shadow: 0 12px 40px rgb(0 0 0 / 0.6);
+  color-scheme: dark;
+}
+[data-contrast='high'][data-theme='dark'] .theme-kontur {
+  --bg: #000;
+  --fg: #fff;
+  --muted: #e6e6e6;
+  --surface: #000;
+  --surface-2: #222;
+  --border: #fff;
+  --ink: #fff;
+  --grid: #4a6b6b;
+  --accent: #ff6a4d;
+}
+
+/* ---------- Epoka: dark — atlas by candlelight ---------- */
+[data-theme='dark'] .theme-epoka {
+  --bg: #1c150d;
+  --fg: #eedfbd;
+  --muted: #b7a17c;
+  --surface: #261d12;
+  --surface-2: #35291a;
+  --border: #5f4a2e;
+  --accent: #d9774f;
+  --accent-fg: #1c150d;
+  --focus: #e8925f;
+  --ink: #eedfbd;
+  --sea: #152024;
+  --terr-1: #7a5c37;
+  --terr-2: #5f4629;
+  --terr-3: #86683f;
+  --terr-4: #4f3b22;
+  --terr-5: #93744a;
+  --terr-6: #45331e;
+  --terr-7: #6f5533;
+  --terr-8: #5a4730;
+  --shadow: 0 12px 40px rgb(0 0 0 / 0.6);
+  color-scheme: dark;
+}
+[data-contrast='high'][data-theme='dark'] .theme-epoka {
+  --bg: #000;
+  --fg: #fff;
+  --muted: #e6e6e6;
+  --surface: #000;
+  --surface-2: #2a2216;
+  --border: #fff;
+  --ink: #fff;
+  --accent: #ff7a50;
+  --sea: #000;
+  --terr-1: #a77b3a;
+  --terr-2: #6e4a1e;
+  --terr-3: #c9a15a;
+  --terr-4: #5a3b14;
+  --terr-5: #d9b36b;
+  --terr-6: #4a2f10;
+  --terr-7: #b88a45;
+  --terr-8: #8a6430;
+}
+
+/* ---------- Globus: green for the found country (both themes) ---------- */
+.theme-globus {
+  --gl-win: #3ccf6e;
+}
+[data-contrast='high'] .theme-globus {
+  --gl-win: #00e676;
+}
+/* ---------- Globus: light — daylight globe on a pale sky ---------- */
+[data-theme='light'] .theme-globus {
+  --bg: #edf2f7;
+  --fg: #10161f;
+  --muted: #55606f;
+  --surface: #ffffff;
+  --surface-2: #dce4ee;
+  --border: #c2ccd8;
+  --accent: #d23b20;
+  --accent-fg: #fff;
+  --focus: #b5461b;
+  --gl-ocean: #cddff0;
+  --gl-land: #b3bdc9;
+  --gl-grid: #b2c7dc;
+  --gl-rim: #7d92aa;
+  --gl-target: #10161f;
+  --gl-win: #1f9d4d;
+  --shadow: 0 12px 40px rgb(16 22 31 / 0.18);
+  color-scheme: light;
+}
+[data-contrast='high'][data-theme='light'] .theme-globus {
+  --bg: #fff;
+  --fg: #000;
+  --muted: #222;
+  --surface: #fff;
+  --surface-2: #e5e5e5;
+  --border: #000;
+  --gl-ocean: #ffffff;
+  --gl-land: #8c8c8c;
+  --gl-grid: #cccccc;
+  --gl-rim: #000;
+  --gl-target: #000;
+  --gl-win: #008a3a;
+}
+
+/* ---------- Głębia: light — sunlit shallows, darkening teal with depth ---------- */
+[data-theme='light'] .theme-glebia {
+  --bg: color-mix(in oklab, #dff3ef, #79b3b1 calc(var(--depth, 0) * 100%));
+  --fg: #042a2d;
+  --muted: #2d5d5e;
+  --surface: rgb(255 255 255 / 0.8);
+  --surface-2: #c4e4df;
+  --border: #84bab5;
+  --accent: #0b7d6a;
+  --accent-fg: #ffffff;
+  --focus: #9c6a00;
+  --glow: #0b7d6a;
+  --glow-2: #a86f00;
+  --shadow: 0 12px 40px rgb(4 42 45 / 0.2);
+  color-scheme: light;
+}
+[data-contrast='high'][data-theme='light'] .theme-glebia {
+  --bg: color-mix(in oklab, #ffffff, #cfe7e4 calc(var(--depth, 0) * 100%));
+  --fg: #000;
+  --muted: #1a1a1a;
+  --surface: #fff;
+  --surface-2: #e0e0e0;
+  --border: #000;
+  --accent: #005e50;
+  --glow: #005e50;
+  --glow-2: #7a4f00;
+}
+
+/* ---------- Flagi — pavilion: clean white, royal blue, bold geometric type ---------- */
+.theme-flagi {
+  --bg: #f3f4f7;
+  --fg: #111723;
+  --muted: #586174;
+  --surface: #ffffff;
+  --surface-2: #e3e7ee;
+  --border: #cbd2de;
+  --accent: #1f4fd1;
+  --accent-fg: #ffffff;
+  --focus: #e0482a;
+  --fl-ok: #1d8a4c;
+  --fl-bad: #cf3a2a;
+  --fl-stage: #e8ebf1;
+  --font-display: 'Outfit', system-ui, sans-serif;
+  --font-body: 'Outfit', system-ui, sans-serif;
+  --radius: 12px;
+  --modal-radius: 18px;
+  --title-tracking: -0.01em;
+}
+[data-theme='dark'] .theme-flagi {
+  --bg: #0e121a;
+  --fg: #eef1f6;
+  --muted: #9aa3b5;
+  --surface: #161b26;
+  --surface-2: #222938;
+  --border: #323b4d;
+  --accent: #6b8fff;
+  --accent-fg: #0b0f17;
+  --focus: #ff7a5c;
+  --fl-ok: #3fcf7f;
+  --fl-bad: #ff6b5b;
+  --fl-stage: #1a2030;
+  --shadow: 0 12px 40px rgb(0 0 0 / 0.6);
+  color-scheme: dark;
+}
+[data-contrast='high'] .theme-flagi {
+  --bg: #fff;
+  --fg: #000;
+  --muted: #222;
+  --surface: #fff;
+  --surface-2: #e2e2e2;
+  --border: #000;
+  --accent: #0033cc;
+  --fl-ok: #005a9e;
+  --fl-bad: #c24e00;
+  --fl-stage: #f0f0f0;
+}
+[data-contrast='high'][data-theme='dark'] .theme-flagi {
+  --bg: #000;
+  --fg: #fff;
+  --muted: #e6e6e6;
+  --surface: #000;
+  --surface-2: #2a2a2a;
+  --border: #fff;
+  --accent: #8fb0ff;
+  --fl-ok: #5cb8ff;
+  --fl-bad: #ff9a3c;
+  --fl-stage: #111;
+}
+
+/* ---------- Kronika — travel journal: paper, teal ink, orange stamps ---------- */
+.theme-kronika {
+  --bg: #f4efe4;
+  --fg: #1c2828;
+  --muted: #5d6965;
+  --surface: #fffaf0;
+  --surface-2: #e9e0cd;
+  --border: #d1c3a6;
+  --accent: #0f6e66;
+  --accent-fg: #ffffff;
+  --focus: #e0692e;
+  --stamp: #d9572b;
+  --route: #0f6e66;
+  --route-dim: #c9bda2;
+  --kr-1: #1d8a4c;
+  --kr-2: #b88a00;
+  --kr-3: #d9692b;
+  --kr-4: #b8322a;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+  --radius: 8px;
+  --modal-radius: 12px;
+  --title-tracking: -0.01em;
+}
+[data-theme='dark'] .theme-kronika {
+  --bg: #0f1a1a;
+  --fg: #f1eadb;
+  --muted: #a3ad9f;
+  --surface: #152323;
+  --surface-2: #1f3131;
+  --border: #2f4848;
+  --accent: #46bfae;
+  --accent-fg: #0a1414;
+  --focus: #f08a4b;
+  --stamp: #f08a4b;
+  --route: #46bfae;
+  --route-dim: #2f4848;
+  --kr-1: #4fd18a;
+  --kr-2: #e8c34a;
+  --kr-3: #f08a4b;
+  --kr-4: #ff6f61;
+  --shadow: 0 12px 40px rgb(0 0 0 / 0.6);
+  color-scheme: dark;
+}
+[data-contrast='high'] .theme-kronika {
+  --bg: #fff;
+  --fg: #000;
+  --muted: #222;
+  --surface: #fff;
+  --surface-2: #e5e5e5;
+  --border: #000;
+  --accent: #00524b;
+  --stamp: #b33a00;
+  --route: #00524b;
+  --route-dim: #999;
+  --kr-1: #005a9e;
+  --kr-2: #7a5c00;
+  --kr-3: #c24e00;
+  --kr-4: #8a0000;
+}
+[data-contrast='high'][data-theme='dark'] .theme-kronika {
+  --bg: #000;
+  --fg: #fff;
+  --muted: #e6e6e6;
+  --surface: #000;
+  --surface-2: #262626;
+  --border: #fff;
+  --accent: #3fffe0;
+  --accent-fg: #000;
+  --stamp: #ff9a3c;
+  --route: #3fffe0;
+  --route-dim: #555;
+  --kr-1: #5cb8ff;
+  --kr-2: #ffe600;
+  --kr-3: #ff9a3c;
+  --kr-4: #ff4d6d;
+}

@@ -17,6 +17,34 @@
   --shadow: 0 12px 40px rgb(0 0 0 / 0.18);
   color-scheme: light;
 }
+/* Hub (neutral) — dark theme */
+[data-theme='dark'] {
+  --bg: #151412;
+  --fg: #ece8de;
+  --muted: #a39d90;
+  --surface: #1e1c19;
+  --surface-2: #2a2824;
+  --border: #3d3a34;
+  --accent: #ece8de;
+  --accent-fg: #151412;
+  --focus: #f08a4b;
+  --shadow: 0 12px 40px rgb(0 0 0 / 0.6);
+  color-scheme: dark;
+}
+[data-contrast='high'][data-theme='dark'] {
+  --bg: #000;
+  --fg: #fff;
+  --muted: #e0e0e0;
+  --surface: #000;
+  --surface-2: #2a2a2a;
+  --border: #fff;
+}
+[data-contrast='high'][data-theme='light'] {
+  --bg: #fff;
+  --fg: #000;
+  --muted: #222;
+  --border: #000;
+}
 *,
 *::before,
 *::after {
@@ -415,6 +443,21 @@ button {
   display: grid;
   gap: 8px;
 }
+.setting legend {
+  padding: 0;
+  margin-bottom: 8px;
+}
+.seg--3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+.seg--3 .seg__btn {
+  padding: 8px 6px;
+}
+body,
+.card {
+  transition: background-color 0.35s ease, color 0.35s ease;
+}
 .seg {
   display: inline-flex;
   border: 1px solid var(--border);
@@ -422,6 +465,10 @@ button {
   overflow: hidden;
 }
 .seg__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   border: 0;
   background: transparent;
   padding: 8px 16px;

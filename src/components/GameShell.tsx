@@ -4,6 +4,7 @@ import { Modal } from './Modal';
 import { SettingsPanel } from './Settings';
 import { Countdown } from './Countdown';
 import { ShareButton } from './Share';
+import { ThemeToggle } from './ThemeToggle';
 import { useI18n } from '../core/i18n';
 import { href } from '../core/router';
 import type { GameId, Mode, Outcome } from '../core/session';
@@ -23,6 +24,10 @@ export interface ShellProps {
   /** delay before auto-opening the result dialog (lets reveal animations finish) */
   revealDelay?: number;
   headerExtra?: ReactNode;
+  /** Wordle-style result dialog: statistics right under the verdict, then share and countdown */
+  statsFirst?: boolean;
+  /** headline shown at the top of the result dialog (defaults to the generic won/lost title) */
+  resultTitle?: string;
 }
 
 export function GameShell(p: ShellProps) {
@@ -44,16 +49,23 @@ export function GameShell(p: ShellProps) {
     }
   }, [p.gameId]);
 
+  // Auto-open the result dialog once, when the game goes from "playing" to "finished".
+  // Depends on the boolean only: the outcome object is re-created when stats are recorded,
+  // which previously cancelled the pending timer and the dialog never appeared.
+  const finished = !!p.result;
+  const revealDelay = useRef(p.revealDelay);
+  revealDelay.current = p.revealDelay;
   useEffect(() => {
-    if (!prevResult.current && p.result) {
-      const id = setTimeout(() => setDialog('result'), p.revealDelay ?? 600);
-      prevResult.current = p.result;
+    const was = prevResult.current;
+    prevResult.current = finished ? (p.result ?? null) : null;
+    if (!was && finished) {
+      const id = setTimeout(() => setDialog('result'), revealDelay.current ?? 600);
       return () => clearTimeout(id);
     }
-    prevResult.current = p.result;
-  }, [p.result, p.revealDelay]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [finished]);
 
-  const resultTitle = p.result ? (p.result.won ? t('wonTitle') : t('lostTitle')) : '';
+  const resultTitle = p.result ? p.resultTitle ?? (p.result.won ? t('wonTitle') : t('lostTitle')) : '';
 
   return (
     <div className={`game theme-${p.gameId}`} data-mode={p.mode}>
@@ -67,6 +79,7 @@ export function GameShell(p: ShellProps) {
         </div>
         <div className="game__actions">
           {p.headerExtra}
+          <ThemeToggle />
           <button className="icon-btn" onClick={() => setDialog('help')} aria-label={t('howToPlay')}>
             <Icon name="help" />
           </button>
@@ -122,8 +135,9 @@ export function GameShell(p: ShellProps) {
         <SettingsPanel />
       </Modal>
       <Modal open={dialog === 'result' && !!p.result} onClose={() => setDialog(null)} title={resultTitle} wide>
-        <div className="result">
+        <div className={`result${p.statsFirst ? ' result--stats-first' : ''}`}>
           {p.resultBody}
+          {p.statsFirst && p.stats}
           {p.shareText && <ShareButton text={p.shareText} />}
           {p.mode === 'daily' ? (
             <>
@@ -146,7 +160,7 @@ export function GameShell(p: ShellProps) {
               </button>
             )
           )}
-          {p.stats}
+          {!p.statsFirst && p.stats}
         </div>
       </Modal>
     </div>

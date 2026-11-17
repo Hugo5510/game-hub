@@ -5,7 +5,7 @@ import { load, save } from './storage';
 import { applyResult, emptyStats, type Stats, type UnlimitedStats } from './stats';
 
 export type Mode = 'daily' | 'unlimited';
-export type GameId = 'slowko' | 'globus' | 'kontur' | 'glebia' | 'epoka';
+export type GameId = 'slowko' | 'globus' | 'kontur' | 'glebia' | 'epoka' | 'flagi' | 'kronika';
 
 export interface Outcome {
   won: boolean;
@@ -44,7 +44,7 @@ export function useDateKey(): string {
   return key;
 }
 
-export function useStats(gameId: GameId) {
+export function useStats(gameId: string) {
   const [stats, setStats] = useState<Stats>(() => load(`${gameId}:stats`, emptyStats()));
   const [ustats, setUStats] = useState<UnlimitedStats>(() => load(`${gameId}:ustats`, { played: 0, wins: 0 }));
   return { stats, setStats, ustats, setUStats };
@@ -57,10 +57,13 @@ export interface SessionOptions<S> {
   init: (puzzle: number) => S;
   outcome: (state: S, puzzle: number) => Outcome | null; // null while still playing
   version?: number; // bump to invalidate stored state shape
+  /** sub-game with its own daily puzzle, saved state and stats (e.g. a flag category) */
+  variant?: string;
 }
 
 export function useGameSession<S>(opts: SessionOptions<S>) {
-  const { gameId, mode, poolSize, init, outcome, version = 1 } = opts;
+  const { mode, poolSize, init, outcome, version = 1 } = opts;
+  const gameId = opts.variant ? `${opts.gameId}-${opts.variant}` : opts.gameId;
   const dateKey = useDateKey();
   const storeKey = `${gameId}:${mode}:v${version}`;
   const { stats, setStats, ustats, setUStats } = useStats(gameId);

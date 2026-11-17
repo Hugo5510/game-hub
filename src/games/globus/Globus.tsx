@@ -33,8 +33,8 @@ export default function Globus({ mode }: { mode: Mode }) {
   }, [geo, g.state, target]);
 
   const colored = useMemo(() => {
-    const m = new Map<string, number | 'target'>();
-    for (const r of rows) m.set(r.id, r.hit ? 'target' : r.level);
+    const m = new Map<string, number | 'target' | 'win'>();
+    for (const r of rows) m.set(r.id, r.hit ? 'win' : r.level);
     if (g.result && !g.result.won) m.set(target, 'target');
     return m;
   }, [rows, g.result, target]);
@@ -119,7 +119,7 @@ export default function Globus({ mode }: { mode: Mode }) {
               <ol className="gb-list">
                 {sorted.map((r) => (
                   <li key={r.id} className={`gb-item${r.hit ? ' is-hit' : ''}${r.id === last ? ' is-last' : ''}`}>
-                    <span className="gb-swatch" style={{ background: r.hit ? 'var(--gl-target)' : `var(--heat-${r.level})` }} aria-hidden="true">
+                    <span className={`gb-swatch${r.hit ? ' is-win' : ''}`} style={{ background: r.hit ? 'var(--gl-win)' : `var(--heat-${r.level})` }} aria-hidden="true">
                       {r.hit && <Icon name="check" size={14} />}
                     </span>
                     <span className="gb-item__name">{countryName(r.id, lang)}</span>

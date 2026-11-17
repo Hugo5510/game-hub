@@ -4,10 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#1d1c1a" />
-    <meta name="description" content="Game Hub — pięć codziennych zagadek: Słówko, Globus, Kontur, Głębia, Epoka." />
+    <meta name="description" content="Game Hub — siedem codziennych zagadek: Słówko, Globus, Kontur, Głębia, Epoka, Flagi, Kronika." />
     <link rel="icon" href="./icon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
     <title>Game Hub</title>
+    <script>
+      // apply the saved light/dark theme before first paint (no flash)
+      try {
+        var p = JSON.parse(localStorage.getItem('gamehub:v1:theme') || '"system"');
+        var t = p === 'system' ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : p;
+        document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

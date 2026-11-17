@@ -5,8 +5,8 @@ import { byId } from '../../data/countries';
 
 export interface GlobeProps {
   geo: Geo;
-  /** id → heat level 0..6, or 'target' */
-  colored: Map<string, number | 'target'>;
+  /** id → heat level 0..6, 'win' (guessed target, green) or 'target' (revealed after giving up) */
+  colored: Map<string, number | 'target' | 'win'>;
   focus: string | null;
   labels: Map<string, string>;
   ariaLabel: string;
@@ -42,6 +42,7 @@ export function Globe({ geo, colored, focus, labels, ariaLabel }: GlobeProps) {
         grid: v('--gl-grid'),
         rim: v('--gl-rim'),
         target: v('--gl-target'),
+        win: v('--gl-win'),
         fg: v('--fg'),
         bg: v('--bg'),
         font: v('--font-body'),
@@ -92,7 +93,7 @@ export function Globe({ geo, colored, focus, labels, ariaLabel }: GlobeProps) {
         const f = geo.features.get(id);
         const meta = byId.get(id);
         if (!f || !meta) continue;
-        const color = lvl === 'target' ? css.target : css[`h${lvl}`];
+        const color = lvl === 'target' ? css.target : lvl === 'win' ? css.win : css[`h${lvl}`];
         ctx.beginPath();
         path(f);
         ctx.fillStyle = color;
@@ -198,6 +199,7 @@ export function Globe({ geo, colored, focus, labels, ariaLabel }: GlobeProps) {
     ro.observe(wrap);
     const onContrast = () => setTimeout(() => (readCss(), request()), 0);
     window.addEventListener('gamehub:contrast', onContrast);
+    window.addEventListener('gamehub:theme', onContrast);
     return () => {
       ro.disconnect();
       canvas.removeEventListener('pointerdown', down);
@@ -207,6 +209,7 @@ export function Globe({ geo, colored, focus, labels, ariaLabel }: GlobeProps) {
       canvas.removeEventListener('wheel', wheel);
       canvas.removeEventListener('keydown', onKey);
       window.removeEventListener('gamehub:contrast', onContrast);
+      window.removeEventListener('gamehub:theme', onContrast);
       cancelAnimationFrame(frame.current);
     };
   }, [geo]);

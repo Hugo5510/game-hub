@@ -33,6 +33,8 @@ export default function Slowko({ mode }: { mode: Mode }) {
   const [toast, setToast] = useState<string | null>(null);
   const [shake, setShake] = useState(false);
   const [revealRow, setRevealRow] = useState<number | null>(null);
+  const [verdict, setVerdict] = useState<string | null>(null);
+  const [bounce, setBounce] = useState(false);
 
   useEffect(() => {
     loadAllowed().then(setAllowed);
@@ -40,12 +42,33 @@ export default function Slowko({ mode }: { mode: Mode }) {
   useEffect(() => {
     setCurrent('');
     setRevealRow(null);
+    setVerdict(null);
+    setBounce(false);
   }, [g.puzzle, mode]);
 
   const answer = g.puzzle != null ? answers[g.puzzle] : '';
   const guesses = g.state?.guesses ?? [];
   const done = !!g.result;
   const kb = useMemo(() => keyboardMarks(guesses, answer), [guesses, answer]);
+  const finished = done;
+  const won = !!g.result?.won;
+
+  // Wordle-style finish: after the last row flips, the winning row bounces and a verdict
+  // ("Genialnie!", "Uff!"…) or the answer pops over the board; then the stats dialog opens.
+  useEffect(() => {
+    if (!finished || revealRow == null) return;
+    const flipEnd = 250 * (WORD_LEN - 1) + 520;
+    const a = setTimeout(() => {
+      setVerdict(won ? t(`slowkoWin${Math.min(guesses.length, MAX_GUESSES)}` as 'slowkoWin1') : answer.toUpperCase());
+      if (won) setBounce(true);
+    }, flipEnd);
+    const b = setTimeout(() => setVerdict(null), flipEnd + 2600);
+    return () => {
+      clearTimeout(a);
+      clearTimeout(b);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [finished]);
 
   const flash = (msg: string, isError = true) => {
     setToast(msg);
@@ -104,6 +127,7 @@ export default function Slowko({ mode }: { mode: Mode }) {
   const stats = (
     <StatsPanel stats={g.stats} ustats={g.ustats} today={g.dateKey} buckets={['1', '2', '3', '4', '5', '6', 'X']} highlight={mode === 'daily' ? g.result?.bucket : null} />
   );
+  const resultTitle = g.result ? (g.result.won ? t(`slowkoWin${Math.min(guesses.length, MAX_GUESSES)}` as 'slowkoWin1') : t('lostTitle')) : undefined;
 
   const help = (
     <>
@@ -140,13 +164,24 @@ export default function Slowko({ mode }: { mode: Mode }) {
       help={help}
       stats={stats}
       result={g.result}
-      revealDelay={revealRow != null ? 1700 : 300}
+      revealDelay={revealRow != null ? 3000 : 300}
+      statsFirst
+      resultTitle={resultTitle}
       shareText={share}
       onNext={() => g.newUnlimited()}
       resultBody={
-        <p className="sl-answer">
-          {t('slowkoAnswerWas')} <strong>{answer.toUpperCase()}</strong>
-        </p>
+        <div className="sl-result">
+          <p className="sl-result__verdict">
+            {g.result?.won ? t('slowkoWonIn', { n: guesses.length, max: MAX_GUESSES }) : t('slowkoLostMsg')}
+          </p>
+          <div className="sl-result__word" aria-label={`${t('slowkoAnswerWas')} ${answer.toUpperCase()}`}>
+            {[...answer].map((ch, i) => (
+              <span key={i} className={`sl-tile is-static ${g.result?.won ? 'is-correct' : 'is-absent'}`}>
+                {ch}
+              </span>
+            ))}
+          </div>
+        </div>
       }
     >
       <div className="sl-wrap">
@@ -155,7 +190,7 @@ export default function Slowko({ mode }: { mode: Mode }) {
             <div
               key={i}
               role="row"
-              className={`sl-row${i === guesses.length && shake ? ' is-shake' : ''}${r.marks && i === revealRow ? ' is-reveal' : ''}`}
+              className={`sl-row${i === guesses.length && shake ? ' is-shake' : ''}${r.marks && i === revealRow ? ' is-reveal' : ''}${bounce && won && i === guesses.length - 1 ? ' is-win' : ''}`}
             >
               {Array.from({ length: WORD_LEN }, (_, j) => {
                 const ch = [...r.word][j] ?? '';
@@ -177,6 +212,7 @@ export default function Slowko({ mode }: { mode: Mode }) {
         </div>
         <div className="sl-toast" role="status" aria-live="assertive">
           {toast && <span>{toast}</span>}
+          {verdict && !toast && <span className={`sl-verdict${won ? ' is-win' : ''}`}>{verdict}</span>}
         </div>
         <div className="sl-kb" aria-label={t('keyboard')}>
           {ROWS.map((row, i) => (

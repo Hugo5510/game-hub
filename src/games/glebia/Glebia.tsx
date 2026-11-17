@@ -53,9 +53,9 @@ export default function Glebia({ mode }: { mode: Mode }) {
   }, []);
   const init = useCallback(() => initialState(), []);
   const out = useCallback((s: GlebiaState) => outcome(s), []);
-  const g = useGameSession<GlebiaState>({ gameId: 'glebia', mode, poolSize: data?.categories.length ?? null, init, outcome: out });
+  const g = useGameSession<GlebiaState>({ gameId: 'glebia', mode, poolSize: data?.categories.length ?? null, init, outcome: out, version: 2 });
 
-  const prompts = useMemo(() => (data && g.puzzle != null ? promptsFor(g.puzzle, data.categories.length).map((i) => data.categories[i]) : []), [data, g.puzzle]);
+  const prompts = useMemo(() => (data && g.puzzle != null ? promptsFor(g.puzzle, data.categories.length, data.categories.map((c) => c.group)).map((i) => data.categories[i]) : []), [data, g.puzzle]);
   useEffect(() => {
     setFlash(null);
     setInput('');

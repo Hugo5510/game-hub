@@ -61,6 +61,37 @@ export function CardArt({ id }: { id: GameId }) {
           <circle cx="90" cy="58" r="2" fill="var(--glow-2)" />
         </svg>
       );
+    case 'flagi':
+      return (
+        <svg className="art" viewBox="0 0 120 120" aria-hidden="true">
+          <g transform="rotate(-8 60 60)">
+            <rect x="14" y="22" width="60" height="42" rx="4" fill="#fff" stroke="var(--border)" />
+            <rect x="14" y="43" width="60" height="21" fill="#dc143c" />
+            <rect x="14" y="22" width="60" height="42" rx="4" fill="none" stroke="rgb(0 0 0 / 0.15)" />
+          </g>
+          <g transform="rotate(6 60 60)">
+            <rect x="44" y="52" width="62" height="42" rx="4" fill="var(--accent)" />
+            <rect x="44" y="66" width="62" height="14" fill="#f4c430" />
+            <circle cx="62" cy="73" r="5" fill="var(--accent)" />
+          </g>
+          <path d="M44 100h62" stroke="var(--fg)" strokeWidth="2" strokeLinecap="round" />
+        </svg>
+      );
+    case 'kronika':
+      return (
+        <svg className="art" viewBox="0 0 200 80" aria-hidden="true">
+          <path d="M8 62 C 40 20, 70 20, 92 46 S 140 78, 166 44 S 186 22, 194 26" fill="none" stroke="var(--route-dim)" strokeWidth="3" strokeDasharray="2 6" strokeLinecap="round" />
+          <path d="M8 62 C 40 20, 70 20, 92 46 S 120 66, 128 64" fill="none" stroke="var(--route)" strokeWidth="4" strokeLinecap="round" />
+          <circle cx="128" cy="64" r="8" fill="var(--stamp)" stroke="var(--bg)" strokeWidth="2.5" />
+          <path d="M194 26v-18M194 8h12l-3 4 3 4h-12" fill="var(--stamp)" stroke="var(--fg)" strokeWidth="1.4" />
+          <g transform="rotate(-6 46 22)">
+            <rect x="22" y="8" width="52" height="26" rx="5" fill="none" stroke="var(--stamp)" strokeWidth="2.5" />
+            <text x="48" y="27" textAnchor="middle" fontFamily="Fraunces, Georgia, serif" fontWeight="600" fontSize="16" fill="var(--stamp)">
+              1410
+            </text>
+          </g>
+        </svg>
+      );
     case 'epoka':
       return (
         <svg className="art" viewBox="0 0 120 120" aria-hidden="true">

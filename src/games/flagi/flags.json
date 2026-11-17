@@ -1,0 +1,987 @@
+[
+ {
+  "id": "AFG",
+  "a2": "af",
+  "cont": "asia"
+ },
+ {
+  "id": "AGO",
+  "a2": "ao",
+  "cont": "africa"
+ },
+ {
+  "id": "ALB",
+  "a2": "al",
+  "cont": "europe"
+ },
+ {
+  "id": "AND",
+  "a2": "ad",
+  "cont": "europe"
+ },
+ {
+  "id": "ARE",
+  "a2": "ae",
+  "cont": "asia"
+ },
+ {
+  "id": "ARG",
+  "a2": "ar",
+  "cont": "samerica"
+ },
+ {
+  "id": "ARM",
+  "a2": "am",
+  "cont": "asia"
+ },
+ {
+  "id": "ATG",
+  "a2": "ag",
+  "cont": "namerica"
+ },
+ {
+  "id": "AUS",
+  "a2": "au",
+  "cont": "oceania"
+ },
+ {
+  "id": "AUT",
+  "a2": "at",
+  "cont": "europe"
+ },
+ {
+  "id": "AZE",
+  "a2": "az",
+  "cont": "asia"
+ },
+ {
+  "id": "BDI",
+  "a2": "bi",
+  "cont": "africa"
+ },
+ {
+  "id": "BEL",
+  "a2": "be",
+  "cont": "europe"
+ },
+ {
+  "id": "BEN",
+  "a2": "bj",
+  "cont": "africa"
+ },
+ {
+  "id": "BFA",
+  "a2": "bf",
+  "cont": "africa"
+ },
+ {
+  "id": "BGD",
+  "a2": "bd",
+  "cont": "asia"
+ },
+ {
+  "id": "BGR",
+  "a2": "bg",
+  "cont": "europe"
+ },
+ {
+  "id": "BHR",
+  "a2": "bh",
+  "cont": "asia"
+ },
+ {
+  "id": "BHS",
+  "a2": "bs",
+  "cont": "namerica"
+ },
+ {
+  "id": "BIH",
+  "a2": "ba",
+  "cont": "europe"
+ },
+ {
+  "id": "BLR",
+  "a2": "by",
+  "cont": "europe"
+ },
+ {
+  "id": "BLZ",
+  "a2": "bz",
+  "cont": "namerica"
+ },
+ {
+  "id": "BOL",
+  "a2": "bo",
+  "cont": "samerica"
+ },
+ {
+  "id": "BRA",
+  "a2": "br",
+  "cont": "samerica"
+ },
+ {
+  "id": "BRB",
+  "a2": "bb",
+  "cont": "namerica"
+ },
+ {
+  "id": "BRN",
+  "a2": "bn",
+  "cont": "asia"
+ },
+ {
+  "id": "BTN",
+  "a2": "bt",
+  "cont": "asia"
+ },
+ {
+  "id": "BWA",
+  "a2": "bw",
+  "cont": "africa"
+ },
+ {
+  "id": "CAF",
+  "a2": "cf",
+  "cont": "africa"
+ },
+ {
+  "id": "CAN",
+  "a2": "ca",
+  "cont": "namerica"
+ },
+ {
+  "id": "CHE",
+  "a2": "ch",
+  "cont": "europe"
+ },
+ {
+  "id": "CHL",
+  "a2": "cl",
+  "cont": "samerica"
+ },
+ {
+  "id": "CHN",
+  "a2": "cn",
+  "cont": "asia"
+ },
+ {
+  "id": "CIV",
+  "a2": "ci",
+  "cont": "africa"
+ },
+ {
+  "id": "CMR",
+  "a2": "cm",
+  "cont": "africa"
+ },
+ {
+  "id": "COD",
+  "a2": "cd",
+  "cont": "africa"
+ },
+ {
+  "id": "COG",
+  "a2": "cg",
+  "cont": "africa"
+ },
+ {
+  "id": "COL",
+  "a2": "co",
+  "cont": "samerica"
+ },
+ {
+  "id": "COM",
+  "a2": "km",
+  "cont": "africa"
+ },
+ {
+  "id": "CPV",
+  "a2": "cv",
+  "cont": "africa"
+ },
+ {
+  "id": "CRI",
+  "a2": "cr",
+  "cont": "namerica"
+ },
+ {
+  "id": "CUB",
+  "a2": "cu",
+  "cont": "namerica"
+ },
+ {
+  "id": "CYP",
+  "a2": "cy",
+  "cont": "asia"
+ },
+ {
+  "id": "CZE",
+  "a2": "cz",
+  "cont": "europe"
+ },
+ {
+  "id": "DEU",
+  "a2": "de",
+  "cont": "europe"
+ },
+ {
+  "id": "DJI",
+  "a2": "dj",
+  "cont": "africa"
+ },
+ {
+  "id": "DMA",
+  "a2": "dm",
+  "cont": "namerica"
+ },
+ {
+  "id": "DNK",
+  "a2": "dk",
+  "cont": "europe"
+ },
+ {
+  "id": "DOM",
+  "a2": "do",
+  "cont": "namerica"
+ },
+ {
+  "id": "DZA",
+  "a2": "dz",
+  "cont": "africa"
+ },
+ {
+  "id": "ECU",
+  "a2": "ec",
+  "cont": "samerica"
+ },
+ {
+  "id": "EGY",
+  "a2": "eg",
+  "cont": "africa"
+ },
+ {
+  "id": "ERI",
+  "a2": "er",
+  "cont": "africa"
+ },
+ {
+  "id": "ESP",
+  "a2": "es",
+  "cont": "europe"
+ },
+ {
+  "id": "EST",
+  "a2": "ee",
+  "cont": "europe"
+ },
+ {
+  "id": "ETH",
+  "a2": "et",
+  "cont": "africa"
+ },
+ {
+  "id": "FIN",
+  "a2": "fi",
+  "cont": "europe"
+ },
+ {
+  "id": "FJI",
+  "a2": "fj",
+  "cont": "oceania"
+ },
+ {
+  "id": "FRA",
+  "a2": "fr",
+  "cont": "europe"
+ },
+ {
+  "id": "FSM",
+  "a2": "fm",
+  "cont": "oceania"
+ },
+ {
+  "id": "GAB",
+  "a2": "ga",
+  "cont": "africa"
+ },
+ {
+  "id": "GBR",
+  "a2": "gb",
+  "cont": "europe"
+ },
+ {
+  "id": "GEO",
+  "a2": "ge",
+  "cont": "asia"
+ },
+ {
+  "id": "GHA",
+  "a2": "gh",
+  "cont": "africa"
+ },
+ {
+  "id": "GIN",
+  "a2": "gn",
+  "cont": "africa"
+ },
+ {
+  "id": "GMB",
+  "a2": "gm",
+  "cont": "africa"
+ },
+ {
+  "id": "GNB",
+  "a2": "gw",
+  "cont": "africa"
+ },
+ {
+  "id": "GNQ",
+  "a2": "gq",
+  "cont": "africa"
+ },
+ {
+  "id": "GRC",
+  "a2": "gr",
+  "cont": "europe"
+ },
+ {
+  "id": "GRD",
+  "a2": "gd",
+  "cont": "namerica"
+ },
+ {
+  "id": "GTM",
+  "a2": "gt",
+  "cont": "namerica"
+ },
+ {
+  "id": "GUY",
+  "a2": "gy",
+  "cont": "samerica"
+ },
+ {
+  "id": "HND",
+  "a2": "hn",
+  "cont": "namerica"
+ },
+ {
+  "id": "HRV",
+  "a2": "hr",
+  "cont": "europe"
+ },
+ {
+  "id": "HTI",
+  "a2": "ht",
+  "cont": "namerica"
+ },
+ {
+  "id": "HUN",
+  "a2": "hu",
+  "cont": "europe"
+ },
+ {
+  "id": "IDN",
+  "a2": "id",
+  "cont": "asia"
+ },
+ {
+  "id": "IND",
+  "a2": "in",
+  "cont": "asia"
+ },
+ {
+  "id": "IRL",
+  "a2": "ie",
+  "cont": "europe"
+ },
+ {
+  "id": "IRN",
+  "a2": "ir",
+  "cont": "asia"
+ },
+ {
+  "id": "IRQ",
+  "a2": "iq",
+  "cont": "asia"
+ },
+ {
+  "id": "ISL",
+  "a2": "is",
+  "cont": "europe"
+ },
+ {
+  "id": "ISR",
+  "a2": "il",
+  "cont": "asia"
+ },
+ {
+  "id": "ITA",
+  "a2": "it",
+  "cont": "europe"
+ },
+ {
+  "id": "JAM",
+  "a2": "jm",
+  "cont": "namerica"
+ },
+ {
+  "id": "JOR",
+  "a2": "jo",
+  "cont": "asia"
+ },
+ {
+  "id": "JPN",
+  "a2": "jp",
+  "cont": "asia"
+ },
+ {
+  "id": "KAZ",
+  "a2": "kz",
+  "cont": "asia"
+ },
+ {
+  "id": "KEN",
+  "a2": "ke",
+  "cont": "africa"
+ },
+ {
+  "id": "KGZ",
+  "a2": "kg",
+  "cont": "asia"
+ },
+ {
+  "id": "KHM",
+  "a2": "kh",
+  "cont": "asia"
+ },
+ {
+  "id": "KIR",
+  "a2": "ki",
+  "cont": "oceania"
+ },
+ {
+  "id": "KNA",
+  "a2": "kn",
+  "cont": "namerica"
+ },
+ {
+  "id": "KOR",
+  "a2": "kr",
+  "cont": "asia"
+ },
+ {
+  "id": "KOS",
+  "a2": "xk",
+  "cont": "europe"
+ },
+ {
+  "id": "KWT",
+  "a2": "kw",
+  "cont": "asia"
+ },
+ {
+  "id": "LAO",
+  "a2": "la",
+  "cont": "asia"
+ },
+ {
+  "id": "LBN",
+  "a2": "lb",
+  "cont": "asia"
+ },
+ {
+  "id": "LBR",
+  "a2": "lr",
+  "cont": "africa"
+ },
+ {
+  "id": "LBY",
+  "a2": "ly",
+  "cont": "africa"
+ },
+ {
+  "id": "LCA",
+  "a2": "lc",
+  "cont": "namerica"
+ },
+ {
+  "id": "LIE",
+  "a2": "li",
+  "cont": "europe"
+ },
+ {
+  "id": "LKA",
+  "a2": "lk",
+  "cont": "asia"
+ },
+ {
+  "id": "LSO",
+  "a2": "ls",
+  "cont": "africa"
+ },
+ {
+  "id": "LTU",
+  "a2": "lt",
+  "cont": "europe"
+ },
+ {
+  "id": "LUX",
+  "a2": "lu",
+  "cont": "europe"
+ },
+ {
+  "id": "LVA",
+  "a2": "lv",
+  "cont": "europe"
+ },
+ {
+  "id": "MAR",
+  "a2": "ma",
+  "cont": "africa"
+ },
+ {
+  "id": "MCO",
+  "a2": "mc",
+  "cont": "europe"
+ },
+ {
+  "id": "MDA",
+  "a2": "md",
+  "cont": "europe"
+ },
+ {
+  "id": "MDG",
+  "a2": "mg",
+  "cont": "africa"
+ },
+ {
+  "id": "MDV",
+  "a2": "mv",
+  "cont": "asia"
+ },
+ {
+  "id": "MEX",
+  "a2": "mx",
+  "cont": "namerica"
+ },
+ {
+  "id": "MHL",
+  "a2": "mh",
+  "cont": "oceania"
+ },
+ {
+  "id": "MKD",
+  "a2": "mk",
+  "cont": "europe"
+ },
+ {
+  "id": "MLI",
+  "a2": "ml",
+  "cont": "africa"
+ },
+ {
+  "id": "MLT",
+  "a2": "mt",
+  "cont": "europe"
+ },
+ {
+  "id": "MMR",
+  "a2": "mm",
+  "cont": "asia"
+ },
+ {
+  "id": "MNE",
+  "a2": "me",
+  "cont": "europe"
+ },
+ {
+  "id": "MNG",
+  "a2": "mn",
+  "cont": "asia"
+ },
+ {
+  "id": "MOZ",
+  "a2": "mz",
+  "cont": "africa"
+ },
+ {
+  "id": "MRT",
+  "a2": "mr",
+  "cont": "africa"
+ },
+ {
+  "id": "MUS",
+  "a2": "mu",
+  "cont": "africa"
+ },
+ {
+  "id": "MWI",
+  "a2": "mw",
+  "cont": "africa"
+ },
+ {
+  "id": "MYS",
+  "a2": "my",
+  "cont": "asia"
+ },
+ {
+  "id": "NAM",
+  "a2": "na",
+  "cont": "africa"
+ },
+ {
+  "id": "NER",
+  "a2": "ne",
+  "cont": "africa"
+ },
+ {
+  "id": "NGA",
+  "a2": "ng",
+  "cont": "africa"
+ },
+ {
+  "id": "NIC",
+  "a2": "ni",
+  "cont": "namerica"
+ },
+ {
+  "id": "NLD",
+  "a2": "nl",
+  "cont": "europe"
+ },
+ {
+  "id": "NOR",
+  "a2": "no",
+  "cont": "europe"
+ },
+ {
+  "id": "NPL",
+  "a2": "np",
+  "cont": "asia"
+ },
+ {
+  "id": "NRU",
+  "a2": "nr",
+  "cont": "oceania"
+ },
+ {
+  "id": "NZL",
+  "a2": "nz",
+  "cont": "oceania"
+ },
+ {
+  "id": "OMN",
+  "a2": "om",
+  "cont": "asia"
+ },
+ {
+  "id": "PAK",
+  "a2": "pk",
+  "cont": "asia"
+ },
+ {
+  "id": "PAN",
+  "a2": "pa",
+  "cont": "namerica"
+ },
+ {
+  "id": "PER",
+  "a2": "pe",
+  "cont": "samerica"
+ },
+ {
+  "id": "PHL",
+  "a2": "ph",
+  "cont": "asia"
+ },
+ {
+  "id": "PLW",
+  "a2": "pw",
+  "cont": "oceania"
+ },
+ {
+  "id": "PNG",
+  "a2": "pg",
+  "cont": "oceania"
+ },
+ {
+  "id": "POL",
+  "a2": "pl",
+  "cont": "europe"
+ },
+ {
+  "id": "PRK",
+  "a2": "kp",
+  "cont": "asia"
+ },
+ {
+  "id": "PRT",
+  "a2": "pt",
+  "cont": "europe"
+ },
+ {
+  "id": "PRY",
+  "a2": "py",
+  "cont": "samerica"
+ },
+ {
+  "id": "PSX",
+  "a2": "ps",
+  "cont": "asia"
+ },
+ {
+  "id": "QAT",
+  "a2": "qa",
+  "cont": "asia"
+ },
+ {
+  "id": "ROU",
+  "a2": "ro",
+  "cont": "europe"
+ },
+ {
+  "id": "RUS",
+  "a2": "ru",
+  "cont": "europe"
+ },
+ {
+  "id": "RWA",
+  "a2": "rw",
+  "cont": "africa"
+ },
+ {
+  "id": "SAU",
+  "a2": "sa",
+  "cont": "asia"
+ },
+ {
+  "id": "SDN",
+  "a2": "sd",
+  "cont": "africa"
+ },
+ {
+  "id": "SDS",
+  "a2": "ss",
+  "cont": "africa"
+ },
+ {
+  "id": "SEN",
+  "a2": "sn",
+  "cont": "africa"
+ },
+ {
+  "id": "SGP",
+  "a2": "sg",
+  "cont": "asia"
+ },
+ {
+  "id": "SLB",
+  "a2": "sb",
+  "cont": "oceania"
+ },
+ {
+  "id": "SLE",
+  "a2": "sl",
+  "cont": "africa"
+ },
+ {
+  "id": "SLV",
+  "a2": "sv",
+  "cont": "namerica"
+ },
+ {
+  "id": "SMR",
+  "a2": "sm",
+  "cont": "europe"
+ },
+ {
+  "id": "SOM",
+  "a2": "so",
+  "cont": "africa"
+ },
+ {
+  "id": "SRB",
+  "a2": "rs",
+  "cont": "europe"
+ },
+ {
+  "id": "STP",
+  "a2": "st",
+  "cont": "africa"
+ },
+ {
+  "id": "SUR",
+  "a2": "sr",
+  "cont": "samerica"
+ },
+ {
+  "id": "SVK",
+  "a2": "sk",
+  "cont": "europe"
+ },
+ {
+  "id": "SVN",
+  "a2": "si",
+  "cont": "europe"
+ },
+ {
+  "id": "SWE",
+  "a2": "se",
+  "cont": "europe"
+ },
+ {
+  "id": "SWZ",
+  "a2": "sz",
+  "cont": "africa"
+ },
+ {
+  "id": "SYC",
+  "a2": "sc",
+  "cont": "africa"
+ },
+ {
+  "id": "SYR",
+  "a2": "sy",
+  "cont": "asia"
+ },
+ {
+  "id": "TCD",
+  "a2": "td",
+  "cont": "africa"
+ },
+ {
+  "id": "TGO",
+  "a2": "tg",
+  "cont": "africa"
+ },
+ {
+  "id": "THA",
+  "a2": "th",
+  "cont": "asia"
+ },
+ {
+  "id": "TJK",
+  "a2": "tj",
+  "cont": "asia"
+ },
+ {
+  "id": "TKM",
+  "a2": "tm",
+  "cont": "asia"
+ },
+ {
+  "id": "TLS",
+  "a2": "tl",
+  "cont": "asia"
+ },
+ {
+  "id": "TON",
+  "a2": "to",
+  "cont": "oceania"
+ },
+ {
+  "id": "TTO",
+  "a2": "tt",
+  "cont": "namerica"
+ },
+ {
+  "id": "TUN",
+  "a2": "tn",
+  "cont": "africa"
+ },
+ {
+  "id": "TUR",
+  "a2": "tr",
+  "cont": "asia"
+ },
+ {
+  "id": "TUV",
+  "a2": "tv",
+  "cont": "oceania"
+ },
+ {
+  "id": "TWN",
+  "a2": "tw",
+  "cont": "asia"
+ },
+ {
+  "id": "TZA",
+  "a2": "tz",
+  "cont": "africa"
+ },
+ {
+  "id": "UGA",
+  "a2": "ug",
+  "cont": "africa"
+ },
+ {
+  "id": "UKR",
+  "a2": "ua",
+  "cont": "europe"
+ },
+ {
+  "id": "URY",
+  "a2": "uy",
+  "cont": "samerica"
+ },
+ {
+  "id": "USA",
+  "a2": "us",
+  "cont": "namerica"
+ },
+ {
+  "id": "UZB",
+  "a2": "uz",
+  "cont": "asia"
+ },
+ {
+  "id": "VAT",
+  "a2": "va",
+  "cont": "europe"
+ },
+ {
+  "id": "VCT",
+  "a2": "vc",
+  "cont": "namerica"
+ },
+ {
+  "id": "VEN",
+  "a2": "ve",
+  "cont": "samerica"
+ },
+ {
+  "id": "VNM",
+  "a2": "vn",
+  "cont": "asia"
+ },
+ {
+  "id": "VUT",
+  "a2": "vu",
+  "cont": "oceania"
+ },
+ {
+  "id": "WSM",
+  "a2": "ws",
+  "cont": "oceania"
+ },
+ {
+  "id": "YEM",
+  "a2": "ye",
+  "cont": "asia"
+ },
+ {
+  "id": "ZAF",
+  "a2": "za",
+  "cont": "africa"
+ },
+ {
+  "id": "ZMB",
+  "a2": "zm",
+  "cont": "africa"
+ },
+ {
+  "id": "ZWE",
+  "a2": "zw",
+  "cont": "africa"
+ }
+]

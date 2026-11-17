@@ -8,11 +8,12 @@ import { puzzleNumber } from '../core/daily';
 import { SettingsPanel } from '../components/Settings';
 import { Modal } from '../components/Modal';
 import { Icon } from '../components/Icon';
+import { ThemeToggle } from '../components/ThemeToggle';
 import { useState } from 'react';
 import { CardArt } from './CardArt';
 import './hub.css';
 
-const ORDER: GameId[] = ['slowko', 'globus', 'kontur', 'glebia', 'epoka'];
+const ORDER: GameId[] = ['slowko', 'globus', 'kontur', 'glebia', 'flagi', 'kronika', 'epoka'];
 
 export function Hub() {
   const { t, lang } = useI18n();
@@ -49,9 +50,12 @@ export function Hub() {
             </p>
           </div>
         </div>
-        <button className="icon-btn" onClick={() => setSettings(true)} aria-label={t('settings')}>
-          <Icon name="settings" />
-        </button>
+        <div className="hub__actions">
+          <ThemeToggle />
+          <button className="icon-btn" onClick={() => setSettings(true)} aria-label={t('settings')}>
+            <Icon name="settings" />
+          </button>
+        </div>
       </header>
       <p className="hub__tagline">{t('hubTagline')}</p>
       <p className="hub__progress" aria-live="polite">
@@ -60,7 +64,7 @@ export function Hub() {
             <span key={id} className={status[id].done ? 'is-on' : ''} />
           ))}
         </span>
-        {t('hubDoneCount', { n: doneCount })}
+        {t('hubDoneCount', { n: doneCount, total: ORDER.length })}
       </p>
       <ul className="hub__grid">
         {ORDER.map((id) => {
