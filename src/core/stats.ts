@@ -64,3 +64,46 @@ export function displayedStreak(stats: Stats, today: string): number {
   if (stats.lastWon === today || stats.lastWon === addDays(today, -1)) return stats.currentStreak;
   return 0;
 }
+
+/* ------------------------------------------------------------------
+   Daily history: one entry per completed daily puzzle. Stats are derived
+   from it (plus a "legacy" baseline for results recorded before the history
+   existed), so two devices can merge their results without double counting.
+   ------------------------------------------------------------------ */
+export interface HistEntry {
+  won: boolean;
+  bucket: string;
+  score?: number;
+  /** when it was recorded (ms) — the earliest record of a day wins on merge */
+  at: number;
+}
+export type History = Record<string, HistEntry>;
+
+export function statsFromHistory(hist: History, legacy: Stats | null): Stats {
+  let s: Stats = legacy ? { ...legacy, dist: { ...legacy.dist } } : emptyStats();
+  const after = legacy?.lastCompleted ?? '';
+  for (const date of Object.keys(hist).sort()) {
+    if (date <= after) continue; // already counted in the baseline
+    const { won, bucket, score } = hist[date];
+    s = applyResult(s, { date, won, bucket, ...(score != null ? { score } : {}) });
+  }
+  return s;
+}
+
+export function mergeHistory(a: History = {}, b: History = {}): History {
+  const out: History = { ...a };
+  for (const [d, e] of Object.entries(b)) {
+    const cur = out[d];
+    if (!cur || e.at < cur.at || (e.at === cur.at && JSON.stringify(e) > JSON.stringify(cur))) out[d] = e;
+  }
+  return out;
+}
+
+/** Baseline from two devices: the one that has seen more games (they cannot be added safely). */
+export function mergeLegacy(a: Stats | null | undefined, b: Stats | null | undefined): Stats | null {
+  if (!a) return b ?? null;
+  if (!b) return a;
+  if (a.played !== b.played) return a.played > b.played ? a : b;
+  if (a.wins !== b.wins) return a.wins > b.wins ? a : b;
+  return JSON.stringify(a) >= JSON.stringify(b) ? a : b;
+}

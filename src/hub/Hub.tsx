@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useI18n } from '../core/i18n';
 import { href } from '../core/router';
-import { useDateKey, type GameId } from '../core/session';
+import { useDateKey, useSyncTick, type GameId } from '../core/session';
 import { load } from '../core/storage';
 import { displayedStreak, emptyStats, type Stats } from '../core/stats';
 import { puzzleNumber } from '../core/daily';
@@ -9,6 +9,7 @@ import { SettingsPanel } from '../components/Settings';
 import { Modal } from '../components/Modal';
 import { Icon } from '../components/Icon';
 import { ThemeToggle } from '../components/ThemeToggle';
+import { SettingsButton } from '../components/SettingsButton';
 import { useState } from 'react';
 import { CardArt } from './CardArt';
 import './hub.css';
@@ -19,6 +20,7 @@ export function Hub() {
   const { t, lang } = useI18n();
   const today = useDateKey();
   const [settings, setSettings] = useState(false);
+  const syncTick = useSyncTick();
   const status = useMemo(
     () =>
       Object.fromEntries(
@@ -28,7 +30,8 @@ export function Hub() {
           return [id, { done, won: done && s.lastWon === today, streak: displayedStreak(s, today) }];
         }),
       ) as Record<GameId, { done: boolean; won: boolean; streak: number }>,
-    [today],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [today, syncTick],
   );
   const doneCount = ORDER.filter((id) => status[id].done).length;
   const dateLabel = new Date().toLocaleDateString(lang === 'pl' ? 'pl-PL' : 'en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
@@ -52,9 +55,7 @@ export function Hub() {
         </div>
         <div className="hub__actions">
           <ThemeToggle />
-          <button className="icon-btn" onClick={() => setSettings(true)} aria-label={t('settings')}>
-            <Icon name="settings" />
-          </button>
+          <SettingsButton onClick={() => setSettings(true)} />
         </div>
       </header>
       <p className="hub__tagline">{t('hubTagline')}</p>

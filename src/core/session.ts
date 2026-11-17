@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { localDateKey, msUntilLocalMidnight } from './date';
 import { dailyIndex, puzzleNumber, unlimitedIndex } from './daily';
 import { load, save } from './storage';
-import { applyResult, emptyStats, type Stats, type UnlimitedStats } from './stats';
+import { emptyStats, statsFromHistory, type History, type Stats, type UnlimitedStats } from './stats';
 
 export type Mode = 'daily' | 'unlimited';
 export type GameId = 'slowko' | 'globus' | 'kontur' | 'glebia' | 'epoka' | 'flagi' | 'kronika';
@@ -13,11 +13,34 @@ export interface Outcome {
   score?: number;
 }
 
-interface Stored<S> {
+export interface Stored<S> {
   puzzle: number;
   date?: string;
   state: S;
   recorded?: boolean;
+  /** last time the player changed the state (ms); 0 = untouched. Used to merge devices. */
+  at?: number;
+}
+
+/** Re-renders whenever a sync brought in data from another device. */
+export function useSyncTick(): number {
+  const [tick, setTick] = useState(0);
+  useEffect(() => {
+    const on = () => setTick((x) => x + 1);
+    window.addEventListener('gamehub:synced', on);
+    return () => window.removeEventListener('gamehub:synced', on);
+  }, []);
+  return tick;
+}
+
+/** Unlimited counters: this device + the other devices known from sync. */
+export function unlimitedTotal(statKey: string): UnlimitedStats {
+  const own = load<UnlimitedStats>(`${statKey}:ustats`, { played: 0, wins: 0 });
+  const others = load<Record<string, UnlimitedStats>>(`${statKey}:ustats-sync`, {});
+  const me = load<string>('device', '');
+  let { played, wins } = own;
+  for (const [dev, u] of Object.entries(others)) if (dev !== me) (played += u.played), (wins += u.wins);
+  return { played, wins };
 }
 
 /** Re-renders when the local date changes (midnight, or tab woken up the next day). */
@@ -46,7 +69,13 @@ export function useDateKey(): string {
 
 export function useStats(gameId: string) {
   const [stats, setStats] = useState<Stats>(() => load(`${gameId}:stats`, emptyStats()));
-  const [ustats, setUStats] = useState<UnlimitedStats>(() => load(`${gameId}:ustats`, { played: 0, wins: 0 }));
+  const [ustats, setUStats] = useState<UnlimitedStats>(() => unlimitedTotal(gameId));
+  const tick = useSyncTick();
+  useEffect(() => {
+    if (!tick) return;
+    setStats(load(`${gameId}:stats`, emptyStats()));
+    setUStats(unlimitedTotal(gameId));
+  }, [tick, gameId]);
   return { stats, setStats, ustats, setUStats };
 }
 
@@ -67,6 +96,7 @@ export function useGameSession<S>(opts: SessionOptions<S>) {
   const dateKey = useDateKey();
   const storeKey = `${gameId}:${mode}:v${version}`;
   const { stats, setStats, ustats, setUStats } = useStats(gameId);
+  const syncTick = useSyncTick();
   const initRef = useRef(init);
   initRef.current = init;
 
@@ -74,7 +104,7 @@ export function useGameSession<S>(opts: SessionOptions<S>) {
     if (!poolSize) return null;
     if (mode === 'daily') {
       const puzzle = dailyIndex(gameId, poolSize, dateKey);
-      return { puzzle, date: dateKey, state: initRef.current(puzzle) };
+      return { puzzle, date: dateKey, state: initRef.current(puzzle), at: 0 };
     }
     const puzzle = unlimitedIndex(gameId, poolSize, dateKey);
     return { puzzle, state: initRef.current(puzzle) };
@@ -93,7 +123,7 @@ export function useGameSession<S>(opts: SessionOptions<S>) {
         ? stored.puzzle !== dailyIndex(gameId, poolSize, dateKey)
         : stored.date === dateKey && stored.puzzle === dailyIndex(gameId, poolSize, dateKey));
     setSession(valid ? stored : fresh());
-  }, [storeKey, poolSize, dateKey, mode, gameId, fresh]);
+  }, [storeKey, poolSize, dateKey, mode, gameId, fresh, syncTick]);
 
   useEffect(() => {
     if (session) save(storeKey, session);
@@ -105,14 +135,18 @@ export function useGameSession<S>(opts: SessionOptions<S>) {
   useEffect(() => {
     if (!session || !result || session.recorded) return;
     if (mode === 'daily' && session.date) {
-      const next = applyResult(load(`${gameId}:stats`, emptyStats()), { date: session.date, ...result });
+      const hist = load<History>(`${gameId}:hist`, {});
+      if (!hist[session.date]) {
+        hist[session.date] = { won: result.won, bucket: result.bucket, ...(result.score != null ? { score: result.score } : {}), at: Date.now() };
+        save(`${gameId}:hist`, hist);
+      }
+      const next = statsFromHistory(hist, load<Stats | null>(`${gameId}:legacy`, null));
       save(`${gameId}:stats`, next);
       setStats(next);
     } else {
       const u = load<UnlimitedStats>(`${gameId}:ustats`, { played: 0, wins: 0 });
-      const next = { played: u.played + 1, wins: u.wins + (result.won ? 1 : 0) };
-      save(`${gameId}:ustats`, next);
-      setUStats(next);
+      save(`${gameId}:ustats`, { played: u.played + 1, wins: u.wins + (result.won ? 1 : 0) });
+      setUStats(unlimitedTotal(gameId));
     }
     setSession({ ...session, recorded: true });
   }, [session, result, mode, gameId, setStats, setUStats]);
@@ -122,7 +156,7 @@ export function useGameSession<S>(opts: SessionOptions<S>) {
       setSession((cur) => {
         if (!cur || (cur.recorded && mode === 'daily')) return cur; // daily locked after completion
         const state = typeof update === 'function' ? (update as (s: S) => S)(cur.state) : update;
-        return { ...cur, state };
+        return { ...cur, state, at: Date.now() };
       });
     },
     [mode],

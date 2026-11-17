@@ -26,8 +26,9 @@
   background: var(--surface);
   margin: 5px;
 }
-.ep-map svg {
+.ep-map__frame > svg {
   display: block;
+  min-height: 120px;
   width: 100%;
   height: auto;
   touch-action: none;
@@ -39,28 +40,90 @@
 .ep-grat {
   fill: none;
   stroke: var(--ink);
-  opacity: 0.35;
+  stroke-width: 0.5;
+  opacity: 0.3;
+  vector-effect: non-scaling-stroke;
 }
 .ep-land {
   stroke: var(--ink);
+  stroke-width: 0.6;
+  stroke-opacity: 0.75;
   stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  cursor: pointer;
 }
-.ep-land:hover {
-  filter: brightness(1.08);
+.ep-land.is-none {
+  stroke-opacity: 0.35;
+  cursor: default;
+}
+.ep-land.is-sel {
+  filter: brightness(1.12) saturate(1.2);
+}
+.ep-sel-outline {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2.4;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  pointer-events: none;
 }
 .ep-rim {
   fill: none;
   stroke: var(--ink);
+  stroke-width: 1.4;
+  vector-effect: non-scaling-stroke;
 }
 .ep-labels text {
   font-family: var(--font-body);
   font-style: italic;
+  text-anchor: middle;
   fill: var(--ink);
-  stroke: var(--surface);
+  stroke: color-mix(in oklab, var(--surface), transparent 15%);
   paint-order: stroke;
   stroke-linejoin: round;
   pointer-events: none;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
+}
+.ep-labels text.is-big {
+  font-family: var(--font-display);
+  font-style: normal;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.ep-pick,
+.ep-hint {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  max-width: calc(100% - 150px);
+  margin: 0;
+  font-family: var(--font-body);
+}
+.ep-pick {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  padding: 4px 10px;
+  background: var(--surface);
+  color: var(--fg);
+  border: 1px solid var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+  font-size: 0.9rem;
+  font-style: italic;
+  cursor: pointer;
+  text-align: left;
+}
+.ep-hint {
+  font-size: 0.72rem;
+  color: var(--muted);
+  background: color-mix(in oklab, var(--surface), transparent 20%);
+  padding: 2px 6px;
+  text-align: right;
+}
+@media (max-width: 520px) {
+  .ep-hint {
+    display: none;
+  }
 }
 .ep-cartouche {
   position: absolute;
@@ -240,4 +303,19 @@
 }
 .ep-src {
   font-size: 0.8rem;
+}
+
+.ep-failed {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 8px;
+  padding: 16px;
+  text-align: center;
+  background: color-mix(in oklab, var(--surface), transparent 10%);
+}
+.ep-failed p {
+  margin: 0;
 }

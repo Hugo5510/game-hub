@@ -25,6 +25,74 @@ let dataPromise: Promise<DepthData> | null = null;
 const loadData = () => (dataPromise ??= fetch(`${import.meta.env.BASE_URL}data/depth.json`).then((r) => r.json()));
 const MAX_M = PROMPTS * 100 * METERS_PER_POINT;
 
+/** Dive time grows with the metres gained (skip: a short pause, nothing gained). */
+export const diveMs = (gain: number) => (gain > 0 ? Math.round(1000 + gain * 1.3) : 900);
+
+interface Dive {
+  from: number;
+  to: number;
+  text: string;
+  kind: 'hit' | 'skip';
+}
+
+/**
+ * The sinking scene shown between prompts: strata scroll upwards past the diver, the depth
+ * counter runs from the old to the new depth and the whole screen darkens with it.
+ */
+function Descent({ dive, rootRef, hudRef, onDone, lang, label }: { dive: Dive; rootRef: React.RefObject<HTMLDivElement>; hudRef: React.RefObject<HTMLElement>; onDone: () => void; lang: string; label: string }) {
+  const counter = useRef<HTMLSpanElement>(null);
+  const gain = dive.to - dive.from;
+  const ms = diveMs(gain);
+  useEffect(() => {
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const start = performance.now();
+    let raf = 0;
+    const tick = (now: number) => {
+      const p = reduce ? 1 : Math.min(1, (now - start) / ms);
+      const e = 1 - (1 - p) ** 3;
+      const m = Math.round(dive.from + gain * e);
+      const txt = `${m.toLocaleString(lang)} m`;
+      if (counter.current) counter.current.textContent = txt;
+      if (hudRef.current) hudRef.current.textContent = txt;
+      rootRef.current?.style.setProperty('--depth', String(Math.min(1, m / 4500)));
+      if (p < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    const done = setTimeout(onDone, (reduce ? 300 : ms) + 550);
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(done);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  return (
+    <section
+      className={`gl-descent is-${dive.kind}`}
+      style={{ ['--dive-ms' as string]: `${ms}ms`, ['--dive-dist' as string]: `${Math.round(gain * 0.9)}px` }}
+      aria-live="polite"
+      aria-label={label}
+    >
+      <div className="gl-descent__strata" aria-hidden="true" />
+      <div className="gl-descent__bubbles" aria-hidden="true">
+        {Array.from({ length: 9 }, (_, i) => (
+          <span key={i} style={{ left: `${12 + ((i * 29) % 76)}%`, animationDelay: `${(i * 0.17) % 1}s`, width: `${4 + (i % 3) * 3}px`, height: `${4 + (i % 3) * 3}px` }} />
+        ))}
+      </div>
+      <svg className="gl-descent__diver" viewBox="0 0 64 64" aria-hidden="true">
+        <ellipse cx="32" cy="34" rx="20" ry="11" />
+        <path d="M50 34 l10 -8 v16z" />
+        <circle cx="22" cy="32" r="4.5" className="gl-descent__eye" />
+        <path d="M30 22 v-8 M27 14 h6" className="gl-descent__lamp" />
+      </svg>
+      <p className="gl-descent__gain">{dive.kind === 'hit' ? `+${gain.toLocaleString(lang)} m` : '±0 m'}</p>
+      <p className="gl-descent__text">{dive.text}</p>
+      <p className="gl-descent__depth">
+        <span ref={counter}>{dive.from.toLocaleString(lang)} m</span>
+      </p>
+    </section>
+  );
+}
+
 function Gauge({ meters, label }: { meters: number; label: string }) {
   const ticks = [0, 1000, 2000, 3000, 4000, 5000, 6000, 7000];
   return (
@@ -47,7 +115,10 @@ export default function Glebia({ mode }: { mode: Mode }) {
   const [data, setData] = useState<DepthData | null>(null);
   const [input, setInput] = useState('');
   const [flash, setFlash] = useState<{ kind: 'hit' | 'miss' | 'info'; text: string } | null>(null);
+  const [dive, setDive] = useState<Dive | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const hudRef = useRef<HTMLElement>(null);
   useEffect(() => {
     loadData().then(setData);
   }, []);
@@ -59,7 +130,11 @@ export default function Glebia({ mode }: { mode: Mode }) {
   useEffect(() => {
     setFlash(null);
     setInput('');
+    setDive(null);
   }, [g.puzzle]);
+  useEffect(() => {
+    if (!dive) inputRef.current?.focus({ preventScroll: true });
+  }, [dive]);
 
   if (!data || !g.ready || !g.state) return <div className="loading">{t('loading')}</div>;
   const s = g.state;
@@ -68,7 +143,8 @@ export default function Glebia({ mode }: { mode: Mode }) {
   const done = !!g.result;
   const cat = prompts[Math.min(step, PROMPTS - 1)];
   const name = (a: { pl: string; en: string }) => (lang === 'pl' ? a.pl : a.en);
-  const depthFrac = Math.min(1, meters / 4500);
+  // while sinking, the screen starts at the old depth and the Descent animates it down
+  const depthFrac = Math.min(1, (dive ? dive.from : meters) / 4500);
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -76,7 +152,8 @@ export default function Glebia({ mode }: { mode: Mode }) {
     const res = submit(s, cat, input);
     if (res.event === 'hit') {
       const a = cat.answers[res.answer!];
-      setFlash({ kind: 'hit', text: `${t('glebiaAccepted', { a: name(a), r: a.r })} · +${a.r * METERS_PER_POINT} m` });
+      setFlash(null);
+      setDive({ from: meters, to: meters + a.r * METERS_PER_POINT, text: t('glebiaDiveHit', { a: name(a), r: a.r }), kind: 'hit' });
     } else if (res.event === 'miss') setFlash({ kind: 'miss', text: t('glebiaWrong', { a: input.trim() }) });
     else if (res.event === 'dup') setFlash({ kind: 'info', text: t('glebiaAlready') });
     g.setState(res.state);
@@ -117,13 +194,14 @@ export default function Glebia({ mode }: { mode: Mode }) {
     : undefined;
 
   return (
-    <div className="gl-root" style={{ ['--depth' as string]: depthFrac }}>
+    <div className="gl-root" ref={rootRef} style={{ ['--depth' as string]: depthFrac, ['--dive-ms' as string]: dive ? `${diveMs(dive.to - dive.from)}ms` : '1.2s' }}>
       <GameShell
         gameId="glebia"
         title={t('glebiaTitle')}
         mode={mode}
         puzzleNo={g.puzzleNo}
         result={g.result}
+        revealDelay={dive ? diveMs(dive.to - dive.from) + 700 : 600}
         shareText={share}
         onNext={() => g.newUnlimited()}
         help={
@@ -159,7 +237,7 @@ export default function Glebia({ mode }: { mode: Mode }) {
             <div className="gl-hud">
               <span className="gl-depth">
                 <small>{t('glebiaDepth')}</small>
-                <strong>{meters.toLocaleString(lang)} m</strong>
+                <strong ref={hudRef} key={dive ? `dive-${step}` : "rest"}>{(dive ? dive.from : meters).toLocaleString(lang)} m</strong>
               </span>
               <span className="gl-oxygen" aria-label={`${t('glebiaOxygen')}: ${s.oxygen}/${OXYGEN}`}>
                 <small>{t('glebiaOxygen')}</small>
@@ -180,8 +258,10 @@ export default function Glebia({ mode }: { mode: Mode }) {
                 );
               })}
             </ol>
-            {!done ? (
-              <section className="gl-card" aria-live="polite">
+            {dive ? (
+              <Descent key={`${dive.from}-${dive.to}-${step}`} dive={dive} rootRef={rootRef} hudRef={hudRef} onDone={() => setDive(null)} lang={lang} label={t('glebiaDiving')} />
+            ) : !done ? (
+              <section className="gl-card" key={step} aria-live="polite">
                 <p className="gl-card__n">{t('glebiaPrompt', { n: step + 1 })}</p>
                 <h2 className="gl-card__q">{lang === 'pl' ? cat.prompt.pl : cat.prompt.en}</h2>
                 {cat.note && <p className="gl-card__note">{lang === 'pl' ? cat.note.pl : cat.note.en}</p>}
@@ -205,6 +285,7 @@ export default function Glebia({ mode }: { mode: Mode }) {
                   onClick={() => {
                     g.setState(skip(s));
                     setFlash(null);
+                    setDive({ from: meters, to: meters, text: t('glebiaDiveSkip'), kind: 'skip' });
                   }}
                 >
                   <Icon name="skip" size={16} /> {t('glebiaSkip')}
