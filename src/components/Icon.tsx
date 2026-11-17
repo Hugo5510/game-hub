@@ -79,6 +79,7 @@ const paths: Record<string, JSX.Element> = {
       <path d="M8 20h8M12 16v4" />
     </>
   ),
+  cloud: <path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.2 4.7 4.7 0 0 0 7 18.5z" />,
   x: <path d="M7 7l10 10M17 7L7 17" />,
   pin: (
     <>

@@ -1,6 +1,7 @@
 import { useI18n, type Lang } from '../core/i18n';
 import { useContrast, useTheme, type ThemePref } from '../core/settings';
 import { Icon } from './Icon';
+import { SyncPanel } from './SyncPanel';
 
 export function SettingsPanel() {
   const { t, lang, setLang } = useI18n();
@@ -45,6 +46,7 @@ export function SettingsPanel() {
           ))}
         </div>
       </fieldset>
+      <SyncPanel />
     </div>
   );
 }

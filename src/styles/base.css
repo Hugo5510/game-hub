@@ -553,3 +553,136 @@ body,
   border: 2px dashed var(--border);
   border-radius: var(--radius);
 }
+
+/* ---------- settings: sync section ---------- */
+.settings-btn {
+  position: relative;
+}
+.settings-btn__dot {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #2f9e5b;
+  box-shadow: 0 0 0 2px var(--bg);
+}
+.settings-btn__dot.is-syncing {
+  background: var(--accent);
+  animation: sync-pulse 0.9s ease-in-out infinite;
+}
+.settings-btn__dot.is-error {
+  background: #d93a2b;
+}
+@keyframes sync-pulse {
+  50% {
+    opacity: 0.3;
+  }
+}
+.sync {
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+}
+.sync__head {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 10px;
+  border: 0;
+  background: none;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  color: var(--fg);
+}
+.sync__title small {
+  display: block;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+.sync__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--border);
+}
+.sync__dot.is-idle {
+  background: #2f9e5b;
+}
+.sync__dot.is-syncing {
+  background: var(--accent);
+  animation: sync-pulse 0.9s ease-in-out infinite;
+}
+.sync__dot.is-error {
+  background: #d93a2b;
+}
+.sync__chev {
+  transition: transform 0.2s ease;
+}
+.sync__head.is-open .sync__chev {
+  transform: rotate(180deg);
+}
+.sync__body {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+.sync__form {
+  display: grid;
+  gap: 10px;
+}
+.sync__form label {
+  display: grid;
+  gap: 4px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.sync__form input {
+  min-height: 42px;
+  padding: 0 10px;
+  font: inherit;
+  font-weight: 400;
+  color: var(--fg);
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+}
+.sync__form input:focus {
+  outline: none;
+  border-color: var(--fg);
+}
+.sync__hint,
+.sync__repo {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+.sync__repo code {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  word-break: break-all;
+}
+.sync__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.sync__how {
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+.sync__how summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.sync__how ol {
+  padding-left: 1.2em;
+}
+.sync__msg {
+  margin: 0;
+  min-height: 1.2em;
+  font-size: 0.85rem;
+  color: var(--muted);
+}

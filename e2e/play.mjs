@@ -161,7 +161,9 @@ const drivers = {
         await page.locator('.gl-form input').fill(cat.answers[cat.answers.length - 1 - i].pl);
         await page.keyboard.press('Enter');
       }
-      await page.waitForTimeout(200);
+      // every answer is followed by the descent animation before the next prompt
+      await page.locator('.gl-descent').waitFor({ state: 'attached', timeout: 1000 }).catch(() => {});
+      await page.locator('.gl-descent').waitFor({ state: 'detached', timeout: 6000 });
     }
     return 'dive';
   },
@@ -249,6 +251,126 @@ for (const game of Object.keys(drivers)) {
   const a2 = (await page.locator('.fl-flag').getAttribute('src')).match(/flags\/(\w+)\.svg/)[1];
   check('flagi: Europe category shows a European flag', flags.find((f) => f.a2 === a2)?.cont === 'europe', a2);
   await ctx.close();
+}
+
+// ---- Głębia: descent animation runs between prompts ----
+{
+  const { ctx, page } = await fresh();
+  await go(page, 'glebia', 'unlimited');
+  const q = (await page.locator('.gl-card__q').textContent()).trim();
+  const cat = depth.categories.find((c) => c.prompt.pl === q);
+  await page.locator('.gl-form input').fill(cat.answers[cat.answers.length - 1].pl);
+  await page.keyboard.press('Enter');
+  await page.waitForTimeout(300);
+  const mid = await page.locator('.gl-descent').count();
+  const cardHidden = (await page.locator('.gl-card__q').count()) === 0;
+  await page.locator('.gl-descent').waitFor({ state: 'detached', timeout: 6000 });
+  const nextQ = (await page.locator('.gl-card__q').textContent()).trim();
+  check('glebia: descent scene between prompts, then the next prompt', mid === 1 && cardHidden && nextQ !== q, `next=${nextQ}`);
+  await ctx.close();
+}
+
+// ---- Epoka: every polity is drawn, neighbours differ, names on the map, tap shows a name ----
+{
+  const { ctx, page } = await fresh();
+  await go(page, 'epoka', 'unlimited');
+  await page.waitForTimeout(800);
+  const n = await page.locator('.ep-land').count();
+  const labels = await page.locator('.ep-labels text').count();
+  const fills = new Set(await page.locator('.ep-land').evaluateAll((els) => els.map((e) => e.getAttribute('fill'))));
+  check('epoka map: polities drawn with several colours and names', n > 40 && fills.size >= 6 && labels >= 5, `polities=${n} colours=${fills.size} labels=${labels}`);
+  const target = await page.locator('.ep-land:not(.is-none)').evaluateAll((els) =>
+    els
+      .map((e) => ({ e, r: e.getBoundingClientRect() }))
+      .sort((a, b) => b.r.width * b.r.height - a.r.width * a.r.height)
+      .map(({ e, r }) => [r.x + r.width / 2, r.y + r.height / 2, e])
+      .filter(([x, y, e]) => document.elementFromPoint(x, y) === e)
+      .map(([x, y]) => [x, y])[0],
+  );
+  await page.mouse.click(target[0], target[1]);
+  await page.waitForTimeout(200);
+  check('epoka map: tapping a polity shows its name', (await page.locator('.ep-pick').count()) === 1, await page.locator('.ep-pick').textContent().catch(() => ''));
+  await ctx.close();
+}
+
+// ---- Sync between two devices through a (mocked) GitHub repository ----
+{
+  let file = null;
+  let n = 0;
+  const route = async (r) => {
+    const req = r.request();
+    const url = new URL(req.url());
+    const json = (status, body) => r.fulfill({ status, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify(body) });
+    if (req.method() === 'OPTIONS') return r.fulfill({ status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': 'GET,PUT' } });
+    if (req.headers().authorization !== 'Bearer test-token') return json(401, {});
+    if (url.pathname === '/repos/gracz/gry-dane') return json(200, {});
+    if (url.pathname === '/repos/gracz/gry-dane/contents/gamehub-dane.json') {
+      if (req.method() === 'PUT') {
+        const body = JSON.parse(req.postData());
+        if ((file?.sha ?? undefined) !== body.sha) return json(409, {});
+        file = { sha: 's' + ++n, content: body.content };
+        return json(200, { content: { sha: file.sha } });
+      }
+      return file ? json(200, { sha: file.sha, encoding: 'base64', content: file.content }) : json(404, {});
+    }
+    return json(404, {});
+  };
+  const device = async () => {
+    const d = await fresh();
+    await d.ctx.route('https://api.github.com/**', route);
+    return d;
+  };
+  const connect = async (page, token = 'test-token') => {
+    await page.goto(BASE + '#/');
+    await page.waitForTimeout(400);
+    await page.locator('.settings-btn').click();
+    await page.locator('.sync__head').click();
+    await page.locator('.sync__form input').first().fill('gracz/gry-dane');
+    await page.locator('.sync__form input[type=password]').fill(token);
+    await page.getByRole('button', { name: /Połącz i synchronizuj/ }).click();
+    await page.waitForTimeout(1200);
+    return (await page.locator('.sync__msg').textContent()) ?? '';
+  };
+  const A = await device();
+  const badToken = await connect(A.page, 'zly-token');
+  check('sync: wrong token is reported', /Token/.test(badToken), badToken);
+  await A.page.getByRole('button', { name: /Rozłącz/ }).click();
+  await A.page.keyboard.press('Escape');
+  await go(A.page, 'slowko', 'daily');
+  await drivers.slowko(A.page, 'daily', true);
+  await A.page.waitForTimeout(2500);
+  const msgA = await connect(A.page);
+  check('sync: device A uploads', /Zsynchronizowano/.test(msgA) && file != null, msgA);
+
+  const B = await device();
+  await go(B.page, 'kronika', 'daily');
+  await drivers.kronika(B.page, 'daily', true);
+  await B.page.waitForTimeout(1500);
+  const msgB = await connect(B.page);
+  await B.page.keyboard.press('Escape');
+  await B.page.waitForTimeout(500);
+  const stB = await stats(B.page, 'slowko');
+  const hubB = await B.page.locator('.card--slowko .card__status').textContent();
+  check('sync: device B gets the Słówko result from A', /Zsynchronizowano/.test(msgB) && stB?.played === 1 && /Ukończone/.test(hubB), `${msgB} hub=${hubB}`);
+  await go(B.page, 'slowko', 'daily');
+  check('sync: B shows today’s Słówko as finished (locked)', (await resultShown(B.page)) && (await B.page.locator('.sl-tile.is-correct').count()) >= 5);
+
+  // A picks up B's Kronika result
+  await A.page.keyboard.press('Escape');
+  await A.page.goto(BASE + '#/');
+  await A.page.waitForTimeout(300);
+  await A.page.locator('.settings-btn').click();
+  await A.page.locator('.sync__head').click();
+  await A.page.getByRole('button', { name: /Synchronizuj teraz/ }).click();
+  await A.page.waitForTimeout(1200);
+  await A.page.keyboard.press('Escape');
+  await A.page.waitForTimeout(300);
+  const stA = await stats(A.page, 'kronika');
+  check('sync: device A gets the Kronika result from B', stA?.played === 1 && stA.wins === 1);
+  const snap = JSON.parse(Buffer.from(file.content, 'base64').toString('utf8'));
+  check('sync: the file never contains the token', !JSON.stringify(snap).includes('test-token') && snap.app === 'gamehub-sync');
+  await A.ctx.close();
+  await B.ctx.close();
 }
 await browser.close();
 const failed = results.filter((r) => !r.ok);

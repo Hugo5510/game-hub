@@ -5,6 +5,7 @@ import { SettingsPanel } from './Settings';
 import { Countdown } from './Countdown';
 import { ShareButton } from './Share';
 import { ThemeToggle } from './ThemeToggle';
+import { SettingsButton } from './SettingsButton';
 import { useI18n } from '../core/i18n';
 import { href } from '../core/router';
 import type { GameId, Mode, Outcome } from '../core/session';
@@ -86,9 +87,7 @@ export function GameShell(p: ShellProps) {
           <button className="icon-btn" onClick={() => setDialog('stats')} aria-label={t('statistics')}>
             <Icon name="stats" />
           </button>
-          <button className="icon-btn" onClick={() => setDialog('settings')} aria-label={t('settings')}>
-            <Icon name="settings" />
-          </button>
+          <SettingsButton onClick={() => setDialog('settings')} />
         </div>
       </header>
       <nav className="mode-switch" aria-label={t('mode')}>

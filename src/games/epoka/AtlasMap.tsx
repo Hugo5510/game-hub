@@ -1,95 +1,133 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { geoNaturalEarth1, geoPath, geoGraticule10, geoArea, geoCentroid } from 'd3-geo';
-import { feature } from 'topojson-client';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { geoNaturalEarth1, geoPath, geoGraticule10, geoArea } from 'd3-geo';
+import { feature, neighbors } from 'topojson-client';
 import type { Topology, GeometryCollection } from 'topojson-specification';
-import type { Feature, MultiPolygon, Polygon } from 'geojson';
-import { hashString } from '../../core/rng';
+import { fixWinding, colorPolities, polylabel, labelLines, NOT_A_STATE, type PolyFeature } from './mapdata';
 
 type Props = { n: string; s: string };
 const W = 960, H = 500;
-const cache = new Map<string, Promise<Feature<Polygon | MultiPolygon, Props>[]>>();
-function load(file: string) {
+const COLORS = 8;
+const MIN_W = W / 10; // max zoom 10×
+
+interface Shape {
+  d: string;
+  fill: string;
+  name: string;
+  state: boolean;
+}
+interface Label {
+  name: string;
+  lines: string[];
+  x: number;
+  y: number;
+  /** room around the anchor (radius of the largest inscribed circle), viewBox units at zoom 1 */
+  r: number;
+  /** extent of the polity's main part */
+  w: number;
+  area: number;
+  i: number;
+}
+interface Drawn {
+  shapes: Shape[];
+  labels: Label[];
+  sphere: string;
+  grat: string;
+}
+
+const cache = new Map<string, Promise<Drawn>>();
+function build(file: string): Promise<Drawn> {
   let p = cache.get(file);
   if (!p) {
     p = fetch(`${import.meta.env.BASE_URL}data/${file}`)
       .then((r) => r.json() as Promise<Topology<{ p: GeometryCollection<Props> }>>)
-      .then((t) => feature(t, t.objects.p).features as Feature<Polygon | MultiPolygon, Props>[]);
+      .then((t) => {
+        const feats = (feature(t, t.objects.p).features as PolyFeature[]).map(fixWinding);
+        const geoms = t.objects.p.geometries;
+        const nb = neighbors(geoms as never) as number[][];
+        const groups = feats.map((f) => f.properties.s || f.properties.n);
+        const colors = colorPolities(groups, nb, COLORS, feats.map((f) => geoArea(f)));
+        const proj = geoNaturalEarth1().fitExtent(
+          [
+            [8, 8],
+            [W - 8, H - 8],
+          ],
+          { type: 'Sphere' },
+        );
+        const path = geoPath(proj);
+        const shapes: Shape[] = feats.map((f, i) => {
+          const state = !NOT_A_STATE.test(f.properties.n);
+          return { d: path(f) ?? '', fill: state ? `var(--terr-${(colors.get(groups[i]) ?? 0) + 1})` : 'var(--terr-0)', name: f.properties.n, state };
+        });
+        // one label per polity, on the main (largest) part, at its pole of inaccessibility
+        const best = new Map<string, Label>();
+        feats.forEach((f, i) => {
+          if (!shapes[i].state) return;
+          const polys = f.geometry.type === 'Polygon' ? [f.geometry.coordinates] : f.geometry.coordinates;
+          for (const poly of polys) {
+            const area = geoArea({ type: 'Polygon', coordinates: poly });
+            const name = f.properties.n;
+            const cur = best.get(name);
+            if (cur && cur.area >= area) continue;
+            const rings = poly.map((ring) => ring.map((c) => proj(c as [number, number]) ?? [0, 0]) as [number, number][]);
+            let minX = Infinity, maxX = -Infinity;
+            for (const [x] of rings[0]) (minX = Math.min(minX, x)), (maxX = Math.max(maxX, x));
+            if (maxX - minX > W * 0.6) continue; // ring split by the antimeridian — skip this part
+            const pl = polylabel(rings);
+            best.set(name, { name, lines: labelLines(name), x: pl.x, y: pl.y, r: pl.d, w: maxX - minX, area, i });
+          }
+        });
+        const labels = [...best.values()].sort((a, b) => b.area - a.area);
+        return { shapes, labels, sphere: path({ type: 'Sphere' }) ?? '', grat: path(geoGraticule10()) ?? '' };
+      });
     cache.set(file, p);
   }
   return p;
 }
 
-export function AtlasMap({ file, label, cartouche }: { file: string; label: string; cartouche: string }) {
-  const [feats, setFeats] = useState<Feature<Polygon | MultiPolygon, Props>[] | null>(null);
-  const [vb, setVb] = useState<[number, number, number, number]>([0, 0, W, H]);
+/** The polygons never change while panning/zooming: memoised and drawn with non-scaling strokes. */
+const Lands = memo(function Lands({ drawn, sel }: { drawn: Drawn; sel: number | null }) {
+  return (
+    <>
+      <path d={drawn.sphere} className="ep-sea" />
+      <path d={drawn.grat} className="ep-grat" />
+      {drawn.shapes.map((s, i) => (
+        <path key={i} d={s.d} fill={s.fill} data-i={i} className={`ep-land${s.state ? '' : ' is-none'}${sel === i ? ' is-sel' : ''}`}>
+          <title>{s.name}</title>
+        </path>
+      ))}
+      {sel != null && <path d={drawn.shapes[sel].d} className="ep-sel-outline" />}
+      <path d={drawn.sphere} className="ep-rim" />
+    </>
+  );
+});
+
+type VB = [number, number, number, number];
+const clampVB = (x: number, y: number, w: number): VB => {
+  w = Math.max(MIN_W, Math.min(W, w));
+  const h = (w * H) / W;
+  return [Math.max(0, Math.min(W - w, x)), Math.max(0, Math.min(H - h, y)), w, h];
+};
+
+export function AtlasMap({ file, label, cartouche, hint }: { file: string; label: string; cartouche: string; hint?: string }) {
+  const [drawn, setDrawn] = useState<Drawn | null>(null);
+  const [vb, setVb] = useState<VB>([0, 0, W, H]);
+  const [sel, setSel] = useState<number | null>(null);
+  const [px, setPx] = useState(W);
   const svgRef = useRef<SVGSVGElement>(null);
+  const vbRef = useRef<VB>(vb);
+  vbRef.current = vb;
+
   useEffect(() => {
-    setFeats(null);
+    let alive = true;
+    setDrawn(null);
+    setSel(null);
     setVb([0, 0, W, H]);
-    load(file).then(setFeats);
+    build(file).then((d) => alive && setDrawn(d));
+    return () => {
+      alive = false;
+    };
   }, [file]);
 
-  const drawn = useMemo(() => {
-    if (!feats) return null;
-    const proj = geoNaturalEarth1().fitExtent(
-      [
-        [8, 8],
-        [W - 8, H - 8],
-      ],
-      { type: 'Sphere' },
-    );
-    const path = geoPath(proj);
-    const shapes = feats.map((f) => ({ d: path(f) ?? '', fill: `var(--terr-${(hashString(f.properties.s) % 8) + 1})`, name: f.properties.n }));
-    // label the largest polities at the centroid of their largest polygon
-    const labels = feats
-      .map((f) => {
-        const polys = f.geometry.type === 'Polygon' ? [f.geometry.coordinates] : f.geometry.coordinates;
-        let best = polys[0], bestA = -1;
-        for (const p of polys) {
-          const a = geoArea({ type: 'Polygon', coordinates: p });
-          if (a > bestA) (bestA = a), (best = p);
-        }
-        return { name: f.properties.n, area: bestA, c: proj(geoCentroid({ type: 'Polygon', coordinates: best })) };
-      })
-      .filter((l) => l.c && !/hunter|gatherer|tribes|peoples|nomad|antarctica/i.test(l.name))
-      .sort((a, b) => b.area - a.area)
-      .slice(0, 30);
-    return { shapes, labels, sphere: path({ type: 'Sphere' }) ?? '', grat: path(geoGraticule10()) ?? '' };
-  }, [feats]);
-
-  // pan & zoom
-  const drag = useRef<{ x: number; y: number; vb: [number, number, number, number] } | null>(null);
-  const zoom = (k: number, cx = vb[0] + vb[2] / 2, cy = vb[1] + vb[3] / 2) => {
-    const w = Math.max(W / 8, Math.min(W, vb[2] / k));
-    const h = (w * H) / W;
-    const x = Math.max(0, Math.min(W - w, cx - w / 2));
-    const y = Math.max(0, Math.min(H - h, cy - h / 2));
-    setVb([x, y, w, h]);
-  };
-  const onDown = (e: React.PointerEvent) => {
-    (e.target as Element).setPointerCapture?.(e.pointerId);
-    drag.current = { x: e.clientX, y: e.clientY, vb };
-  };
-  const onMove = (e: React.PointerEvent) => {
-    if (!drag.current || !svgRef.current) return;
-    const k = drag.current.vb[2] / svgRef.current.clientWidth;
-    const [x0, y0, w, h] = drag.current.vb;
-    setVb([Math.max(0, Math.min(W - w, x0 - (e.clientX - drag.current.x) * k)), Math.max(0, Math.min(H - h, y0 - (e.clientY - drag.current.y) * k)), w, h]);
-  };
-  useEffect(() => {
-    const el = svgRef.current;
-    if (!el) return;
-    const wheel = (e: WheelEvent) => {
-      e.preventDefault();
-      const r = el.getBoundingClientRect();
-      const cx = vb[0] + ((e.clientX - r.left) / r.width) * vb[2];
-      const cy = vb[1] + ((e.clientY - r.top) / r.height) * vb[3];
-      zoom(e.deltaY < 0 ? 1.25 : 0.8, cx, cy);
-    };
-    el.addEventListener('wheel', wheel, { passive: false });
-    return () => el.removeEventListener('wheel', wheel);
-  });
-  const [px, setPx] = useState(W);
   useEffect(() => {
     const el = svgRef.current;
     if (!el) return;
@@ -97,22 +135,123 @@ export function AtlasMap({ file, label, cartouche }: { file: string; label: stri
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
-  const fontScale = vb[2] / W;
+
+  const ptrs = useRef(new Map<number, { x: number; y: number }>());
+  const gesture_active = () => ptrs.current.size > 0;
+  // live view box during gestures is written straight to the DOM (no React re-render per move)
+  const live = useRef<VB>(vb);
+  if (!gesture_active()) live.current = vb;
+  const apply = (v: VB) => {
+    live.current = v;
+    svgRef.current?.setAttribute('viewBox', v.join(' '));
+  };
+  const commit = () => setVb(live.current);
+  const zoomAt = useCallback((k: number, cx?: number, cy?: number) => {
+    const [x, y, w, h] = vbRef.current;
+    cx ??= x + w / 2;
+    cy ??= y + h / 2;
+    const nw = Math.max(MIN_W, Math.min(W, w / k));
+    const f = nw / w;
+    const v = clampVB(cx - (cx - x) * f, cy - (cy - y) * f, nw);
+    live.current = v;
+    setVb(v);
+  }, []);
+  const toView = (clientX: number, clientY: number, v: VB): [number, number] => {
+    const r = svgRef.current!.getBoundingClientRect();
+    return [v[0] + ((clientX - r.left) / r.width) * v[2], v[1] + ((clientY - r.top) / r.height) * v[3]];
+  };
+
+  // pointers: drag to pan, two fingers to pinch, a tap selects a polity
+
+  const gesture = useRef<{ vb: VB; x: number; y: number; dist: number; moved: boolean; target: number | null } | null>(null);
+  const onDown = (e: React.PointerEvent) => {
+    svgRef.current?.setPointerCapture?.(e.pointerId);
+    ptrs.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    const pts = [...ptrs.current.values()];
+    const cx = pts.reduce((a, p) => a + p.x, 0) / pts.length;
+    const cy = pts.reduce((a, p) => a + p.y, 0) / pts.length;
+    const dist = pts.length > 1 ? Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y) : 0;
+    const t = (e.target as Element).getAttribute?.('data-i');
+    gesture.current = { vb: live.current, x: cx, y: cy, dist, moved: pts.length > 1, target: pts.length === 1 && t != null ? Number(t) : null };
+  };
+  const onMove = (e: React.PointerEvent) => {
+    const gs = gesture.current;
+    if (!gs || !ptrs.current.has(e.pointerId) || !svgRef.current) return;
+    ptrs.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    const pts = [...ptrs.current.values()];
+    const cx = pts.reduce((a, p) => a + p.x, 0) / pts.length;
+    const cy = pts.reduce((a, p) => a + p.y, 0) / pts.length;
+    if (Math.hypot(cx - gs.x, cy - gs.y) > 6) gs.moved = true;
+    const k = gs.vb[2] / svgRef.current.clientWidth;
+    let [x, y, w] = gs.vb;
+    if (pts.length > 1 && gs.dist > 0) {
+      const dist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+      const [ax, ay] = toView(gs.x, gs.y, gs.vb);
+      const nw = Math.max(MIN_W, Math.min(W, w * (gs.dist / dist)));
+      const f = nw / w;
+      x = ax - (ax - x) * f;
+      y = ay - (ay - y) * f;
+      w = nw;
+    }
+    const kk = (w / gs.vb[2]) * k;
+    apply(clampVB(x - (cx - gs.x) * kk, y - (cy - gs.y) * kk, w));
+  };
+  const onUp = (e: React.PointerEvent) => {
+    ptrs.current.delete(e.pointerId);
+    const gs = gesture.current;
+    if (gs && !gs.moved && ptrs.current.size === 0) setSel((s) => (gs.target == null || s === gs.target ? null : gs.target));
+    if (ptrs.current.size === 0) {
+      gesture.current = null;
+      commit();
+    } else {
+      // one finger left after a pinch: restart the pan from here
+      const p = [...ptrs.current.values()][0];
+      gesture.current = { vb: live.current, x: p.x, y: p.y, dist: 0, moved: true, target: null };
+    }
+  };
+  useEffect(() => {
+    const el = svgRef.current;
+    if (!el) return;
+    const wheel = (e: WheelEvent) => {
+      e.preventDefault();
+      const [cx, cy] = toView(e.clientX, e.clientY, vbRef.current);
+      zoomAt(e.deltaY < 0 ? 1.25 : 0.8, cx, cy);
+    };
+    el.addEventListener('wheel', wheel, { passive: false });
+    return () => el.removeEventListener('wheel', wheel);
+  }, [zoomAt]);
+
+  // labels: constant on-screen size; a name shows when it fits its polity at the current zoom
   const unit = vb[2] / px; // viewBox units per screen pixel
-  const fontSize = Math.max(9, Math.min(12, px / 80)) * unit;
-  const visibleLabels = useMemo(() => {
+  const fs = Math.max(8.5, Math.min(12.5, px / 70)) * unit;
+  const zoom = W / vb[2];
+  const visible = useMemo(() => {
     if (!drawn) return [];
     const boxes: number[][] = [];
-    return drawn.labels.filter((l) => {
-      const [x, y] = l.c!;
-      if (x < vb[0] || x > vb[0] + vb[2] || y < vb[1] || y > vb[1] + vb[3]) return false;
-      const w = l.name.length * fontSize * 0.27;
-      const b = [x - w, y - fontSize * 0.6, x + w, y + fontSize * 0.6];
-      if (boxes.some((o) => o[0] < b[2] && b[0] < o[2] && o[1] < b[3] && b[1] < o[3])) return false;
-      boxes.push(b);
-      return true;
-    });
-  }, [drawn, vb, fontSize]);
+    const out: (Label & { big: boolean })[] = [];
+    // pass 1: names that fit inside their polity (+ the largest few, + the selected one);
+    // pass 2 (zoomed in): every remaining name that does not collide
+    const passes = zoom >= 1.8 ? [true, false] : [true];
+    for (const strict of passes)
+      drawn.labels.forEach((l, rank) => {
+        const [x0, y0, w, h] = vb;
+        if (l.x < x0 || l.x > x0 + w || l.y < y0 || l.y > y0 + h) return;
+        if (out.some((o) => o.name === l.name)) return;
+        const big = rank < 14;
+        const tw = Math.max(...l.lines.map((t) => t.length)) * fs * (big ? 0.68 : 0.5);
+        const th = l.lines.length * fs * 1.1;
+        const fits = l.r * 2.2 >= th && (l.w >= tw * 0.85 || l.r * 2.4 >= tw);
+        if (strict && !fits && !big && l.i !== sel) return;
+        const pad = fs * 0.2;
+        const b = [l.x - tw / 2 - pad, l.y - th / 2 - pad, l.x + tw / 2 + pad, l.y + th / 2 + pad];
+        if (l.i !== sel && boxes.some((o) => o[0] < b[2] && b[0] < o[2] && o[1] < b[3] && b[1] < o[3])) return;
+        boxes.push(b);
+        out.push({ ...l, big });
+      });
+    return out;
+  }, [drawn, vb, fs, sel, zoom]);
+
+  const selName = sel != null && drawn ? drawn.shapes[sel].name : null;
 
   return (
     <figure className="ep-map">
@@ -124,35 +263,21 @@ export function AtlasMap({ file, label, cartouche }: { file: string; label: stri
           aria-label={label}
           onPointerDown={onDown}
           onPointerMove={onMove}
-          onPointerUp={() => (drag.current = null)}
-          onPointerCancel={() => (drag.current = null)}
+          onPointerUp={onUp}
+          onPointerCancel={onUp}
+          style={{ ['--zoom' as string]: zoom }}
         >
-          <defs>
-            <filter id="ep-paper">
-              <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" seed="7" />
-              <feColorMatrix values="0 0 0 0 0.35  0 0 0 0 0.25  0 0 0 0 0.12  0 0 0 0.10 0" />
-              <feComposite in2="SourceGraphic" operator="in" />
-            </filter>
-            <pattern id="ep-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
-              <path d="M0 0V6" stroke="var(--ink)" strokeWidth="0.35" opacity="0.35" />
-            </pattern>
-          </defs>
           {drawn ? (
             <>
-              <path d={drawn.sphere} className="ep-sea" />
-              <path d={drawn.sphere} fill="url(#ep-hatch)" />
-              <path d={drawn.grat} className="ep-grat" style={{ strokeWidth: 0.5 * fontScale }} />
-              {drawn.shapes.map((s, i) => (
-                <path key={i} d={s.d} fill={s.fill} className="ep-land" style={{ strokeWidth: 0.6 * fontScale }}>
-                  <title>{s.name}</title>
-                </path>
-              ))}
-              <path d={drawn.sphere} className="ep-rim" style={{ strokeWidth: 1.4 * fontScale }} />
-              <rect x="0" y="0" width={W} height={H} filter="url(#ep-paper)" pointerEvents="none" />
-              <g className="ep-labels" style={{ fontSize: `${fontSize}px` }}>
-                {visibleLabels.map((l) => (
-                  <text key={l.name} x={l.c![0]} y={l.c![1]} textAnchor="middle" style={{ strokeWidth: fontSize * 0.28 }}>
-                    {l.name}
+              <Lands drawn={drawn} sel={sel} />
+              <g className="ep-labels" style={{ fontSize: `${fs}px` }}>
+                {visible.map((l) => (
+                  <text key={l.name} x={l.x} y={l.y - ((l.lines.length - 1) * fs * 0.55)} className={l.big ? 'is-big' : undefined} style={{ strokeWidth: fs * 0.3 }}>
+                    {l.lines.map((line, k) => (
+                      <tspan key={k} x={l.x} dy={k ? fs * 1.1 : 0} dominantBaseline="middle">
+                        {line}
+                      </tspan>
+                    ))}
                   </text>
                 ))}
               </g>
@@ -166,13 +291,20 @@ export function AtlasMap({ file, label, cartouche }: { file: string; label: stri
         <div className="ep-cartouche" aria-hidden="true">
           {cartouche}
         </div>
+        {selName ? (
+          <button className="ep-pick" onClick={() => setSel(null)}>
+            {selName} <span aria-hidden="true">×</span>
+          </button>
+        ) : (
+          hint && <p className="ep-hint">{hint}</p>
+        )}
         <div className="ep-zoom">
-          <button className="icon-btn" onClick={() => zoom(1.5)} aria-label="Zoom +">
+          <button className="icon-btn" onClick={() => zoomAt(1.6)} aria-label="Zoom +">
             <svg width="18" height="18" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" fill="none" aria-hidden="true">
               <path d="M12 5v14M5 12h14" />
             </svg>
           </button>
-          <button className="icon-btn" onClick={() => zoom(1 / 1.5)} aria-label="Zoom −">
+          <button className="icon-btn" onClick={() => zoomAt(1 / 1.6)} aria-label="Zoom −">
             <svg width="18" height="18" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" fill="none" aria-hidden="true">
               <path d="M5 12h14" />
             </svg>

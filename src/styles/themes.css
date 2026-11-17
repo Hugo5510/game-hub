@@ -157,14 +157,15 @@
   --focus: #842a18;
   --ink: #33230f;
   --sea: #d9cba6;
-  --terr-1: #d6b27c;
-  --terr-2: #b98c5a;
-  --terr-3: #c99d6c;
-  --terr-4: #a47b4f;
-  --terr-5: #e0c28e;
-  --terr-6: #8f6b43;
-  --terr-7: #cfa775;
-  --terr-8: #b7956a;
+  --terr-0: #e4d8bd;
+  --terr-1: #e6c27e;
+  --terr-2: #b5c98e;
+  --terr-3: #e3a587;
+  --terr-4: #a4bfd4;
+  --terr-5: #d8adc2;
+  --terr-6: #c6bde3;
+  --terr-7: #94c7b5;
+  --terr-8: #ecd77e;
   --font-display: 'Cinzel', 'Old Standard TT', serif;
   --font-body: 'Old Standard TT', Georgia, serif;
   --font-mono: 'Old Standard TT', Georgia, serif;
@@ -182,14 +183,15 @@
   --ink: #000;
   --accent: #8a0000;
   --sea: #ffffff;
+  --terr-0: #f2f2f2;
   --terr-1: #f2c879;
-  --terr-2: #c58a46;
-  --terr-3: #f0dca8;
-  --terr-4: #9a6a35;
-  --terr-5: #ffe9b8;
-  --terr-6: #7a5226;
-  --terr-7: #e0b066;
-  --terr-8: #b8834a;
+  --terr-2: #a8d08d;
+  --terr-3: #f4a582;
+  --terr-4: #92c5de;
+  --terr-5: #e7a6c9;
+  --terr-6: #c2b8f0;
+  --terr-7: #7fd1c0;
+  --terr-8: #ffe680;
 }
 
 /* =====================================================================
@@ -272,14 +274,15 @@
   --focus: #e8925f;
   --ink: #eedfbd;
   --sea: #152024;
-  --terr-1: #7a5c37;
-  --terr-2: #5f4629;
-  --terr-3: #86683f;
-  --terr-4: #4f3b22;
-  --terr-5: #93744a;
-  --terr-6: #45331e;
-  --terr-7: #6f5533;
-  --terr-8: #5a4730;
+  --terr-0: #2a2219;
+  --terr-1: #8a6a35;
+  --terr-2: #56703f;
+  --terr-3: #8a4f3c;
+  --terr-4: #3f5f78;
+  --terr-5: #7a4c62;
+  --terr-6: #5b5488;
+  --terr-7: #3d7062;
+  --terr-8: #857a3a;
   --shadow: 0 12px 40px rgb(0 0 0 / 0.6);
   color-scheme: dark;
 }
@@ -293,14 +296,15 @@
   --ink: #fff;
   --accent: #ff7a50;
   --sea: #000;
-  --terr-1: #a77b3a;
-  --terr-2: #6e4a1e;
-  --terr-3: #c9a15a;
-  --terr-4: #5a3b14;
-  --terr-5: #d9b36b;
-  --terr-6: #4a2f10;
-  --terr-7: #b88a45;
-  --terr-8: #8a6430;
+  --terr-0: #1a1a1a;
+  --terr-1: #b07a2a;
+  --terr-2: #4f8a3a;
+  --terr-3: #b0503a;
+  --terr-4: #2f6d96;
+  --terr-5: #9c4a78;
+  --terr-6: #6a5cb0;
+  --terr-7: #2f8f7a;
+  --terr-8: #a89a2a;
 }
 
 /* ---------- Globus: green for the found country (both themes) ---------- */
