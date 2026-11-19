@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Feature, Geometry } from 'geojson';
-import { borderDistance, bucketFor, heatLevel, outcome, pool } from './logic';
+import { bearing, compassIndex, borderDistance, bucketFor, heatLevel, outcome, pool } from './logic';
 
 const sq = (lon: number, lat: number, s = 1): Feature<Geometry> => ({
   type: 'Feature',
@@ -30,5 +30,11 @@ describe('globus', () => {
     expect(outcome({ guesses: ['DEU'], gaveUp: true }, 'POL')).toEqual({ won: false, bucket: 'X' });
     expect(outcome({ guesses: ['DEU'] }, 'POL')).toBeNull();
     expect(bucketFor(30)).toBe('26+');
+  });
+  it('bearing and compass sector', () => {
+    expect(compassIndex(bearing([0, 0], [0, 10]))).toBe(0);
+    expect(compassIndex(bearing([0, 0], [10, 0]))).toBe(2);
+    expect(compassIndex(bearing([21, 52], [2, 48]))).toBe(6); // Warsaw → Paris: west
+    expect(compassIndex(bearing([0, 10], [0, 0]))).toBe(4);
   });
 });

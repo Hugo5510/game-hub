@@ -76,3 +76,19 @@ export function shareLine(levels: number[], won: boolean): string {
   for (let i = 0; i < cells.length; i += 10) rows.push(cells.slice(i, i + 10).join(''));
   return rows.join('\n');
 }
+
+/** Initial great-circle bearing (degrees, 0 = north, clockwise) from point a to point b, both [lon, lat]. */
+export function bearing([lon1, lat1]: [number, number], [lon2, lat2]: [number, number]): number {
+  const r = Math.PI / 180;
+  const p1 = lat1 * r, p2 = lat2 * r, dl = (lon2 - lon1) * r;
+  const y = Math.sin(dl) * Math.cos(p2);
+  const x = Math.cos(p1) * Math.sin(p2) - Math.sin(p1) * Math.cos(p2) * Math.cos(dl);
+  return ((Math.atan2(y, x) / r) % 360 + 360) % 360;
+}
+
+export const COMPASS = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'] as const;
+export const ARROWS = ['⬆️', '↗️', '➡️', '↘️', '⬇️', '↙️', '⬅️', '↖️'];
+/** 8-point compass sector (0 = N … 7 = NW). */
+export function compassIndex(deg: number): number {
+  return Math.round(deg / 45) % 8;
+}

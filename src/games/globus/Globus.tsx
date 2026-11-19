@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { pool, outcome, borderDistance, heatLevel, shareLine, BUCKETS, type GlobusState } from './logic';
-import { loadGeo, countryName, type Geo } from '../../data/countries';
+import { pool, outcome, borderDistance, heatLevel, shareLine, bearing, compassIndex, BUCKETS, type GlobusState } from './logic';
+import { loadGeo, countryName, byId, type Geo } from '../../data/countries';
 import { useGameSession, type Mode } from '../../core/session';
 import { useI18n, plural } from '../../core/i18n';
 import { GameShell } from '../../components/GameShell';
@@ -28,7 +28,9 @@ export default function Globus({ mode }: { mode: Mode }) {
     return g.state.guesses.map((id, order) => {
       const f = geo.features.get(id);
       const km = id === target ? 0 : f ? borderDistance(f, tf, geo.neighbours.get(target)?.has(id) ?? false) : 20000;
-      return { id, km, order, level: heatLevel(km), hit: id === target };
+      const a = byId.get(id), b = byId.get(target);
+      const deg = a && b && id !== target ? bearing([a.lx, a.ly], [b.lx, b.ly]) : null;
+      return { id, km, order, level: heatLevel(km), hit: id === target, deg, dir: deg == null ? null : compassIndex(deg) };
     });
   }, [geo, g.state, target]);
 
@@ -124,6 +126,13 @@ export default function Globus({ mode }: { mode: Mode }) {
                     </span>
                     <span className="gb-item__name">{countryName(r.id, lang)}</span>
                     <span className="gb-item__km">{r.hit ? '' : r.km === 0 ? t('globusNeighbour') : km(r.km)}</span>
+                    <span className="gb-item__dir" title={r.dir == null ? undefined : t(`globusDir${r.dir}` as 'globusDir0')} aria-label={r.dir == null ? undefined : t(`globusDir${r.dir}` as 'globusDir0')}>
+                      {r.deg != null && (
+                        <svg viewBox="0 0 24 24" width="18" height="18" style={{ transform: `rotate(${Math.round(r.deg)}deg)` }} aria-hidden="true">
+                          <path d="M12 3l6 9h-4v9h-4v-9H6z" fill="currentColor" />
+                        </svg>
+                      )}
+                    </span>
                   </li>
                 ))}
               </ol>
