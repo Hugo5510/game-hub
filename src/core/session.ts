@@ -5,7 +5,7 @@ import { load, save } from './storage';
 import { emptyStats, statsFromHistory, type History, type Stats, type UnlimitedStats } from './stats';
 
 export type Mode = 'daily' | 'unlimited';
-export type GameId = 'slowko' | 'globus' | 'kontur' | 'glebia' | 'epoka' | 'flagi' | 'kronika';
+export type GameId = 'slowko' | 'globus' | 'kontur' | 'glebia' | 'epoka' | 'flagi' | 'kronika' | 'oko';
 
 export interface Outcome {
   won: boolean;

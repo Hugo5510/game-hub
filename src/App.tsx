@@ -13,6 +13,7 @@ const games: Record<GameId, React.LazyExoticComponent<(p: { mode: Mode }) => JSX
   epoka: lazy(() => import('./games/epoka/Epoka')),
   flagi: lazy(() => import('./games/flagi/Flagi')),
   kronika: lazy(() => import('./games/kronika/Kronika')),
+  oko: lazy(() => import('./games/oko/Oko')),
 };
 
 export function App() {

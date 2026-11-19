@@ -14,7 +14,7 @@ import { useState } from 'react';
 import { CardArt } from './CardArt';
 import './hub.css';
 
-const ORDER: GameId[] = ['slowko', 'globus', 'kontur', 'glebia', 'flagi', 'kronika', 'epoka'];
+const ORDER: GameId[] = ['slowko', 'globus', 'kontur', 'glebia', 'flagi', 'kronika', 'epoka', 'oko'];
 
 export function Hub() {
   const { t, lang } = useI18n();

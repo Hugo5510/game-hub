@@ -21,8 +21,11 @@ import { StatsPanel } from '../../components/StatsPanel';
 import { Icon } from '../../components/Icon';
 import './glebia.css';
 
+declare const __DEPTH_VERSION__: string;
 let dataPromise: Promise<DepthData> | null = null;
-const loadData = () => (dataPromise ??= fetch(`${import.meta.env.BASE_URL}data/depth.json`).then((r) => r.json()));
+// versioned URL: the service worker caches data files stale-while-revalidate, so an unversioned
+// URL would serve the previous question set once after every update
+const loadData = () => (dataPromise ??= fetch(`${import.meta.env.BASE_URL}data/depth.json?v=${__DEPTH_VERSION__}`).then((r) => r.json()));
 const MAX_M = PROMPTS * 100 * METERS_PER_POINT;
 
 /** Dive time grows with the metres gained (skip: a short pause, nothing gained). */
