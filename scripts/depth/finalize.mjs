@@ -5,6 +5,7 @@
 //  - hand-curated history / science / culture / sport / politics categories are added;
 //  - every category gets a `group`, used to keep each dive varied (see promptsFor in logic.ts).
 import { curated, countrySets, polishCities } from './curated.mjs';
+import { curated2, countrySets2 } from './curated2.mjs';
 
 /** Natural Earth categories that stay in the pool, with their group. */
 export const KEEP = {
@@ -73,18 +74,19 @@ export function finalize(natural, meta) {
   const countryAns = new Map();
   for (const c of natural) if (c.id.startsWith('countries-')) for (const a of c.answers) if (!countryAns.has(a.en)) countryAns.set(a.en, a);
   const metaById = new Map(meta.map((m) => [m.id, m]));
-  const sets = countrySets.map((s) => {
-    const items = s.ids
+  const toItems = (ids, setId) =>
+    ids
       .map((id) => {
         const m = metaById.get(id);
-        if (!m) throw new Error(`unknown country ${id} in ${s.id}`);
+        if (!m) throw new Error(`unknown country ${id} in ${setId}`);
         const a = countryAns.get(m.en) ?? { pl: m.pl, en: m.en, alt: [m.pl, m.en, ...m.aliases] };
         return { pop: m.pop, item: [a.pl, a.en, ...a.alt] };
       })
       .sort((x, y) => y.pop - x.pop)
       .map((x) => x.item);
-    return fromItems({ ...s, metric: { pl: 'populacja', en: 'population' }, items });
-  });
+  const sets = [...countrySets, ...countrySets2].map((s) =>
+    fromItems({ ...s, metric: { pl: 'populacja', en: 'population' }, items: toItems(s.ids, s.id), extra: s.extra ? toItems(s.extra, s.id) : undefined }),
+  );
 
-  return [...kept, fromItems(polishCities), ...curated.map(fromItems), ...sets];
+  return [...kept, fromItems(polishCities), ...curated.map(fromItems), ...curated2.map(fromItems), ...sets];
 }

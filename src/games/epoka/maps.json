@@ -1,12 +1,271 @@
 [
  {
+  "year": -3000,
+  "from": -3000,
+  "to": -2001,
+  "file": "epoch/world_bc3000.topo.json",
+  "prevYear": null,
+  "nextYear": -2000,
+  "appears": [],
+  "vanishes": [
+   "Yamnaya culture",
+   "Aboriginal Tasmanians",
+   "Dapenkeng culture"
+  ],
+  "polities": 25
+ },
+ {
+  "year": -2000,
+  "from": -2000,
+  "to": -1501,
+  "file": "epoch/world_bc2000.topo.json",
+  "prevYear": -3000,
+  "nextYear": -1500,
+  "appears": [
+   "Andronovo",
+   "Thai",
+   "Tibeto-Burmanese",
+   "Catacomb culture",
+   "Koreans"
+  ],
+  "vanishes": [
+   "Bantu",
+   "Andronovo",
+   "Thai",
+   "Semites",
+   "Tibeto-Burmanese"
+  ],
+  "polities": 45
+ },
+ {
+  "year": -1500,
+  "from": -1500,
+  "to": -1001,
+  "file": "epoch/world_bc1500.topo.json",
+  "prevYear": -2000,
+  "nextYear": -1000,
+  "appears": [
+   "West African cereal farmers",
+   "Proto-Altaic pastoralists",
+   "Manioc farmers",
+   "Karasuk culture",
+   "Tibetans"
+  ],
+  "vanishes": [
+   "Poverty point culture"
+  ],
+  "polities": 68
+ },
+ {
+  "year": -1000,
+  "from": -1000,
+  "to": -701,
+  "file": "epoch/world_bc1000.topo.json",
+  "prevYear": -1500,
+  "nextYear": -700,
+  "appears": [
+   "Gandhara grave culture",
+   "Chavin"
+  ],
+  "vanishes": [
+   "Gandhara grave culture"
+  ],
+  "polities": 69
+ },
+ {
+  "year": -700,
+  "from": -700,
+  "to": -501,
+  "file": "epoch/world_bc700.topo.json",
+  "prevYear": -1000,
+  "nextYear": -500,
+  "appears": [
+   "Proto-Scythian culture",
+   "Chernoles culture",
+   "Lusatian culture",
+   "Milograd culture",
+   "La Tène culture"
+  ],
+  "vanishes": [
+   "Karasuk culture",
+   "Tibetans",
+   "Iranian pastoralists",
+   "Vedic Aryans",
+   "Sinic"
+  ],
+  "polities": 73
+ },
+ {
+  "year": -500,
+  "from": -500,
+  "to": -401,
+  "file": "epoch/world_bc500.topo.json",
+  "prevYear": -700,
+  "nextYear": -400,
+  "appears": [
+   "Achaemenid Empire",
+   "Carthaginian Empire",
+   "Meroe",
+   "Plain-Pottery culture",
+   "Adena Culture"
+  ],
+  "vanishes": [
+   "Meroe",
+   "Illyrians",
+   "El Paraiso",
+   "Saba",
+   "Kuru"
+  ],
+  "polities": 74
+ },
+ {
+  "year": -400,
+  "from": -400,
+  "to": -324,
+  "file": "epoch/world_bc400.topo.json",
+  "prevYear": -500,
+  "nextYear": -323,
+  "appears": [
+   "Xiongnu",
+   "Hallstatt culture",
+   "Scythians",
+   "Zhangzhung Kingdom",
+   "Gojoseon"
+  ],
+  "vanishes": [
+   "Achaemenid Empire",
+   "Xiongnu",
+   "Hallstatt culture",
+   "Maize farmers",
+   "Austronesians"
+  ],
+  "polities": 76
+ },
+ {
+  "year": -323,
+  "from": -323,
+  "to": -301,
+  "file": "epoch/world_bc323.topo.json",
+  "prevYear": -400,
+  "nextYear": -300,
+  "appears": [
+   "Empire of Alexander",
+   "Qin",
+   "Meroe",
+   "Qataban",
+   "Cappadocia"
+  ],
+  "vanishes": [
+   "Empire of Alexander",
+   "Magadha",
+   "Ethiopian highland farmers"
+  ],
+  "polities": 68
+ },
+ {
+  "year": -300,
+  "from": -300,
+  "to": -201,
+  "file": "epoch/world_bc300.topo.json",
+  "prevYear": -323,
+  "nextYear": -200,
+  "appears": [
+   "Seleucid Kingdom",
+   "Mauryan Empire",
+   "Kingdom of Antigonus",
+   "Ptolemaic Kingdom",
+   "Nabatean Kingdom"
+  ],
+  "vanishes": [
+   "Hindu kingdoms and republics",
+   "Kingdom of Antigonus",
+   "Carthaginian Empire",
+   "Qin",
+   "Cappadocia"
+  ],
+  "polities": 74
+ },
+ {
+  "year": -200,
+  "from": -200,
+  "to": -101,
+  "file": "epoch/world_bc200.topo.json",
+  "prevYear": -300,
+  "nextYear": -100,
+  "appears": [
+   "Scythians",
+   "Xiongnu",
+   "Yuezhi",
+   "Han Empire",
+   "Thai"
+  ],
+  "vanishes": [
+   "Yuezhi",
+   "Thai",
+   "Arabs",
+   "Bactria",
+   "Malays"
+  ],
+  "polities": 86
+ },
+ {
+  "year": -100,
+  "from": -100,
+  "to": -2,
+  "file": "epoch/world_bc100.topo.json",
+  "prevYear": -200,
+  "nextYear": -1,
+  "appears": [
+   "Kushan Empire",
+   "Roman Republic",
+   "Sarmates",
+   "Hopewell Culture",
+   "Saces"
+  ],
+  "vanishes": [
+   "Manioc farmers",
+   "Kushan Empire",
+   "Mauryan Empire",
+   "Seleucid Kingdom",
+   "Scythians"
+  ],
+  "polities": 84
+ },
+ {
+  "year": -1,
+  "from": -1,
+  "to": 99,
+  "file": "epoch/world_bc1.topo.json",
+  "prevYear": -100,
+  "nextYear": 100,
+  "appears": [
+   "Roman Empire",
+   "Parthian Empire",
+   "Saka Kingdom",
+   "Suren Kingdom",
+   "Satavahanihara"
+  ],
+  "vanishes": [
+   "Mascat",
+   "Odrysian Kingdom",
+   "Judea"
+  ],
+  "polities": 79
+ },
+ {
   "year": 100,
   "from": 100,
   "to": 199,
   "file": "epoch/world_100.topo.json",
-  "prevYear": null,
+  "prevYear": -1,
   "nextYear": 200,
-  "appears": [],
+  "appears": [
+   "Kushan Empire",
+   "Yayoi",
+   "Alans",
+   "Scythians",
+   "Yueban"
+  ],
   "vanishes": [
    "Kushan Empire",
    "Saami",
