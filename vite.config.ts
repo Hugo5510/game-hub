@@ -1,9 +1,15 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
+import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
+
+/** Content hash of the Głębia data: changes the URL whenever the questions change, so no cached copy is reused. */
+const depthVersion = createHash('sha256').update(readFileSync(new URL('./public/data/depth.json', import.meta.url))).digest('hex').slice(0, 10);
 
 export default defineConfig({
   base: './',
+  define: { __DEPTH_VERSION__: JSON.stringify(depthVersion) },
   plugins: [
     react(),
     VitePWA({
