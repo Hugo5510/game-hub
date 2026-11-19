@@ -40,9 +40,12 @@ export function dailyIndex(gameId: string, poolSize: number, dateKey: string): n
   return dailyIndexForDay(gameId, poolSize, dayNumber(dateKey));
 }
 
-/** Puzzle number shown to players ("#123"), counted from the epoch. */
+/** Launch day (Sunday 2026-11-15) is puzzle #1. Only the displayed number — puzzle selection still uses EPOCH. */
+export const LAUNCH_KEY = '2026-11-15';
+
+/** Puzzle number shown to players ("#5"), counted from the launch day. */
 export function puzzleNumber(dateKey: string): number {
-  return dayNumber(dateKey) + 1;
+  return dayNumber(dateKey) - dayNumber(LAUNCH_KEY) + 1;
 }
 
 /** Random puzzle for Unlimited mode — never today's daily puzzle (and not the previous one). */

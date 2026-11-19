@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { dailyIndex, dailyIndexForDay, unlimitedIndex, cyclePermutation } from './daily';
+import { dailyIndex, dailyIndexForDay, unlimitedIndex, cyclePermutation, puzzleNumber } from './daily';
 import { addDays, dayNumber, localDateKey, msUntilLocalMidnight } from './date';
 import { applyResult, displayedStreak, emptyStats } from './stats';
 
@@ -85,5 +85,9 @@ describe('stats & streak', () => {
     expect(displayedStreak(s, '2026-11-15')).toBe(1);
     expect(displayedStreak(s, '2026-11-16')).toBe(0);
     expect(s.dist).toEqual({ '3': 1, '4': 1, X: 1, '1': 1 });
+  });
+  it('puzzle number counts from launch Sunday', () => {
+    expect(puzzleNumber('2026-11-15')).toBe(1);
+    expect(puzzleNumber('2026-11-19')).toBe(5);
   });
 });
