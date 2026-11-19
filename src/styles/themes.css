@@ -515,3 +515,81 @@
   --kr-3: #ff9a3c;
   --kr-4: #ff4d6d;
 }
+
+/* ---------- Oko — optician's test chart: paper white, black ink, signal red, cobalt ---------- */
+.theme-oko {
+  --bg: #f4f4f0;
+  --fg: #111214;
+  --muted: #5d5f63;
+  --surface: #ffffff;
+  --surface-2: #e6e6e1;
+  --border: #c9c9c2;
+  --accent: #111214;
+  --accent-fg: #ffffff;
+  --focus: #e2302a;
+  --paper: #fbfbf8;
+  --mark: #e2302a;
+  --answer: #2347d6;
+  --ok-1: #16833f;
+  --ok-2: #8a7a00;
+  --ok-3: #c25a12;
+  --ok-4: #c0261f;
+  --font-display: 'IBM Plex Mono', ui-monospace, monospace;
+  --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+  --radius: 2px;
+  --modal-radius: 4px;
+  --title-case: uppercase;
+  --title-tracking: 0.08em;
+}
+[data-theme='dark'] .theme-oko {
+  --bg: #0e0f11;
+  --fg: #ecece6;
+  --muted: #9a9c9f;
+  --surface: #17181b;
+  --surface-2: #22242a;
+  --border: #34363c;
+  --accent: #ecece6;
+  --accent-fg: #0e0f11;
+  --focus: #ff5a4f;
+  --paper: #121316;
+  --mark: #ff5a4f;
+  --answer: #6d8cff;
+  --ok-1: #4fd18a;
+  --ok-2: #e8c34a;
+  --ok-3: #f08a4b;
+  --ok-4: #ff6f61;
+  --shadow: 0 12px 40px rgb(0 0 0 / 0.6);
+  color-scheme: dark;
+}
+[data-contrast='high'] .theme-oko {
+  --bg: #fff;
+  --fg: #000;
+  --muted: #222;
+  --surface: #fff;
+  --surface-2: #e5e5e5;
+  --border: #000;
+  --paper: #fff;
+  --mark: #c24e00;
+  --answer: #005a9e;
+  --ok-1: #005a9e;
+  --ok-2: #7a5c00;
+  --ok-3: #c24e00;
+  --ok-4: #8a0000;
+}
+[data-contrast='high'][data-theme='dark'] .theme-oko {
+  --bg: #000;
+  --fg: #fff;
+  --muted: #e6e6e6;
+  --surface: #000;
+  --surface-2: #262626;
+  --border: #fff;
+  --paper: #000;
+  --accent: #fff;
+  --accent-fg: #000;
+  --mark: #ff9a3c;
+  --answer: #5cb8ff;
+  --ok-1: #5cb8ff;
+  --ok-2: #ffe600;
+  --ok-3: #ff9a3c;
+  --ok-4: #ff4d6d;
+}

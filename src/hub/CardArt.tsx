@@ -92,6 +92,20 @@ export function CardArt({ id }: { id: GameId }) {
           </g>
         </svg>
       );
+    case 'oko':
+      return (
+        <svg className="art" viewBox="0 0 120 120" aria-hidden="true">
+          <circle cx="60" cy="60" r="50" fill="none" stroke="var(--fg)" strokeWidth="1.5" />
+          <circle cx="60" cy="60" r="34" fill="none" stroke="var(--fg)" strokeWidth="0.8" strokeDasharray="2 3" />
+          <path d="M60 60 L110 60" stroke="var(--fg)" strokeWidth="2.5" strokeLinecap="round" />
+          <path d="M60 60 L92 22" stroke="var(--answer)" strokeWidth="2.5" strokeLinecap="round" />
+          <path d="M84 60 A24 24 0 0 0 75.4 41.6" fill="none" stroke="var(--mark)" strokeWidth="2" />
+          {[[30, 34], [40, 82], [24, 64], [52, 92], [36, 50]].map(([x, y], i) => (
+            <circle key={i} cx={x} cy={y} r="3.2" fill="var(--fg)" />
+          ))}
+          <circle cx="60" cy="60" r="3.5" fill="var(--mark)" />
+        </svg>
+      );
     case 'epoka':
       return (
         <svg className="art" viewBox="0 0 120 120" aria-hidden="true">
