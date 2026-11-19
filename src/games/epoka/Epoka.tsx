@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
-import { maps, judge, outcome, window, timeX, shareRows, MAX_GUESSES, MIN_YEAR, MAX_YEAR, type EpokaState, type Feedback } from './logic';
+import { maps, judge, outcome, window, timeX, shareRows, signedYear, formatYear, MAX_GUESSES, MIN_YEAR, MAX_YEAR, type EpokaState, type Feedback } from './logic';
 import { useGameSession, type Mode } from '../../core/session';
 import { useI18n } from '../../core/i18n';
 import { useContrast } from '../../core/settings';
@@ -11,7 +11,8 @@ import './epoka.css';
 
 function Timeline({ fb, range, reveal }: { fb: Feedback[]; range: [number, number]; reveal: [number, number] | null }) {
   const [lo, hi] = window(fb);
-  const ticks = [1, 500, 1000, 1200, 1400, 1500, 1600, 1700, 1800, 1900, 2010];
+  const ticks = [-3000, -1500, -500, 1, 500, 1000, 1200, 1500, 1600, 1800, 1900, 2010];
+  const tickLabel = (y: number) => (y < 0 ? `−${-y}` : String(y));
   return (
     <div className="ep-tl" aria-hidden="true">
       <div className="ep-tl__axis">
@@ -20,7 +21,7 @@ function Timeline({ fb, range, reveal }: { fb: Feedback[]; range: [number, numbe
         {ticks.map((t) => (
           <span key={t} className="ep-tl__tick" style={{ left: `${timeX(t) * 100}%` }}>
             <i />
-            <b>{t}</b>
+            <b>{tickLabel(t)}</b>
           </span>
         ))}
         {fb.map((f, i) => (
@@ -40,6 +41,7 @@ export default function Epoka({ mode }: { mode: Mode }) {
   const { t, lang } = useI18n();
   const [hc] = useContrast();
   const [val, setVal] = useState('');
+  const [bc, setBc] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const init = useCallback((): EpokaState => ({ guesses: [] }), []);
   const out = useCallback((s: EpokaState, p: number) => outcome(s, maps[p]), []);
@@ -51,26 +53,28 @@ export default function Epoka({ mode }: { mode: Mode }) {
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    const y = Number(val.trim());
-    if (!Number.isInteger(y) || y < MIN_YEAR || y > MAX_YEAR) return setErr(t('epokaInvalid', { min: MIN_YEAR, max: MAX_YEAR }));
+    const n = Number(val.trim());
+    const y = signedYear(n, bc);
+    if (!Number.isInteger(n) || n === 0 || y < MIN_YEAR || y > MAX_YEAR) return setErr(t('epokaInvalid', { min: formatYear(MIN_YEAR, lang), max: formatYear(MAX_YEAR, lang) }));
     setErr(null);
     setVal('');
+    setBc(false);
     g.setState((s) => ({ guesses: [...s.guesses, y] }));
   };
   const share = g.result ? `${t('epokaTitle')} ${mode === 'daily' ? '#' + g.puzzleNo : '∞'} ${g.result.won ? fb.length : 'X'}/${MAX_GUESSES}\n${shareRows(fb, hc)}` : undefined;
 
   const clues = (
     <div className="ep-clues">
-      <p className="ep-range">{t('epokaRange', { from: m.from, to: m.to })}</p>
+      <p className="ep-range">{t('epokaRange', { from: formatYear(m.from, lang), to: formatYear(m.to, lang) })}</p>
       <h3>{t('epokaClues')}</h3>
       {m.appears.length > 0 && (
         <p>
-          <strong>{t('epokaAppears', { y: m.prevYear ?? '' })}:</strong> {m.appears.join(', ')}
+          <strong>{t('epokaAppears', { y: m.prevYear == null ? '' : formatYear(m.prevYear, lang) })}:</strong> {m.appears.join(', ')}
         </p>
       )}
       {m.vanishes.length > 0 && (
         <p>
-          <strong>{t('epokaVanishes', { y: m.nextYear ?? '' })}:</strong> {m.vanishes.join(', ')}
+          <strong>{t('epokaVanishes', { y: m.nextYear == null ? '' : formatYear(m.nextYear, lang) })}:</strong> {m.vanishes.join(', ')}
         </p>
       )}
       <p className="muted ep-src">{t('epokaSource')}</p>
@@ -87,6 +91,7 @@ export default function Epoka({ mode }: { mode: Mode }) {
       shareText={share}
       onNext={() => {
         setVal('');
+        setBc(false);
         g.newUnlimited();
       }}
       help={
@@ -100,7 +105,7 @@ export default function Epoka({ mode }: { mode: Mode }) {
       resultBody={clues}
     >
       <div className="ep-wrap">
-        <AtlasMap file={m.file} label={t('map')} cartouche={done ? `Anno ${m.from}–${m.to}` : 'Anno ????'} hint={t('epokaMapHint')} errorText={t('epokaMapError')} retryText={t('epokaMapRetry')} />
+        <AtlasMap file={m.file} label={t('map')} cartouche={done ? `Anno ${formatYear(m.from, lang)} – ${formatYear(m.to, lang)}` : 'Anno ????'} hint={t('epokaMapHint')} errorText={t('epokaMapError')} retryText={t('epokaMapRetry')} />
         <Timeline fb={fb} range={[m.from, m.to]} reveal={done ? [m.from, m.to] : null} />
         <div className="ep-panel">
           <ol className="ep-guesses" aria-label={t('attempts')}>
@@ -109,7 +114,7 @@ export default function Epoka({ mode }: { mode: Mode }) {
               if (!f) return <li key={i} className="ep-g is-empty" />;
               return (
                 <li key={i} className={`ep-g is-${f.dir}`}>
-                  <span className="ep-g__year">{f.year}</span>
+                  <span className="ep-g__year">{formatYear(f.year, lang)}</span>
                   {f.dir === 'correct' ? (
                     <span className="ep-g__hint">
                       <Icon name="check" size={18} /> {t('epokaCorrect')}
@@ -134,6 +139,9 @@ export default function Epoka({ mode }: { mode: Mode }) {
                 placeholder={t('epokaPlaceholder')}
                 aria-label={t('epokaPlaceholder')}
               />
+              <button type="button" className={`btn ep-era${bc ? ' is-bc' : ''}`} aria-pressed={bc} onClick={() => setBc((x) => !x)} title={t('epokaEraToggle')}>
+                {bc ? (lang === 'pl' ? 'p.n.e.' : 'BC') : lang === 'pl' ? 'n.e.' : 'AD'}
+              </button>
               <button className="btn btn--primary" type="submit" disabled={!val}>
                 {t('guess')}
               </button>

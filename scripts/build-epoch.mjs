@@ -7,11 +7,13 @@ import { quantize } from 'topojson-client';
 import { geoArea } from 'd3-geo';
 
 const root = path.resolve(import.meta.dirname, '..');
-const YEARS = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1279, 1300, 1400, 1492, 1500, 1530, 1600, 1650, 1700, 1715, 1783, 1800, 1815, 1878, 1880, 1900, 1914, 1920, 1930, 1938, 1945, 1960, 1994, 2000, 2010];
+// negative = BC (file world_bc500 = 500 BC)
+const YEARS = [-3000, -2000, -1500, -1000, -700, -500, -400, -323, -300, -200, -100, -1, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1279, 1300, 1400, 1492, 1500, 1530, 1600, 1650, 1700, 1715, 1783, 1800, 1815, 1878, 1880, 1900, 1914, 1920, 1930, 1938, 1945, 1960, 1994, 2000, 2010];
 const LAST_YEAR = 2010;
+const hbName = (y) => (y < 0 ? `bc${-y}` : String(y));
 
 const maps = YEARS.map((year) => {
-  const gj = JSON.parse(fs.readFileSync(path.join(root, `data-raw/hb/world_${year}.geojson`), 'utf8'));
+  const gj = JSON.parse(fs.readFileSync(path.join(root, `data-raw/hb/world_${hbName(year)}.geojson`), 'utf8'));
   const feats = gj.features.filter((f) => f.geometry && f.properties.NAME);
   const areas = new Map();
   for (const f of feats) areas.set(f.properties.NAME, (areas.get(f.properties.NAME) ?? 0) + geoArea(f));
@@ -66,7 +68,7 @@ groups.forEach((g, gi) => {
   topo = presimplify(topo);
   topo = simplify(topo, quantile(topo, 0.82));
   topo = quantize(topo, 2e4);
-  const file = `epoch/world_${from}.topo.json`;
+  const file = `epoch/world_${hbName(from)}.topo.json`;
   fs.writeFileSync(path.join(root, 'public/data', file), JSON.stringify(topo));
   if (SKIP_AS_PUZZLE.has(from)) return;
   out.push({ year: from, from, to, file, prevYear: prev?.year ?? null, nextYear: next?.year ?? null, appears, vanishes, polities: m.names.size });
